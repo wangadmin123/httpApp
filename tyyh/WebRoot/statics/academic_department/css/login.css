@@ -1,0 +1,17 @@
+*{
+    margin:0px;
+    padding:0px;
+    font-family:"微软雅黑";
+
+}
+a{text-decoration:none;}
+img{border:0;}
+a:focus {outline:none;}
+body{ background-color:#5c5c5c;}
+.loginContent{text-align:center; margin:0 auto;background-color: #fff;width: 500px; height: 310px; }
+.titleText{margin-top: 150px; }
+.titleText h1{ font-size:20px; color:#fff; background-color: #333333; line-height:60px; height:60px;font-weight:normal;}
+
+
+.user{  margin:0 auto; text-align:center; width:460px; border-top:1px solid #fff; padding-top:10px; display:block; overflow:hidden;}
+

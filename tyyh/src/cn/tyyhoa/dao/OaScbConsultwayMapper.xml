@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbConsultwayMapper" >
+  <select id="selectConsultWay" resultType="OaScbConsultway">
+  		SELECT id,consultWay FROM oa_scb_consultway  where usesion =1
+  </select>
+  
+  
+  <select id="selectConsultUnWay" resultType="OaScbConsultway">
+  		SELECT id,consultWay FROM oa_scb_consultway  where usesion =2
+  </select>
+  
+  <insert id="addconsultway" parameterType="OaScbConsultway">
+  	INSERT INTO tyyhoa.oa_scb_consultway 
+	( 
+	consultWay 
+
+	)
+	VALUES
+	(
+	#{consultWay}
+
+	)
+  	
+  </insert>
+  
+  
+  <update id="checkUnuseWay" parameterType="int">
+ 	
+ 		UPDATE  oa_scb_consultway SET usesion=2 WHERE id  in
+ 			<foreach collection="id" item="id" index ="index" open ="(" close =")" separator =",">
+ 			     #{id}
+ 			</foreach>
+ 	
+ 	</update>
+ 	
+ 	
+ 	<update id="editWayName" parameterType="OaScbConsultway">
+  		UPDATE tyyhoa.oa_scb_consultway 
+			SET
+ 
+		consultWay = #{consultWay}
+
+	
+		WHERE
+		id = #{id}
+  	
+  	</update>
+  	
+  	
+  	<update id="moveUnuseWay" parameterType="int">
+ 	
+ 		UPDATE  oa_scb_consultway SET usesion=1 WHERE id  in
+ 			<foreach collection="id" item="id" index ="index" open ="(" close =")" separator =",">
+ 			     #{id}
+ 			</foreach>
+ 	
+ 	</update>
+  
+  
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJwbClasstimeMapper" >
+<!-- 查询班级 -->
+<select id="selectAllgrade" resultType="OaJwbGrade" parameterType="String">
+	SELECT oa_jwb_grade.id,oa_jwb_grade.name FROM oa_jwb_grade WHERE struts &lt;3
+</select>
+	
+	<!-- 查询上课周期 -->
+	
+	<select id="selectTime" resultType="OaJwbClasstime">
+	SELECT timeID,class_time FROM oa_jwb_classtime
+	
+	</select>
+	<!-- 查询机房 -->
+	<select id="selectMotor" resultType="OaJwbMotor" parameterType="String" >
+   SELECT oa_jwb_motor.id,oa_jwb_motor.name,floor,status FROM oa_jwb_motor   
+  </select>
+  	
+
+  <!-- 添加 -->
+  <insert id="insert" parameterType="OaJwbCurriculum">
+  	INSERT INTO oa_jwb_curriculum(motor,
+  								  grade,
+  								  cycle
+  								) VALUES
+  								<foreach collection="list" item="reddemCode" index="index"
+			separator=",">
+  								 (
+  								#{reddemCode.motor},
+    							#{reddemCode.grade},
+    							#{reddemCode.cycle}	
+  								)
+  								</foreach> 
+  </insert>
+  
+  
+  
+  
+  
+  <!-- 显示课程表 -->
+  
+  <select id="getCurriculum" resultType="OaJwbCurriculum">
+  	SELECT recordID,classdate,motor,grade,name,cycle,lecturer,course,phase,classhour FROM oa_jwb_curriculum
+  	INNER JOIN oa_jwb_grade ON oa_jwb_grade.id=oa_jwb_curriculum.grade
+  <where>
+  	<if test="name!=null and name!=''">
+  		and name like concat('%',#{name},'%')
+  	</if>
+  	<if test="lecturer!=null and lecturer!=''">
+  		and lecturer like concat ('%',#{lecturer},'%')
+  	</if>
+  		<if test="bieTime!=null and bieTime!='' and outTime!=null and outTime!=''">
+  		 and classdate BETWEEN #{bieTime} AND #{outTime}
+  	</if>
+  </where>
+  </select>
+  
+  
+  <!-- 更新已添加的数据 -->
+   <update id="updateCurriculum" parameterType="OaJwbCurriculum">
+  	UPDATE  oa_jwb_curriculum SET 
+  	<foreach collection="list" item="reddemCode" index="index" separator=",">
+  		classdate=#{reddemCode.classdate},lecturer=#{reddemCode.lecturer},
+  		chapter_name=#{reddemCode.chapter_name},classhour=#{reddemCode.classhour}
+  		 WHERE recordID=#{reddemCode.recordID}
+  	</foreach>
+  	
+  </update>
+  
+</mapper>

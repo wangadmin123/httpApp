@@ -1,0 +1,13 @@
+﻿.tdWidth{
+font-size: 15px;}
+p{margin-bottom: 30px;}
+.saveBotton{margin-right: 30px;border-style: groove;border-radius:8px;width:60px;height:25px;}
+.addTable{margin: auto;padding-left: 60px;}
+select,input{border: none;height: 40px; margin-left: 38px;}
+.P_update_update{border:1px solid menu; width: 900px; height:540px; font-size: 15px;margin-left: 115px;margin-top:25px;}
+.addstu{font-family:'楷体';width:200px;margin-bottom:5px;margin-left:10px;color: blue;font-size:25px; font-weight: bold;margin-top:15px;}
+.border{border-bottom: 1px solid black; width:220px;height:35px;line-height: 35px;margin: auto;}
+.border-bottom{border-bottom:1px solid black; width:258px;}
+.saveBotton{margin-right:70px;float: right;}
+textarea{border: none; width:258px;}
+.border span{margin-left:43px;}

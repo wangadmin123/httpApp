@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tyyhoa.dao.OaScbConsultTeacherMapper">
+
+	<!-- 查询所有咨询师式 -->
+	<select id="ConsultTeacherFind" resultType="OaRlzybEmployee" >
+	SELECT emp_id,emp_name  FROM oa_rlzyb_employee 
+	WHERE emp_department = 5 AND emp_position = 12
+	</select>
+	
+ 	<!-- 咨询师查询 -->
+ 	<select id="selectConsultersaveup" resultType="OaScbConsulter" parameterType="Map">
+		SELECT consulter.id AS id,consulter.NAME,consulter.age,consulter.sex,
+		oa_scb_education.education AS educationName,
+		consulter.specialty,oa_scb_consultstatus.STATUS AS statusName,consulter.telphone1,
+		consulter.city,oa_scb_ranktype.rank AS rankName,
+		 oa_scb_consultway.consultWay AS consultwayName,oa_scb_consultlesson.consultLesson AS consultLessonName,
+		 consulter.allotTime AS allotTime,MAX(oa_scb_visit.returnvisitTime) AS returnvisitTime,consulter.invalid,
+		 `allotstatus`,consulter.payStatus,consulter.enrollStatus,consulter.come,consulter.follow
+		 
+		FROM oa_scb_consulter as consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_visit ON oa_scb_visit.consultId = consulter.id
+		
+		where  consulter.invalid !=2  and allotstatus !=2 and identityStatus = 1 and infoStatus = 2 and consulter.consultTeacher = #{consulter.consultTeacher}
+	    AND  DATE_SUB(NOW(),INTERVAL 7 DAY) > consulter.`allotTime`  
+	  <if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.age=#{consulter.name} 	<!-- 年龄 -->
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%') <!-- 专业 -->
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') OR consulter.ungenTelphone LIKE concat('%',#{consulter.name},'%') <!-- #联系方式(本人联系方式或者紧急联系人方式) -->
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%') <!-- 毕业院校 -->
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	<!-- 城市 -->
+		 </if>
+ 			
+ 		<if test="consulter.sex !=0 and consulter.sex !=null">
+ 				and consulter.sex = #{consulter.sex}
+ 		</if>
+ 		
+ 		<if test="consulter.infoSource !=null and consulter.infoSource !=''">
+ 				and consulter.infoSource = #{consulter.infoSource}
+ 		</if>
+		
+ 		<if test="consulter.education !=0">
+ 				and consulter.education = #{consulter.education}
+ 		</if>
+ 		 		
+ 		<if test="consulter.status !=null">
+ 				and consulter.status = #{consulter.status}
+ 		</if>
+ 		
+ 		<if test="consulter.consultWay !=0">
+ 				and consulter.consultWay = #{consulter.consultWay}
+ 		</if>
+ 		
+ 		<if test="consulter.come != 0">
+ 				and consulter.come = #{consulter.come}
+ 		</if>
+ 		
+ 		<if test = "consulter.rank !=0">
+ 				and consulter.rank = #{consulter.rank}
+ 		</if>
+		
+		<if test="consulter.allotstatus !=0">
+ 				and consulter.allotstatus = #{consulter.allotstatus}
+ 		</if>
+ 		
+		<if test="consulter.consultLesson !=0">
+ 				and consulter.consultLesson = #{consulter.consultLesson}
+ 		</if>
+ 		
+ 		<if test="consulter.firstConsultTimes!=null">
+ 			and consulter.firstConsultTimes = #{consulter.firstConsultTimes}
+ 		</if>
+ 		
+ 		<if test="consulter.enrollTimes!=null">
+ 			and consulter.enrollTimes = #{consulter.enrollTimes}
+ 		</if>
+	     GROUP BY consulter.id 
+		ORDER BY consulter.allotTime DESC
+		limit #{index},#{pageSize}		
+	</select>
+ 	<select id="selectConsultersave" resultType="OaScbConsulter" parameterType="Map">
+		SELECT consulter.id AS id,consulter.NAME,consulter.age,consulter.sex,
+		oa_scb_education.education AS educationName,
+		consulter.specialty,oa_scb_consultstatus.STATUS AS statusName,consulter.telphone1,
+		consulter.city,oa_scb_ranktype.rank AS rankName,
+		 oa_scb_consultway.consultWay AS consultwayName,oa_scb_consultlesson.consultLesson AS consultLessonName,
+		 consulter.allotTime AS allotTime,MAX(oa_scb_visit.returnvisitTime) AS returnvisitTime,consulter.invalid,
+		 `allotstatus`,consulter.payStatus,consulter.enrollStatus,consulter.come,consulter.follow
+		 
+		FROM oa_scb_consulter as consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_visit ON oa_scb_visit.consultId = consulter.id
+		
+		where  consulter.invalid !=2  and consulter.invalid !=2 and identityStatus = 1 and infoStatus = 2 and consulter.consultTeacher = #{consulter.consultTeacher}
+	    AND consulter.`allotTime` > DATE_SUB(NOW(),INTERVAL 7 DAY) 
+	  <if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.age=#{consulter.name} 	<!-- 年龄 -->
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%') <!-- 专业 -->
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') OR consulter.ungenTelphone LIKE concat('%',#{consulter.name},'%') <!-- #联系方式(本人联系方式或者紧急联系人方式) -->
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%') <!-- 毕业院校 -->
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	<!-- 城市 -->
+		 </if>
+ 			
+ 		<if test="consulter.sex !=0 and consulter.sex !=null">
+ 				and consulter.sex = #{consulter.sex}
+ 		</if>
+ 		
+ 		<if test="consulter.infoSource !=null and consulter.infoSource !=''">
+ 				and consulter.infoSource = #{consulter.infoSource}
+ 		</if>
+		
+ 		<if test="consulter.education !=0">
+ 				and consulter.education = #{consulter.education}
+ 		</if>
+ 		 		
+ 		<if test="consulter.status !=null">
+ 				and consulter.status = #{consulter.status}
+ 		</if>
+ 		
+ 		<if test="consulter.consultWay !=0">
+ 				and consulter.consultWay = #{consulter.consultWay}
+ 		</if>
+ 		
+ 		<if test="consulter.come != 0">
+ 				and consulter.come = #{consulter.come}
+ 		</if>
+ 		
+ 		<if test = "consulter.rank !=0">
+ 				and consulter.rank = #{consulter.rank}
+ 		</if>
+		
+		<if test="consulter.allotstatus !=0">
+ 				and consulter.allotstatus = #{consulter.allotstatus}
+ 		</if>
+ 		
+		<if test="consulter.consultLesson !=0">
+ 				and consulter.consultLesson = #{consulter.consultLesson}
+ 		</if>
+ 		
+ 		<if test="consulter.firstConsultTimes!=null">
+ 			and consulter.firstConsultTimes = #{consulter.firstConsultTimes}
+ 		</if>
+ 		
+ 		<if test="consulter.enrollTimes!=null">
+ 			and consulter.enrollTimes = #{consulter.enrollTimes}
+ 		</if>
+	     GROUP BY consulter.id 
+		ORDER BY consulter.allotTime DESC
+		limit #{index},#{pageSize}		
+	</select>
+ 		<select id="selectConsulterthree" resultType="OaScbConsulter" parameterType="Map">
+		SELECT consulter.id AS id,consulter.NAME,consulter.age,consulter.sex,
+		oa_scb_education.education AS educationName,
+		consulter.specialty,oa_scb_consultstatus.STATUS AS statusName,consulter.telphone1,
+		consulter.city,oa_scb_ranktype.rank AS rankName,
+		 oa_scb_consultway.consultWay AS consultwayName,oa_scb_consultlesson.consultLesson AS consultLessonName,
+		 consulter.allotTime AS allotTime,MAX(oa_scb_visit.returnvisitTime) AS returnvisitTime,consulter.invalid,
+		 `allotstatus`,consulter.payStatus,consulter.enrollStatus,consulter.come,consulter.follow
+		 
+		FROM oa_scb_consulter as consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_visit ON oa_scb_visit.consultId = consulter.id
+		
+		where  consulter.invalid !=2  and consulter.invalid !=2 and identityStatus = 1 and infoStatus = 2 and consulter.consultTeacher = #{consulter.consultTeacher}
+	    AND consulter.`allotTime` > DATE_SUB(NOW(),INTERVAL 3 DAY) 
+	  <if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.age=#{consulter.name} 	<!-- 年龄 -->
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%') <!-- 专业 -->
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') OR consulter.ungenTelphone LIKE concat('%',#{consulter.name},'%') <!-- #联系方式(本人联系方式或者紧急联系人方式) -->
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%') <!-- 毕业院校 -->
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	<!-- 城市 -->
+		 </if>
+ 			
+ 		<if test="consulter.sex !=0 and consulter.sex !=null">
+ 				and consulter.sex = #{consulter.sex}
+ 		</if>
+ 		
+ 		<if test="consulter.infoSource !=null and consulter.infoSource !=''">
+ 				and consulter.infoSource = #{consulter.infoSource}
+ 		</if>
+		
+ 		<if test="consulter.education !=0">
+ 				and consulter.education = #{consulter.education}
+ 		</if>
+ 		 		
+ 		<if test="consulter.status !=null">
+ 				and consulter.status = #{consulter.status}
+ 		</if>
+ 		
+ 		<if test="consulter.consultWay !=0">
+ 				and consulter.consultWay = #{consulter.consultWay}
+ 		</if>
+ 		
+ 		<if test="consulter.come != 0">
+ 				and consulter.come = #{consulter.come}
+ 		</if>
+ 		
+ 		<if test = "consulter.rank !=0">
+ 				and consulter.rank = #{consulter.rank}
+ 		</if>
+		
+		<if test="consulter.allotstatus !=0">
+ 				and consulter.allotstatus = #{consulter.allotstatus}
+ 		</if>
+ 		
+		<if test="consulter.consultLesson !=0">
+ 				and consulter.consultLesson = #{consulter.consultLesson}
+ 		</if>
+ 		
+ 		<if test="consulter.firstConsultTimes!=null">
+ 			and consulter.firstConsultTimes = #{consulter.firstConsultTimes}
+ 		</if>
+ 		
+ 		<if test="consulter.enrollTimes!=null">
+ 			and consulter.enrollTimes = #{consulter.enrollTimes}
+ 		</if>
+	     GROUP BY consulter.id 
+		ORDER BY consulter.allotTime DESC
+		limit #{index},#{pageSize}		
+	</select>
+ 	<select id="selectConsulterone" resultType="OaScbConsulter" parameterType="Map">
+		SELECT consulter.id AS id,consulter.NAME,consulter.age,consulter.sex,
+		oa_scb_education.education AS educationName,
+		consulter.specialty,oa_scb_consultstatus.STATUS AS statusName,consulter.telphone1,
+		consulter.city,oa_scb_ranktype.rank AS rankName,
+		 oa_scb_consultway.consultWay AS consultwayName,oa_scb_consultlesson.consultLesson AS consultLessonName,
+		 consulter.allotTime AS allotTime,MAX(oa_scb_visit.returnvisitTime) AS returnvisitTime,consulter.invalid,
+		 `allotstatus`,consulter.payStatus,consulter.enrollStatus,consulter.come,consulter.follow
+		 
+		FROM oa_scb_consulter as consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_visit ON oa_scb_visit.consultId = consulter.id
+		
+		where  consulter.invalid !=2  and consulter.invalid !=2 and identityStatus = 1 and infoStatus = 2 and consulter.consultTeacher = #{consulter.consultTeacher}
+	 AND TO_DAYS(consulter.`allotTime`) = TO_DAYS(NOW())
+	  <if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.age=#{consulter.name} 	<!-- 年龄 -->
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%') <!-- 专业 -->
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') OR consulter.ungenTelphone LIKE concat('%',#{consulter.name},'%') <!-- #联系方式(本人联系方式或者紧急联系人方式) -->
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%') <!-- 毕业院校 -->
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	<!-- 城市 -->
+		 </if>
+ 			
+ 		<if test="consulter.sex !=0 and consulter.sex !=null">
+ 				and consulter.sex = #{consulter.sex}
+ 		</if>
+ 		
+ 		<if test="consulter.infoSource !=null and consulter.infoSource !=''">
+ 				and consulter.infoSource = #{consulter.infoSource}
+ 		</if>
+		
+ 		<if test="consulter.education !=0">
+ 				and consulter.education = #{consulter.education}
+ 		</if>
+ 		 		
+ 		<if test="consulter.status !=null">
+ 				and consulter.status = #{consulter.status}
+ 		</if>
+ 		
+ 		<if test="consulter.consultWay !=0">
+ 				and consulter.consultWay = #{consulter.consultWay}
+ 		</if>
+ 		
+ 		<if test="consulter.come != 0">
+ 				and consulter.come = #{consulter.come}
+ 		</if>
+ 		
+ 		<if test = "consulter.rank !=0">
+ 				and consulter.rank = #{consulter.rank}
+ 		</if>
+		
+		<if test="consulter.allotstatus !=0">
+ 				and consulter.allotstatus = #{consulter.allotstatus}
+ 		</if>
+ 		
+		<if test="consulter.consultLesson !=0">
+ 				and consulter.consultLesson = #{consulter.consultLesson}
+ 		</if>
+ 		
+ 		<if test="consulter.firstConsultTimes!=null">
+ 			and consulter.firstConsultTimes = #{consulter.firstConsultTimes}
+ 		</if>
+ 		
+ 		<if test="consulter.enrollTimes!=null">
+ 			and consulter.enrollTimes = #{consulter.enrollTimes}
+ 		</if>
+	     GROUP BY consulter.id 
+		ORDER BY consulter.allotTime DESC
+		limit #{index},#{pageSize}		
+	</select>
+	<select id="selectConsulter" resultType="OaScbConsulter" parameterType="Map">
+		SELECT consulter.id AS id,consulter.NAME,consulter.age,consulter.sex,
+		oa_scb_education.education AS educationName,
+		consulter.specialty,oa_scb_consultstatus.STATUS AS statusName,consulter.telphone1,
+		consulter.city,oa_scb_ranktype.rank AS rankName,
+		 oa_scb_consultway.consultWay AS consultwayName,oa_scb_consultlesson.consultLesson AS consultLessonName,
+		 consulter.allotTime AS allotTime,MAX(oa_scb_visit.returnvisitTime) AS returnvisitTime,consulter.invalid,
+		 `allotstatus`,consulter.payStatus,consulter.enrollStatus,consulter.come,consulter.follow
+		 
+		FROM oa_scb_consulter as consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_visit ON oa_scb_visit.consultId = consulter.id
+		
+		where  consulter.invalid !=2  and consulter.invalid !=2 and identityStatus = 1 and infoStatus = 2 and consulter.consultTeacher = #{consulter.consultTeacher}
+		<if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.age=#{consulter.name} 	<!-- 年龄 -->
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%') <!-- 专业 -->
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') OR consulter.ungenTelphone LIKE concat('%',#{consulter.name},'%') <!-- #联系方式(本人联系方式或者紧急联系人方式) -->
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%') <!-- 毕业院校 -->
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	<!-- 城市 -->
+		 </if>
+ 			
+ 		<if test="consulter.sex !=0 and consulter.sex !=null">
+ 				and consulter.sex = #{consulter.sex}
+ 		</if>
+ 		
+ 		<if test="consulter.infoSource !=null and consulter.infoSource !=''">
+ 				and consulter.infoSource = #{consulter.infoSource}
+ 		</if>
+		
+ 		<if test="consulter.education !=0">
+ 				and consulter.education = #{consulter.education}
+ 		</if>
+ 		 		
+ 		<if test="consulter.status !=null">
+ 				and consulter.status = #{consulter.status}
+ 		</if>
+ 		
+ 		<if test="consulter.consultWay !=0">
+ 				and consulter.consultWay = #{consulter.consultWay}
+ 		</if>
+ 		
+ 		<if test="consulter.come != 0">
+ 				and consulter.come = #{consulter.come}
+ 		</if>
+ 		
+ 		<if test = "consulter.rank !=0">
+ 				and consulter.rank = #{consulter.rank}
+ 		</if>
+		
+		<if test="consulter.allotstatus !=0">
+ 				and consulter.allotstatus = #{consulter.allotstatus}
+ 		</if>
+ 		
+		<if test="consulter.consultLesson !=0">
+ 				and consulter.consultLesson = #{consulter.consultLesson}
+ 		</if>
+ 		
+ 		<if test="consulter.firstConsultTimes!=null">
+ 			and consulter.firstConsultTimes = #{consulter.firstConsultTimes}
+ 		</if>
+ 		
+ 		<if test="consulter.enrollTimes!=null">
+ 			and consulter.enrollTimes = #{consulter.enrollTimes}
+ 		</if>
+ 		
+		GROUP BY consulter.id 
+		ORDER BY consulter.allotTime DESC
+		limit #{index},#{pageSize}		
+ 	</select>
+ 	
+ 	<!-- 查询总记录数 -->
+ 	
+ 	<select id="selectConsulterCount" resultType="OaScbConsulter" parameterType="OaScbConsulter">
+		SELECT consulter.id AS id
+		 
+		FROM oa_scb_consulter as consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_visit ON oa_scb_visit.consultId = consulter.id
+		
+		where  consulter.invalid !=2  and consulter.invalid !=2 and identityStatus = 1 and infoStatus = 2  AND consultTeacher = #{consultTeacher}
+		<if test=" name !=null and   name!=''">
+		 AND consulter.name LIKE  concat('%',#{ name},'%')   
+		 OR consulter.age=#{ name} 	<!-- 年龄 -->
+		 OR consulter.specialty LIKE concat('%',#{ name},'%') <!-- 专业 -->
+		 OR consulter.telphone1 LIKE concat('%',#{ name},'%') OR consulter.ungenTelphone LIKE concat('%',#{ name},'%') <!-- #联系方式(本人联系方式或者紧急联系人方式) -->
+		 OR consulter.schoolName LIKE concat('%',#{ name},'%') <!-- 毕业院校 -->
+		 OR consulter.city LIKE concat('%',#{ name},'%')	<!-- 城市 -->
+		 </if>
+ 			
+ 		<if test=" sex !=0 and  sex !=null">
+ 				and  consulter.sex = #{ sex}
+ 		</if>
+ 		
+ 		<if test=" infoSource !=null and  infoSource !=''">
+ 				and  consulter.infoSource = #{ infoSource}
+ 		</if>
+		
+ 		<if test=" education !=0">
+ 				and  consulter.education = #{ education}
+ 		</if>
+ 		 		
+ 		<if test=" status !=null">
+ 				and  consulter.status = #{ status}
+ 		</if>
+ 		
+ 		<if test=" consultWay !=0">
+ 				and  consulter.consultWay = #{ consultWay}
+ 		</if>
+ 		
+ 		<if test=" come != 0">
+ 				and  consulter.come = #{ come}
+ 		</if>
+ 		
+ 		<if test = " rank !=0">
+ 				and  consulter.rank = #{ rank}
+ 		</if>
+		
+		<if test=" allotstatus !=0">
+ 				and  consulter.allotstatus = #{ allotstatus}
+ 		</if>
+ 		
+		<if test=" consultLesson !=0">
+ 				and  consulter.consultLesson = #{ consultLesson}
+ 		</if>
+ 		
+ 		<if test=" firstConsultTimes!=null">
+ 			and  consulter.firstConsultTimes = #{ firstConsultTimes}
+ 		</if>
+ 		
+ 		<if test=" enrollTimes!=null">
+ 			and  consulter.enrollTimes = #{ enrollTimes}
+ 		</if>
+ 		
+		GROUP BY consulter.id
+			
+ 	</select>
+ 	
+ 	<!-- 编辑查询 -->
+ 	<select id="findConsulter" parameterType="int" resultType="OaScbConsulter">
+ 		SELECT oa_scb_consulter.id,oa_scb_infosource.infoSource as infoSourceName,oa_scb_consultway.consultWay AS consultwayName,firstComeTime,
+ 		firstConsultTime,oa_scb_ranktype.rank AS rankName,TYPE,NAME,age,sex,allMoneyTime,come,
+ 		telphone1,urgentTelpeople,oa_scb_education.education AS educationName,wechat,specialty,
+		province,city,district,schoolName,oa_scb_consultstatus.STATUS AS statusName,keywords,
+		oa_scb_consultlesson.consultLesson AS consultLessonName,oa_scb_medianame.mediaName as mediaNames
+		FROM oa_scb_consulter
+		
+		
+		LEFT JOIN oa_scb_infosource ON oa_scb_infosource.id = oa_scb_consulter.infoSource
+		LEFT JOIN oa_scb_medianame ON oa_scb_medianame.id = oa_scb_consulter.mediaName
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = oa_scb_consulter.status
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = oa_scb_consulter.education
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = oa_scb_consulter.rank
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = oa_scb_consulter.consultLesson
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = oa_scb_consulter.consultWay
+		where oa_scb_consulter.id=#{id}
+ 	</select>
+ 	
+ 	<!-- 插入回访记录 -->
+ 	<insert id="visitrecord" parameterType="OaScbVisit">
+ 	insert into tyyhoa.oa_scb_visit 
+	(
+	consultId, 
+	returnvisitTime, 
+	<if test="nextvisitTimes!='' and nextvisitTimes!=null">
+		nextvisitTime,
+	</if>
+	returnvisitRecord,
+	returnvisitPeopleName,
+	status
+	)
+	values
+	(
+	#{consultId}, #{returnvisitTimes},
+	<if test="nextvisitTimes!='' and nextvisitTimes!=null">
+	#{nextvisitTimes},
+	</if>
+	#{returnvisitRecord},#{returnvisitPeopleName},#{status}
+	);
+ 	
+ 	</insert>
+ 	
+ 	<!-- 修改 -->
+ 	<update id="updateConsulter" parameterType="OaScbConsulter" >
+ 	 update oa_scb_consulter
+ 	 <set>
+ 	 	<if test="infoSource!=null and infoSource!=''">
+ 	 		infoSource=#{infoSource},
+ 	 	</if>
+ 	 	<if test="consultWay!=null and consultWay!=''">
+ 	 		consultWay=#{consultWay},
+ 	 	</if>
+ 	 	<if test="come!=0">
+ 	 		come=#{come},
+ 	 	</if>
+ 	 	<if test="firstComeTime!=null and firstComeTime!=''">
+ 	 		firstComeTime=#{firstComeTime},
+ 	 	</if>
+ 	 	<if test="firstConsultTime!=null and firstConsultTime!=''">
+ 	 		firstConsultTime=#{firstConsultTime},
+ 	 	</if>
+ 	 	<if test="allMoneyTime!=null and allMoneyTime!=''">
+ 	 		allMoneyTime=#{allMoneyTime},
+ 	 	</if>
+ 	 	<if test="rank!=null and rank!=''">
+ 	 		rank=#{rank},
+ 	 	</if>
+ 	 	<if test="type!=0 and type!=null">
+ 	 		type=#{type},
+ 	 	</if>
+ 	 	<if test="name!=null and name!=''">
+ 	 		name=#{name},
+ 	 	</if>
+ 	 	<if test="age!=null and age!=''">
+ 	 		age=#{age},
+ 	 	</if>
+ 	 	<if test="sex!=0">
+ 	 		sex=#{sex},
+ 	 	</if>
+ 	 	<if test="telphone1!=null and telphone1!=''">
+ 	 		telphone1=#{telphone1},
+ 	 	</if>
+ 	 	<if test="urgentTelpeople!=null and aurgentTelpeople!=''">
+ 	 		urgentTelpeople=#{urgentTelpeople},
+ 	 	</if>
+ 	 	<if test="education!=0">
+ 	 		education=#{education},
+ 	 	</if>
+ 	 	<if test="wechat!=null and wechat!=''">
+ 	 		wechat=#{wechat},
+ 	 	</if>
+ 	 	<if test="specialty!=null and specialty!=''">
+ 	 		specialty=#{specialty},
+ 	 	</if>
+ 	 	<if test="province!=null and province!=''">
+ 	 		province=#{province},
+ 	 	</if>
+ 	 	<if test="city!=null and city!=''">
+ 	 		city=#{city},
+ 	 	</if>
+ 	 	<if test="district!=null and district!=''">
+ 	 		district=#{district},
+ 	 	</if>
+ 	 	<if test="schoolName!=null and schoolName!=''">
+ 	 		schoolName=#{schoolName},
+ 	 	</if>
+ 	 	<if test="status!=null and status!=''">
+ 	 		status=#{status},
+ 	 	</if>
+ 	 	<if test="keywords!=null and keywords!=''">
+ 	 		keywords=#{keywords},
+ 	 	</if>
+ 	 	<if test="consultLesson!=0">
+ 	 		consultLesson=#{consultLesson},
+ 	 	</if>
+ 	 	<if test="mediaName!=null and mediaName!=''">
+ 	 		mediaName=#{mediaName},
+ 	 	</if>
+
+ 	 </set>
+		where id=#{id}
+ 	</update>
+
+	<!-- 提交无效量 -->
+	<update id="invalidConsulter"> 
+ 		UPDATE oa_scb_consulter SET invalid =3,uselessCause=#{uselessCause}
+ 		WHERE id = #{id}
+ 	</update>
+ 	
+	<!-- 提交不再显示 -->
+ 	<update id="displayConsulter">
+ 		UPDATE oa_scb_consulter SET display=2
+ 		WHERE id = #{id}
+ 	</update>
+ 	
+ 	<!-- 提交 -->
+ 	<update id="enrollStatusConsulter" parameterType="OaScbConsulter">
+ 		UPDATE oa_scb_consulter SET declareStatus=1,payMoney=#{payMoney},payTime=#{payTime},insurance=#{insurance},dorm=#{dorm},
+ 		consultLesson=#{consultLesson},payType=#{payType},payStatus=#{payStatus}
+ 		WHERE id = #{id}
+ 	</update>
+ 	
+ 	<!-- 保存 -->
+ 	<update id="StatusConsulter" parameterType="OaScbConsulter">
+ 		UPDATE oa_scb_consulter SET payMoney=#{payMoney},payTime=#{payTime},insurance=#{insurance},dorm=#{dorm},
+ 		consultLesson=#{consultLesson},payType=#{payType},payStatus=#{payStatus}
+ 		WHERE id = #{id}
+ 	</update>
+ 	
+ 	<!-- 跟踪 -->
+ 	<select id="queryvisit" resultType="OaScbVisit">
+ 		
+		SELECT 	visit.id, 
+			visit.consultId, 
+			visit.returnvisitTime, 
+			visit.returnvisitRecord, 
+			visit.nextvisitTime,
+			returnvisitPeopleName,
+			consulter.name as consultName
+			
+			FROM 
+			tyyhoa.oa_scb_visit  as visit
+			left join oa_scb_consulter AS consulter on consulter.id=visit.consultId
+			WHERE consultId=#{consultId}
+			ORDER BY returnvisitTime DESC
+	</select>
+	
+	<!-- 查询跟踪 -->
+	<select id="consultqueryvisit" resultType="OaScbConsulter" parameterType="Map">
+
+		SELECT consulter.id AS id,consulter.name,employee.emp_name AS consultTeacherName, 
+		payMoney,payTime,oa_scb_consultlesson.consultLesson AS enlistLessonName,
+		oa_scb_paytype.payType AS payTypeName,oa_scb_paystatus.payStatus AS payStatusName	 
+		FROM oa_scb_consulter AS consulter
+		LEFT JOIN oa_rlzyb_employee AS employee  ON employee.emp_id = consulter.consultTeacher
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id=consulter.enlistLesson
+		LEFT JOIN oa_scb_paytype ON oa_scb_paytype.id =consulter.payType
+		LEFT JOIN oa_scb_paystatus ON oa_scb_paystatus.id=consulter.payStatus
+
+		WHERE consulter.display=1  AND consulter.invalid !=2 
+		<if test="consulter.id !=null and consulter.id!='' ">
+			and consulter.id=#{consulter.id}
+		</if>
+	
+	</select>
+	
+	<!-- 查询报审 -->
+	<select id="consultquerybaoshen" resultType="OaScbConsulter">
+			
+		SELECT consulter.id,NAME,employee.emp_name AS consultTeacherName,
+		payMoney,payTime,consultLesson,payType,payStatus,dorm,insurance	 
+		FROM oa_scb_consulter AS consulter
+		LEFT JOIN oa_rlzyb_employee AS employee  ON employee.emp_id = consulter.consultTeacher
+
+		WHERE consulter.id= #{id}
+	
+	</select>
+	
+	<!-- 查班主任 -->
+	<select id="selectPosition"  resultType="OaRlzybEmployee">
+		SELECT emp_id ,emp_name FROM  oa_rlzyb_employee 
+		WHERE emp_position = 23
+	</select>
+	
+	<update id="updatePosition" parameterType="Map">
+	UPDATE oa_scb_consulter SET allotClassteacher=#{allotClassteacher},identityStatus=2,allotCLass=2 where id in
+			<foreach collection="id" item="id" index ="index" open ="(" close =")" separator =",">
+ 			     #{id}
+ 			</foreach>
+	</update>
+	
+	<!-- 查询缴费类型 -->
+	<select id="selectpayType" resultType="OaScbPaytype">
+	
+	SELECT 	id, 
+	payType
+	 
+	FROM 
+	tyyhoa.oa_scb_paytype 
+	</select>
+	
+	<!-- 缴费状态 -->
+	<select id="selectpaystatus"  resultType="OaScbPaystatus" >
+	SELECT 	id,payStatus FROM oa_scb_paystatus 
+	</select>
+		
+	<!-- 记事 -->
+ 	<insert id="insertRecord" parameterType="OaScbRecord">
+	 	insert into oa_scb_record (	
+	 			recordId, 
+				consulterId, 
+				eventTime, 
+				eventName, 
+				enterPeople, 
+				enterTime)		 		
+		 		values(
+		 		#{recordId},
+		 		#{consulterId},
+		 		#{eventTime},
+		 		#{eventName},
+		 		#{enterPeople},
+		 		#{enterTime}
+		 		)
+				
+				
+				
+ 	
+ 	</insert>
+ 	
+	<!-- 查询最近id -->
+	<select id="maxId" resultType="int">
+		SELECT MAX(id) FROM oa_scb_consulter
+	</select>
+	
+	<!-- 查询通过审核的 -->
+	<select id="selectTeacherConsulter" resultType="OaScbConsulter" parameterType="Map">
+		SELECT consulter.id AS id,consulter.NAME,consulter.age,consulter.sex,
+		oa_scb_education.education AS educationName,
+		consulter.specialty,oa_scb_consultstatus.STATUS AS statusName,consulter.telphone1,
+		consulter.city,oa_scb_ranktype.rank AS rankName,
+		 oa_scb_consultway.consultWay AS consultwayName,oa_scb_consultlesson.consultLesson AS consultLessonName,
+		 MAX(oa_scb_visit.returnvisitTime) AS returnvisitTime,consulter.invalid
+		 
+		FROM oa_scb_consulter as consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_visit ON oa_scb_visit.consultId = consulter.id
+		
+		where consulter.identityStatus=1  and consulter.enrollStatus =1
+		<if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.age=#{consulter.name} 	<!-- 年龄 -->
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%') <!-- 专业 -->
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') OR consulter.ungenTelphone LIKE concat('%',#{consulter.name},'%') <!-- #联系方式(本人联系方式或者紧急联系人方式) -->
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%') <!-- 毕业院校 -->
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	<!-- 城市 -->
+		 </if>
+ 			
+ 		<if test="consulter.sex !=0 and consulter.sex !=null">
+ 				and consulter.sex = #{consulter.sex}
+ 		</if>
+		
+ 		<if test="consulter.education !=0">
+ 				and consulter.education = #{consulter.education}
+ 		</if>
+ 		 		
+ 		<if test="consulter.status !=null">
+ 				and consulter.status = #{consulter.status}
+ 		</if>
+ 		
+ 		<if test="consulter.consultWay !=0">
+ 				and consulter.consultWay = #{consulter.consultWay}
+ 		</if>
+ 		
+ 		<if test="consulter.come != 0">
+ 				and consulter.come = #{consulter.come}
+ 		</if>
+ 		
+ 		<if test = "consulter.rank !=0">
+ 				and consulter.rank = #{consulter.rank}
+ 		</if>
+		
+		<if test="consulter.allotstatus !=0">
+ 				and consulter.allotstatus = #{consulter.allotstatus}
+ 		</if>
+ 		
+		<if test="consulter.consultLesson !=0">
+ 				and consulter.consultLesson = #{consulter.consultLesson}
+ 		</if>
+	
+		GROUP BY consulter.id  
+		limit #{index},#{pageSize}		
+ 	</select>
+	<update id="Update">
+	UPDATE `oa_scb_consulter` SET allotstatus=4 WHERE id=#{id}
+	</update>
+</mapper>

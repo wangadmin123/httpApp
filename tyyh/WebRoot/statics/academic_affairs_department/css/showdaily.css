@@ -1,0 +1,84 @@
+
+*{
+	margin:0px;
+	_margin:0px;
+	padding:0px;
+	_padding:0px;
+	border: 1px solid #fff;
+}
+.body{
+	margin:auto;
+	height: 1075px;
+	width: 1200px;
+	
+}
+/* 中心日报工作 */
+.dailyP{
+	height:43px;
+	font-size: 24px;
+	font-weight:20px;
+	color: red;
+	float: right;
+	margin-right: 200px;
+	margin-top: 50px;
+	font-weight: 700;	
+}
+
+.dailyhead{
+	
+	list-style:none;	
+	height:43px;
+	line-height:43px;
+	font-size:18px;
+	margin:0px 16px;
+	float: left;
+	font-weight: 700;	
+}
+.dailyheadli1{
+	margin-top: 100px;
+	margin-left:100px;	
+}
+.dailyhead span{
+	margin-left:30px;
+	font-weight: 400;
+	font-family: "楷体";
+}
+.dailyheadli2{
+	margin-top: -45px;
+	margin-left:350px;
+}
+
+.dailyheadli3{
+	margin-top:-45px;
+	margin-left:600px;
+}
+
+/*--------------------table-----------------------*/
+.tableOne{
+	margin-top:200px;
+	margin-left:80px;
+	line-height:43px;  
+}
+.tableOne tr{
+		text-align:center;
+}
+.dailydivtri{
+	height: 200px;
+	width: 1200px;
+}
+.dailydivtri p{
+	float: left;
+	margin-left: 102px;
+	margin-top: 80px;
+	font-size: 20px;
+	font-weight: 700;
+	font-family: "楷体";
+}
+.dailydivtri input{
+	height: 200px;
+	width: 700px;
+	font-size: 16px;
+	margin-left: 20px;
+	text-align:center;
+}
+

@@ -1,0 +1,82 @@
+.selectTab{
+  text-align:center;
+  width:60%;
+  font-size:12px;
+  color:#333333;
+}
+.selectTab tr th span{
+  margin-left: -160px;
+}
+.searchTable tr{
+	line-height: 30px;
+}
+.Dao{
+	font-size: 12px;
+}
+.btposition2{
+	margin-left: 630px;
+}
+.dbjh{
+	width: 50px;
+}
+.dbjh1{
+	width: 200px;
+}
+#areaStyle{width:100%;  height:80px; border:1px solid #CCCCCC; padding:2px 4px;line-height:24px; color:#606060;border-radius: 2px;}
+.textStyle{
+	border:0px;
+}
+.tongjitu{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:1px; border-radius: 3px;
+margin-left:700px;
+}
+.tongjitu1{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:1px; border-radius: 3px;
+margin-left:700px;
+}
+
+
+.searchTable tr h2{
+    text-align:left;
+	width:100%;
+	font-size:12px;
+	color:#333333;
+}
+.searchTitle{
+    font-size:14px;
+    color:#333333;
+    text-indent:2pt;
+    height:40px;
+    line-height:40px;
+    border-bottom:1px solid #E5E5E5;
+    font-weight: bold;
+    position: relative;
+}
+.searchShow{ position:absolute; bottom: 10px;  left:95%; cursor: pointer; font-size: 12px;  color: #ff6600;}
+.searchShow:hover{color: #ff0000; text-decoration: underline;}
+.searchContent{display: none;}
+#sousuo{
+  width: 150px;
+}
+.ZY_tj{
+  width:100px;height:27px;
+}
+#btposition1{
+  margin-left: 200px;
+}
+#btposition2{
+  margin-left: 600px;
+}
+#pagezhoukao{
+	float:right; 
+	font-size:12px;
+	color:#333333; 
+	font-family:"微软雅黑";
+	margin-right:20px; 
+	line-height:30px;
+	height:30px; 
+	cursor:pointer;
+}
+#pagezhoukao span{
+    margin:0px 4px;
+}

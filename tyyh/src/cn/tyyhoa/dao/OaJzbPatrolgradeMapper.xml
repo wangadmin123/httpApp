@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbPatrolgradeMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJzbPatrolgrade" >
+    <result column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Teacher_id" property="teacher_id" jdbcType="INTEGER" />
+    <result column="Grade_id" property="grade_id" jdbcType="INTEGER" />
+    <result column="studentName_id" property="studentName_id" jdbcType="INTEGER" />
+    <result column="patrolClassTime" property="patrolClassTime" jdbcType="TIMESTAMP" />
+    <result column="enteringTime" property="enteringTime" jdbcType="DATE" />
+    <result column="Problem" property="problem" jdbcType="INTEGER" />
+    <result column="deleteStatus" property="deleteStatus" jdbcType="INTEGER" />
+    <result column="stu_name" property="stu_name" jdbcType="VARCHAR" />
+    <result column="endpatrolClassTime" property="endpatrolClassTime" jdbcType="TIMESTAMP"/>
+  </resultMap>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJzbPatrolgrade" >
+    insert into oa_jzb_patrolgrade (Id, Teacher_id, Grade_id, 
+      studentName_id, patrolClassTime, enteringTime, 
+      Problem,deleteStatus)
+    values (#{id,jdbcType=INTEGER}, #{teacher_id,jdbcType=INTEGER}, #{grade_id,jdbcType=INTEGER}, 
+      #{studentName_id,jdbcType=INTEGER}, #{patrolClassTime,jdbcType=TIMESTAMP}, #{enteringTime,jdbcType=DATE}, 
+      #{problem,jdbcType=INTEGER},#{deleteStatus,jdbcType=INTEGER},#{stu_name,jdbcType=VARCHAR},{endpatrolClassTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJzbPatrolgrade" >
+    insert into oa_jzb_patrolgrade
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="teacher_id != null" >
+        Teacher_id,
+      </if>
+      <if test="grade_id != null" >
+        Grade_id,
+      </if>
+      <if test="studentName_id != null" >
+        studentName_id,
+      </if>
+      <if test="patrolClassTime != null" >
+        patrolClassTime,
+      </if>
+      <if test="enteringTime != null" >
+        enteringTime,
+      </if>
+      <if test="problem != null" >
+        Problem,
+      </if>
+      
+       <if test="deleteStatus != null" >
+        deleteStatus,
+      </if>
+       <if test="stu_name != null" >
+        stu_name,
+      </if>
+       <if test="endpatrolClassTime != null" >
+        endpatrolClassTime,
+      </if>
+      
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="teacher_id != null" >
+        #{teacher_id,jdbcType=INTEGER},
+      </if>
+      <if test="grade_id != null" >
+        #{grade_id,jdbcType=INTEGER},
+      </if>
+      <if test="studentName_id != null" >
+        #{studentName_id,jdbcType=INTEGER},
+      </if>
+      <if test="patrolClassTime != null" >
+        #{patrolClassTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enteringTime != null" >
+        #{enteringTime,jdbcType=DATE},
+      </if>
+      <if test="problem != null" >
+        #{problem,jdbcType=INTEGER},
+      </if>
+      
+      <if test="deleteStatus != null" >
+        #{deleteStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deleteStatus != null" >
+        #{stu_name,jdbcType=VARCHAR},
+      </if>
+       <if test="endpatrolClassTime != null" >
+        #{endpatrolClassTime,jdbcType=TIMESTAMP},
+      </if>
+      
+    </trim>
+  </insert>
+  <select id="selectpatrolgrade" resultType="OaJzbPatrolgrade">
+	(SELECT oa_jzb_patrolgrade.id,oa_rlzyb_employee.emp_name,oa_jwb_grade.name,stu_name,enteringTime,question,oa_jzb_patrolgrade.deleteStatus 
+FROM oa_jzb_patrolgrade 
+INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_patrolgrade.Teacher_id
+INNER JOIN oa_jwb_grade ON oa_jwb_grade.id=oa_jzb_patrolgrade.Grade_id
+INNER JOIN oa_jzb_question ON oa_jzb_question.id=oa_jzb_patrolgrade.problem
+INNER JOIN oa_jzb_student ON oa_jzb_student.stu_id=oa_jzb_patrolgrade.studentName_id
+WHERE oa_jzb_patrolgrade.grade_id=#{grade_id} AND oa_jzb_patrolgrade.deleteStatus=0)
+UNION
+(SELECT oa_jzb_xunbanbeizhu.id,oa_rlzyb_employee.emp_name,oa_jwb_grade.name,'' AS stu_name,oa_jzb_xunbanbeizhu.`datetime` AS enteringTime,beizhu AS question,'3' AS deleteStatus
+FROM `oa_jzb_xunbanbeizhu`
+INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_xunbanbeizhu.teacher_id
+INNER JOIN oa_jwb_grade ON oa_jwb_grade.id=oa_jzb_xunbanbeizhu.grade_id
+WHERE oa_jzb_xunbanbeizhu.grade_id=#{grade_id}
+)
+ORDER BY enteringTime DESC 
+	</select>
+	
+	<delete id="delxunbanbeizhu">
+		DELETE FROM `oa_jzb_xunbanbeizhu` WHERE id=#{id}
+	</delete>
+	<select id="selectxunbanbeizhu" resultType="OaJzbPatrolgrade">
+		SELECT oa_jzb_xunbanbeizhu.id,oa_rlzyb_employee.emp_name,oa_jwb_grade.name,'' AS stu_name,oa_jzb_xunbanbeizhu.`datetime` AS enteringTime,beizhu AS question,'' AS deleteStatus
+FROM `oa_jzb_xunbanbeizhu`
+INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_xunbanbeizhu.teacher_id
+INNER JOIN oa_jwb_grade ON oa_jwb_grade.id=oa_jzb_xunbanbeizhu.grade_id
+WHERE oa_jzb_xunbanbeizhu.id=#{id}
+	</select>
+	<select id="selectgradelist" resultType="OaJwbGrade">
+	SELECT id,NAME,classteacherid FROM oa_jwb_grade where 1=1
+	<if test="classTeacherID!=0">
+	and  classTeacherID=#{classTeacherID}
+	</if>
+	
+	</select>
+	<update id="updatexunbanbeizhu">
+		update oa_jzb_xunbanbeizhu set beizhu=#{problem} where oa_jzb_xunbanbeizhu.id=#{id}
+	</update>
+	<select id="selectstudentlist" resultType="OaJzbStudent">
+	select stu_id,stu_name,grade_id from oa_jzb_student where grade_id=#{grade_id}
+	</select>
+	
+	<!-- 查询问题列表 -->
+	<select id="selectquestlist" resultType="OaJzbQuestion">
+	SELECT id,question FROM oa_jzb_question
+	</select>
+	
+	<insert id="addpatrolgrade" parameterType="OaJzbPatrolgrade">
+	INSERT INTO oa_jzb_patrolgrade(teacher_id,grade_id,studentname_id,problem,enteringTime)VALUES(#{teacher_id},#{grade_id},#{studentName_id},#{problem},#{enteringTime})
+	</insert>
+	
+	<select id="selectclassteacherid" resultType="OaJzbPatrolgrade">
+	SELECT teacher_id FROM oa_jzb_patrolgrade
+	INNER JOIN oa_jwb_grade ON oa_jzb_patrolgrade.Grade_id=oa_jwb_grade.id
+ 	WHERE oa_jwb_grade.id=#{grade_id} GROUP BY classTeacherid
+	</select>
+	
+	<update id="delpatrolgrade">
+	UPDATE oa_jzb_patrolgrade SET deleteStatus=1 WHERE id=#{id}
+	</update>
+
+	<select id="selectpatrol" resultType="OaJzbPatrolgrade">
+	SELECT oa_jzb_patrolgrade.id,oa_jzb_patrolgrade.Grade_id,oa_rlzyb_employee.emp_name,oa_jwb_grade.name,stu_name,enteringTime,question,oa_jzb_patrolgrade.deleteStatus 
+	FROM oa_jzb_patrolgrade 
+	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_patrolgrade.Teacher_id
+	INNER JOIN oa_jwb_grade ON oa_jwb_grade.id=oa_jzb_patrolgrade.Grade_id
+	INNER JOIN oa_jzb_question ON oa_jzb_question.id=oa_jzb_patrolgrade.problem
+	INNER JOIN oa_jzb_student ON oa_jzb_student.stu_id=oa_jzb_patrolgrade.studentName_id
+	WHERE oa_jzb_patrolgrade.id=#{id} AND oa_jzb_patrolgrade.deleteStatus=0
+	</select>
+	
+	<update id="updatepatrolgrade">
+	UPDATE oa_jzb_patrolgrade SET problem=#{problem} WHERE id=#{id}
+	</update>
+</mapper>

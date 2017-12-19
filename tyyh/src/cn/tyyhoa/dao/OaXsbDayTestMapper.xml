@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaXsbDayTestMapper">
+
+	<!-- 添加日考表 -->
+	<insert id="insertDay" parameterType="java.util.List">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into oa_xsb_daytext
+
+		(id,studentId,
+		written,classId,createtime,writetime)
+		values
+		<foreach collection="list" item="reddemCode" index="index"
+			separator=",">
+
+			(
+			#{reddemCode.id},
+			#{reddemCode.studentId},
+			#{reddemCode.written},
+			#{reddemCode.classId},
+			#{reddemCode.createtime},
+			#{reddemCode.writetime}
+			)
+
+		</foreach>
+	</insert>
+
+	<!-- 根据班级Id查询最近一天的数据 -->
+	<select id="getAlldaytest" resultType="OaXsbDayTest">
+		SELECT
+		oa_xsb_daytext.id,stu_number,stu_name,written,classId,studentId,oa_xsb_daytext.createTime
+		FROM oa_xsb_daytext
+		INNER JOIN oa_jzb_student ON
+		oa_jzb_student.stu_id=oa_xsb_daytext.studentId
+		INNER JOIN oa_jwb_grade
+		ON
+		oa_jwb_grade.id=oa_xsb_daytext.classId
+		WHERE
+		oa_xsb_daytext.createTime
+		=
+		(SELECT createTime FROM
+		oa_xsb_daytext
+		WHERE
+		classId=#{classId} ORDER BY
+		createTime DESC
+		LIMIT 1)
+		AND
+		classId=#{classId}
+	</select>
+
+
+
+	<!-- 根据班级Id和时间查询 -->
+	<select id="selectDatByClassIdAndCreateTime" resultType="OaXsbDayTest">
+		SELECT
+		oa_xsb_daytext.id,stu_number,stu_name,written,stu_id,oa_xsb_daytext.createtime,oa_xsb_daytext.writeTime
+		FROM
+		oa_xsb_daytext
+		INNER JOIN
+		oa_jzb_student ON
+		oa_jzb_student.stu_id=oa_xsb_daytext.studentId
+		INNER JOIN
+		oa_jwb_grade
+		ON oa_jwb_grade.id=oa_xsb_daytext.classId
+		<where>
+			<if test="classId!=null and classId!=''">
+				and classId=#{classId}
+			</if>
+			<if test="createTime!=null and createTime!=''">
+				and oa_xsb_daytext.createTime =#{createTime}
+			</if>
+		</where>
+
+		ORDER BY stu_number
+	</select>
+
+	<update id="xg">
+		UPDATE oa_xsb_daytext SET written =#{score} WHERE studentId=#{id} AND createTime=#{time}
+	</update>
+
+	<select id="ck" resultType="int">
+		SELECT COUNT(*) FROM oa_xsb_daytext WHERE classID = #{studentClassId} AND createTime = #{dateStyle}
+	</select>
+	
+
+</mapper>

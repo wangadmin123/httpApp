@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJwbGradeMapper">
+	<resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJwbGrade">
+	</resultMap>
+
+	<!-- 查询产品 -->
+	<select id="selectSpecialty" resultType="OaJzbSpecialty"
+		parameterType="String">
+		SELECT specialty_Id,Specialty_name FROM oa_jzb_specialty
+	</select>
+
+	<!-- 查询班主任 -->
+	<select id="selectClassTeacher" resultType="OaRlzybEmployee">
+		SELECT
+		e.emp_id,e.emp_name,p.position_name
+		FROM oa_rlzyb_employee AS e
+		INNER
+		JOIN oa_rlzyb_position AS p ON p.position_id =e.emp_position
+		WHERE
+		p.position_id IN (22,23)
+	</select>
+
+	<!-- 查询教员 -->
+	<select id="selectTeacher" resultType="OaRlzybEmployee">
+		SELECT
+		e.emp_id,e.emp_name,p.position_name
+		FROM oa_rlzyb_employee AS e
+		INNER
+		JOIN oa_rlzyb_position AS p ON p.position_id =e.emp_position
+		WHERE
+		p.position_id in (20,21)
+	</select>
+
+	<!-- 查询就业专员 -->
+	<select id="selectObtain" resultType="OaRlzybEmployee">
+		SELECT
+		e.emp_id,e.emp_name,p.position_name
+		FROM oa_rlzyb_employee AS e
+		INNER
+		JOIN oa_rlzyb_position AS p ON p.position_id =e.emp_position
+		WHERE
+		p.position_id = 26
+	</select>
+
+	<!-- 查询机房 -->
+	<select id="selectMotor" resultType="OaJwbMotor" parameterType="String">
+		SELECT oa_jwb_motor.id,oa_jwb_motor.name,floor,status FROM
+		oa_jwb_motor
+	</select>
+
+	<!-- 查询班级状态 -->
+	<select id="selectStatus" resultType="OaJwbStruts">
+		SELECT strutsid,strutsName
+		FROM oa_jwb_struts
+	</select>
+
+	<!-- 添加 -->
+
+	<insert id="insert" parameterType="OaJwbGrade">
+		INSERT INTO oa_jwb_grade(
+		NAME,
+		teacherID,
+		classTeacherID,
+		obtainID,
+		motorid,
+		specialtyID,
+		struts,
+		stage,
+		createTime
+		)
+		VALUES (
+		#{name},
+		#{teacherID},
+		#{classTeacherID},
+		#{obtainID},
+		#{motorid},
+		#{specialtyID},
+		#{struts},
+		#{stage},
+		#{createTime}
+		)
+	</insert>
+
+
+
+
+	<!-- 查询班级信息 -->
+	<select id="selectProject" resultMap="OaJwbGrade" parameterType="Integer">
+		SELECT g.id,g.name,e1.emp_name AS teacher,e2.emp_name AS classTeacher,
+		e3.emp_name AS obtain,obtainID,teacherID,classTeacherID,motorid,m.name
+		AS mName,s.strutsName,
+		specialtyID,struts,createTime,oa_jwb_semester.stage as
+		stages,oa_jwb_semester.id AS stage
+		FROM oa_jwb_grade g
+		INNER JOIN
+		oa_rlzyb_employee e1
+		ON teacherID=e1.emp_id
+		INNER JOIN oa_rlzyb_employee
+		e2
+		ON classTeacherID=e2.emp_id
+		INNER JOIN oa_rlzyb_employee e3
+		ON
+		obtainID=e3.emp_id
+		INNER JOIN oa_jwb_motor m
+		ON motorid=m.id
+		INNER JOIN
+		oa_jwb_struts s
+		ON struts=s.strutsId
+		inner join oa_jwb_semester
+		on oa_jwb_semester.id=g.stage
+		<where>
+			<if test="id!=0">
+				and g.id=#{id}
+			</if>
+			<if test="name !=null">
+				and g.name like CONCAT('%',#{name},'%')
+			</if>
+			<if test="teacherID !=0">
+				and teacherID=#{teacherID}
+			</if>
+			<if test="classTeacherID !=0">
+				and classTeacherID=#{classTeacherID}
+			</if>
+		</where>
+		order by struts
+	</select>
+	<resultMap type="OaJwbGrade" id="OaJwbGrade">
+		<id property="id" column="g.id" />
+		<result property="name" column="g.name" />
+		<result property="teacher" column="teacher" />
+		<result property="classTeacher" column="classTeacher" />
+		<result property="obtain" column="obtain" />
+		<result property="motorid" column="motorid" />
+		<result property="specialtyID" column="specialtyID" />
+		<result property="struts" column="struts" />
+		<result property="strutsName" column="s.strutsName" />
+		<result property="stage" column="stage" />
+		<result property="stages" column="stages" />
+		<result property="createTime" column="createTime" />
+		<result property="obtainID" column="obtainID" />
+		<result property="teacherID" column="teacherID" />
+		<result property="classTeacherID" column="classTeacherID" />
+		<result property="obtainID" column="obtainID" />
+		<result property="motor" column="mName" />
+	</resultMap>
+
+	<!-- 根据ID修改班级 -->
+	<update id="updateGrade">
+		UPDATE oa_jwb_grade
+		SET
+		name=#{name},teacherID=#{teacherID},classTeacherID=#{classTeacherID},obtainID=#{obtainID}
+		,motorid=#{motorid},struts=#{struts},stage=#{stage},specialtyID=#{specialtyID},createTime=#{createTime}
+		where id=#{id}
+	</update>
+
+	<!-- 根据ID修改班级状态 -->
+	<update id="updateGradestatus" parameterType="Integer">
+		UPDATE oa_jwb_motor
+		SET
+		status=1
+		where id=#{id}
+	</update>
+	<!-- 查询班主任带几个班 -->
+	<select id="selectclassTeacherGrade" resultMap="ClassteacherGrade"
+		parameterType="String">
+		SELECT recordID,motor,grade,c.lecturer,course,classhour,
+		SUM(classhour) AS sumhour,classhours
+		FROM oa_jwb_curriculum AS c
+		INNER
+		JOIN (SELECT SUM(classhour) AS classhours,lecturer FROM
+		oa_jwb_curriculum
+		GROUP BY lecturer) AS s
+		ON c.lecturer=s.lecturer
+		WHERE
+		<if test="selectDate !=null">
+			DATE_FORMAT(classdate,'%Y-%m')=#{selectDate}
+			and
+		</if>
+		<if test="lecturer !=null">
+			c.lecturer like CONCAT('%',#{lecturer},'%')
+			and
+		</if>
+		PHASE=1 AND
+		c.lecturer IN
+		(SELECT emp_name FROM oa_rlzyb_employee
+		WHERE
+		emp_position=
+		(SELECT position_id FROM oa_rlzyb_position
+		WHERE
+		position_name='班主任')
+		)
+		GROUP BY grade,c.lecturer
+	</select>
+	<resultMap type="OaJwbCurriculum" id="ClassteacherGrade">
+		<id property="recordID" column="recordID" />
+		<result property="motor" column="motor" />
+		<result property="grade" column="grade" />
+		<result property="lecturer" column="c.lecturer" />
+		<result property="course" column="course" />
+		<result property="classhour" column="classhour" />
+		<result property="sumhour" column="sumhour" />
+		<result property="classhours" column="classhours" />
+	</resultMap>
+	<!-- 查询教员带几个班 -->
+	<select id="selectTeacherGrade" resultMap="teacherGrade"
+		parameterType="String">
+		SELECT recordID,motor,grade,c.lecturer,course,classhour,
+		SUM(classhour) AS sumhour,classhours
+		FROM oa_jwb_curriculum AS c
+		INNER
+		JOIN (SELECT SUM(classhour) AS classhours,lecturer FROM
+		oa_jwb_curriculum
+		GROUP BY lecturer) AS s
+		ON c.lecturer=s.lecturer
+		WHERE
+		<if test="selectDate !=null">
+			DATE_FORMAT(classdate,'%Y-%m')=#{selectDate}
+			and
+		</if>
+		<if test="lecturer !=null">
+			c.lecturer like CONCAT('%',#{lecturer},'%')
+			and
+		</if>
+		PHASE=1 AND
+		c.lecturer IN
+		(SELECT emp_name FROM oa_rlzyb_employee
+		INNER
+		JOIN oa_rlzyb_employeeposition
+		ON emp_id=employee_id
+		WHERE position_id=
+		(SELECT emp_name FROM oa_rlzyb_employee
+		WHERE emp_position=
+		(SELECT
+		position_id FROM oa_rlzyb_position
+		WHERE position_name='教员')
+		)
+		GROUP BY
+		grade,c.lecturer
+	</select>
+	<resultMap type="OaJwbCurriculum" id="teacherGrade">
+		<id property="recordID" column="recordID" />
+		<result property="motor" column="motor" />
+		<result property="grade" column="grade" />
+		<result property="lecturer" column="c.lecturer" />
+		<result property="classhours" column="classhours" />
+		<result property="course" column="course" />
+		<result property="classhour" column="classhour" />
+		<result property="sumhour" column="sumhour" />
+	</resultMap>
+	<!-- 查询带班数据 -->
+	<select id="selectGrade" resultMap="OaJwbGradeinfo">
+		SELECT grade,stage,classTeacher,teacher,teacherID,
+		classTeacherID,id,obtainID,obtain,stagename,specialtyID,struts,stages,
+		SUM(preparationPT)/COUNT(class) AS preparationPT,
+		SUM(manamiPT)/COUNT(class) AS manamiPT,
+		SUM(homeworkPT)/COUNT(class) AS
+		homeworkPT,
+		SUM(classHourPT)/COUNT(class) AS classHourPT,
+		SUM(obuPT)/COUNT(class) AS obuPT,
+		SUM(wordPT)/COUNT(class)
+		AS wordPT,
+		createTime,
+		studentNum
+		FROM (SELECT gd.grade_id AS
+		classID,COUNT(classID) AS
+		class,SUM(d.obu) AS obu,COUNT(studentID) AS
+		studentNum,
+		g.id AS id,g.specialtyID AS
+		specialtyID,spe.Specialty_name
+		AS stagename,
+		g.struts AS struts,
+		g.classTeacherID AS
+		classTeacherID,g.obtainID AS obtainID,g.teacherID AS teacherID,
+		g.name
+		AS grade, g.stage
+		AS stage,sta.stage AS stages,e1.emp_name AS
+		classTeacher,e2.emp_name AS
+		teacher,e3.emp_name AS
+		obtain,
+		(SUM(preparation)/(MAX(preparation)*COUNT(Student_id))) AS
+		preparationPT,
+		(SUM(word)/(MAX(word)*COUNT(Student_id))) AS wordPT,
+		(SUM(manami))/(MAX(manami)*COUNT(studentId)) AS manamiPT,
+		(SUM(d.obu))/(MAX(d.obu)*COUNT(studentId)) AS obuPT,
+		(SUM(homework))/(MAX(homework)*COUNT(studentId)) AS homeworkPT,
+		((SUM(gd.classHour)-SUM(gd.qijiaHour))/(MAX(gd.classHour)*COUNT(student_id)))
+		AS classHourPT,
+		gd.enteringTime AS createTime
+		FROM oa_jzb_gradedata AS
+		gd
+		INNER JOIN
+		oa_jwb_grade AS g
+		ON g.id=gd.grade_id
+		INNER JOIN
+		oa_rlzyb_employee AS
+		e1
+		ON g.classTeacherID=e1.emp_id
+		INNER JOIN
+		oa_rlzyb_employee AS e2
+		ON
+		g.teacherID=e2.emp_id
+		INNER JOIN
+		oa_rlzyb_employee AS e3
+		ON
+		g.obtainID=e3.emp_id
+		LEFT JOIN
+		oa_xsb_dailypaper AS d
+		ON
+		d.classID=g.id
+		INNER JOIN oa_jwb_semester AS
+		sta
+		ON
+		g.stage=sta.id
+		INNER JOIN oa_jzb_specialty AS spe
+		ON
+		g.specialtyID=spe.specialty_Id
+		WHERE 1=1
+		<if test="nameHead !=null and nameHead !='0' and nameHead !=''">
+			and g.specialtyID = #{nameHead}
+		</if>
+		<if test="name !=null and name !=''">
+			and g.name LIKE CONCAT('%',#{name},'%')
+		</if>
+		<if test="createTime !=null and createTime!=''">
+			and DATE_FORMAT(gd.enteringTime,'%Y-%m')=#{createTime}
+		</if>
+		GROUP BY classID,DATE_FORMAT(gd.enteringTime,'%Y-%m')
+		) AS countgrade
+		GROUP BY
+		classID,DATE_FORMAT(createTime,'%Y-%m') DESC
+	</select>
+	<select id="selectGrade2" resultMap="OaJwbGradeinfo">
+		SELECT grade,stage,classTeacher,teacher,teacherID,
+		classTeacherID,id,obtainID,obtain,stagename,specialtyID,struts,stages,
+		SUM(preparationPT) AS preparationPT,
+		SUM(manamiPT) AS manamiPT,
+		SUM(homeworkPT) AS
+		homeworkPT,
+		SUM(classHourPT) AS classHourPT,
+		SUM(obuPT) AS obuPT,
+		SUM(wordPT)
+		AS wordPT,
+		createTime,
+		studentNum
+		FROM (
+		SELECT classID,COUNT(classID) AS
+		class,SUM(d.obu) AS
+		obu,COUNT(studentID) AS
+		studentNum,
+		g.id AS id,g.specialtyID AS
+		specialtyID,spe.Specialty_name AS stagename,
+		g.struts AS struts,
+		g.classTeacherID AS classTeacherID,g.obtainID AS obtainID,g.teacherID
+		AS teacherID,
+		g.name AS grade, g.stage
+		AS stage,sta.stage AS
+		stages,e1.emp_name AS classTeacher,e2.emp_name AS
+		teacher,e3.emp_name
+		AS
+		obtain,
+		(SUM(preparation)/(MAX(preparation)*COUNT(Student_id))) AS
+		preparationPT,
+		(SUM(word)/(MAX(word)*COUNT(Student_id))) AS wordPT,
+		(SUM(manami))/(MAX(manami)*COUNT(studentId)) AS manamiPT,
+		(SUM(d.obu))/(MAX(d.obu)*COUNT(studentId)) AS obuPT,
+		(SUM(homework))/(MAX(homework)*COUNT(studentId)) AS homeworkPT,
+		((SUM(gd.classHour)-SUM(gd.qijiaHour))/(MAX(gd.classHour)*COUNT(student_id)))
+		AS classHourPT,
+		d.createTime AS createTime
+		FROM oa_xsb_dailypaper AS d
+		INNER JOIN oa_jwb_grade AS g
+		ON d.classID=g.id
+		INNER JOIN
+		oa_rlzyb_employee AS
+		e1
+		ON g.classTeacherID=e1.emp_id
+		INNER JOIN
+		oa_rlzyb_employee AS e2
+		ON
+		g.teacherID=e2.emp_id
+		INNER JOIN
+		oa_rlzyb_employee AS e3
+		ON
+		g.obtainID=e3.emp_id
+		INNER JOIN
+		oa_jzb_gradedata AS gd
+		ON
+		g.id=gd.grade_id
+		INNER JOIN oa_jwb_semester AS
+		sta
+		ON
+		g.stage=sta.id
+		INNER JOIN oa_jzb_specialty AS spe
+		ON
+		g.specialtyID=spe.specialty_Id
+		WHERE 1=1
+		<if test="nameHead !=null and nameHead !='0' and nameHead !=''">
+			and g.specialtyID = #{nameHead}
+		</if>
+		<if test="name !=null and name !=''">
+			and g.name LIKE CONCAT('%',#{name},'%')
+		</if>
+		<if test="createTime !=null and createTime!=''">
+			and DATE_FORMAT(d.createTime,'%Y-%m')=#{createTime}
+		</if>
+		GROUP BY classID,DATE_FORMAT(d.createTime,'%Y-%m')
+		) AS countgrade
+		GROUP BY
+		classID,DATE_FORMAT(createTime,'%Y-%m') DESC
+	</select>
+	<resultMap type="OaJwbGrade" id="OaJwbGradeinfo">
+		<result property="id" column="id" />
+		<result property="name" column="grade" />
+		<result property="teacherID" column="teacherID" />
+		<result property="stage" column="stage" />
+		<result property="classTeacher" column="classTeacher" />
+		<result property="teacher" column="teacher" />
+		<result property="classHourPT" column="classHourPT" />
+		<result property="preparationPT" column="preparationPT" />
+		<result property="wordPT" column="wordPT" />
+		<result property="manamiPT" column="manamiPT" />
+		<result property="obuPT" column="obuPT" />
+		<result property="homeworkPT" column="homeworkPT" />
+		<result property="studentNum" column="studentNum" />
+		<result property="createTime" column="createTime" />
+		<result property="classTeacherID" column="classTeacherID" />
+		<result property="obtain" column="obtain" />
+		<result property="motorid" column="motorid" />
+		<result property="specialtyID" column="specialtyID" />
+		<result property="struts" column="struts" />
+		<result property="stages" column="stages" />
+		<result property="stagename" column="stagename" />
+		<result property="graduate" column="graduateDate" />
+		<result property="firststudytime" column="firststudytime" />
+		<result property="secondstudytime" column="secondstudytime" />
+		<result property="practicetime" column="practicetime" />
+	</resultMap>
+	<select id="selectMonthStudent" resultMap="MonthStudent">
+		SELECT
+		g.name AS grade,g.stage AS stage,e1.emp_name AS
+		classTeacher,e2.emp_name AS
+		teacher,
+		s.stu_name AS stuName,
+		s.stu_Id AS
+		stuid,
+		SUM(classHour)/COUNT(d.studentID)/10 AS classHourPT,
+		SUM(d.obu)/COUNT(d.studentID)/20 AS obuPT,
+		SUM(d.homework)/COUNT(d.studentID)/30 AS homeworkPT,
+		SUM(d.manami)/COUNT(d.studentID)/10 manami,
+		((SUM(classHour)/COUNT(d.studentID)/10)*25+
+		(SUM(d.obu)/COUNT(d.studentID)/20)*25+
+		(SUM(homework)/COUNT(d.studentID)/30)*20+written*0.15+scjd*0.15) AS
+		Integrated,
+		written,scjd,d.createTime
+		FROM oa_jwb_grade AS g
+		INNER JOIN
+		oa_xsb_dailypaper AS d
+		ON d.classID=g.id
+		INNER JOIN oa_rlzyb_employee AS
+		e1
+		ON
+		g.classTeacherID=e1.emp_id
+		INNER JOIN oa_rlzyb_employee AS e2
+		ON
+		g.teacherID=e2.emp_id
+		INNER JOIN oa_jzb_student AS s
+		ON
+		d.studentID=s.stu_Id
+		INNER JOIN oa_xsb_monthly AS m
+		ON
+		m.studentID=d.studentID
+		INNER JOIN oa_jzb_gradedata AS gd
+		ON
+		gd.Student_id=s.stu_Id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="name !=null and name !=''">
+				and g.name LIKE CONCAT('%',#{name},'%')
+			</if>
+			<if test="createTime !=null and createTime!=''">
+				and DATE_FORMAT(d.createTime,'%Y-%m')=#{createTime}
+				<!-- and d.createTime=#{createTime} -->
+			</if>
+		</trim>
+		GROUP BY DATE_FORMAT(d.createTime,'%Y-%m'),d.studentID
+		ORDER BY
+		((SUM(classHour)/COUNT(d.studentID)/10)*25+(SUM(d.obu)/COUNT(d.studentID)/20)*25+(SUM(homework)/COUNT(d.studentID)/30)*20+written*0.15+scjd*0.15)
+		DESC,
+		DATE_FORMAT(d.createTime,'%Y-%m')
+	</select>
+	<resultMap type="OaJwbGrade" id="MonthStudent">
+		<result property="name" column="grade" />
+		<result property="stage" column="stage" />
+		<result property="classTeacher" column="classTeacher" />
+		<result property="teacher" column="teacher" />
+		<result property="stuName" column="stuName" />
+		<result property="written" column="written" />
+
+		<result property="Integrated" column="Integrated" />
+		<result property="scjd" column="scjd" />
+		<result property="manamiPT" column="manamiPT" />
+		<result property="obuPT" column="obuPT" />
+		<result property="homeworkPT" column="homeworkPT" />
+		<result property="studentNum" column="studentNum" />
+		<result property="createTime" column="d.createTime" />
+	</resultMap>
+	<select id="selectScoreGrade" resultMap="MonthGrade">
+		SELECT grade,stage,classTeacher,teacher,
+		SUM(classHourPT)/COUNT(class)
+		AS classHourPT,
+		SUM(manamiPT)/COUNT(class) AS manamiPT,
+		SUM(homeworkPT)/COUNT(class) AS homeworkPT,
+		SUM(obuPT)/COUNT(class) AS
+		obuPT,
+		createTime,studentNum,classTeacherID
+		FROM (
+		SELECT
+		d.classID,COUNT(d.classID) AS class,SUM(d.obu) AS
+		obu,COUNT(d.studentID) AS studentNum,
+		g.name AS grade,g.stage AS
+		stage,e1.emp_name AS classTeacher,e2.emp_name AS
+		teacher,
+		s.stu_name AS
+		stuName,classTeacherID,
+		SUM(classHour)/COUNT(d.studentID)/10 AS
+		classHourPT,
+		(SUM(manami))/(MAX(manami)*COUNT(d.studentId)) AS
+		manamiPT,
+		(SUM(d.obu))/(MAX(d.obu)*COUNT(d.studentId)) AS obuPT,
+		(SUM(written)/COUNT(d.studentID)+SUM(scjd)/COUNT(d.studentID))/2 AS
+		homeworkPT,
+		d.createTime AS createTime
+		FROM oa_jwb_grade AS g
+		INNER JOIN
+		oa_xsb_dailypaper AS d
+		ON d.classID=g.id
+		INNER JOIN oa_rlzyb_employee AS
+		e1
+		ON g.classTeacherID=e1.emp_id
+		INNER JOIN oa_rlzyb_employee AS e2
+		ON
+		g.teacherID=e2.emp_id
+		INNER JOIN oa_jzb_student AS s
+		ON
+		d.studentID=s.stu_Id
+		INNER JOIN oa_xsb_monthly AS m
+		ON
+		m.studentID=d.studentID
+		INNER JOIN oa_jzb_gradedata AS gd
+		ON
+		gd.Student_id=s.stu_Id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="name !=null and name !=''">
+				and g.name LIKE CONCAT('%',#{name},'%')
+			</if>
+		</trim>
+		GROUP BY d.createTime,classID
+		) AS countgrade
+		GROUP BY
+		DATE_FORMAT(createTime,'%Y-%m') DESC,classID
+	</select>
+	<resultMap type="OaJwbGrade" id="MonthGrade">
+		<result property="name" column="grade" />
+		<result property="stage" column="stage" />
+		<result property="classTeacher" column="classTeacher" />
+		<result property="teacher" column="teacher" />
+		<result property="classHourPT" column="classHourPT" />
+		<result property="manamiPT" column="manamiPT" />
+		<result property="obuPT" column="obuPT" />
+		<result property="homeworkPT" column="homeworkPT" />
+		<result property="studentNum" column="studentNum" />
+		<result property="createTime" column="createTime" />
+		<result property="classTeacherID" column="classTeacherID" />
+
+	</resultMap>
+
+	<!-- 向学生记事中插入数据 -->
+
+	<insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybChronicle">
+		insert into oa_jyb_chronicle
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="student_id != null">
+				student_id,
+			</if>
+			<if test="event_time != null">
+				event_time,
+			</if>
+			<if test="event_name != null">
+				event_name,
+			</if>
+			<if test="inputUser != null">
+				inputUser,
+			</if>
+			<if test="input_time != null">
+				input_time,
+			</if>
+			<if test="describe != null">
+				describe,
+			</if>
+			<if test="isNormal != null">
+				isNormal,
+			</if>
+
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="student_id != null">
+				#{student_id},
+			</if>
+			<if test="event_time != null">
+				#{event_time},
+			</if>
+			<if test="event_name != null">
+				#{event_name},
+			</if>
+			<if test="inputUser != null">
+				#{inputUser},
+			</if>
+			<if test="input_time != null">
+				#{input_time},
+			</if>
+			<if test="describe != null">
+				#{describe},
+			</if>
+			<if test="isNormal != null">
+				#{isNormal},
+			</if>
+
+		</trim>
+	</insert>
+
+	<!-- 开发部二级联动占用 -->
+	<select id="selectAllGrade" resultType="cn.tyyhoa.pojo.OaJwbGrade">
+		SELECT gr.id, gr.name
+		FROM oa_jwb_grade AS gr
+		WHERE gr.struts>2
+	</select>
+
+	<select id="selectStrutsById" resultType="int">
+		SELECT struts FROM oa_jwb_grade WHERE id=#{id}
+	</select>
+
+	<!-- 根据教员员工编号查询所带班级 -->
+	<select id="selectGradeByTeacherId" resultType="OaJwbGrade">
+		SELECT id,NAME,teacherID FROM oa_jwb_grade WHERE 1=1
+		<if test="teacherID != 0">
+			and teacherID=#{teacherID}
+		</if>
+	</select>
+	<!-- 根据班级名字查询班级id -->
+	<select id="selectGradeid" resultType="Integer">
+		select * from oa_jwb_grade
+		where name=#{name}
+	</select>
+	<!-- 根据班级id修改学生的状态 -->
+	<update id="updateStusta">
+		update oa_jzb_student set status_id = 2 where
+		grade_id=#{grade_id}
+	</update>
+	<insert id="insertFuckClass">
+		INSERT `oa_jwb_fuckclass`(classId) VALUES ((SELECT
+		MAX(id) FROM `oa_jwb_grade`))
+	</insert>
+	<update id="updateFuckClass">
+		UPDATE `oa_jwb_fuckclass` SET
+		monday=#{mon},tuesday=#{tue},wednesday=#{wed},thursday=#{thu},triday=#{tri},saturday=#{sat}
+		WHERE classId=#{gradeId}
+	</update>
+	<select id="selFuckType" resultType="cn.tyyhoa.pojo.OaJwbFuckType">
+		SELECT * FROM
+		`oa_jwb_fucktype`
+	</select>
+	<select id="selFuckClass" resultMap="FuckType">
+		SELECT f.id,f.classId,g.name
+		AS grade,e1.emp_name AS classTeacher,e2.emp_name AS
+		teacher,e3.emp_name AS careerteacher,
+		t1.id AS monId,t1.type AS mon,t2.id AS tueId,t2.type AS tue,
+		t3.id AS wedId,t3.type AS wed,t4.id AS thuId,t4.type AS thu,t5.id AS
+		triId,t5.type AS tri,t6.id AS satId,t6.type AS sat
+		FROM `oa_jwb_fuckclass` AS f
+		INNER JOIN `oa_jwb_grade` AS g
+		ON g.id=f.classId
+		INNER JOIN `oa_rlzyb_employee` AS e1
+		ON g.teacherID=e1.emp_id
+		INNER JOIN `oa_rlzyb_employee` AS e2
+		ON g.classTeacherID=e2.emp_id
+		INNER JOIN `oa_rlzyb_employee` AS e3
+		ON g.obtainID=e3.emp_id
+		INNER JOIN `oa_jwb_fucktype` AS t1
+		ON f.monday=t1.id
+		INNER JOIN `oa_jwb_fucktype` AS t2
+		ON f.tuesday=t2.id
+		INNER JOIN `oa_jwb_fucktype` AS t3
+		ON f.wednesday=t3.id
+		INNER JOIN `oa_jwb_fucktype` AS t4
+		ON f.thursday=t4.id
+		INNER JOIN `oa_jwb_fucktype` AS t5
+		ON f.triday=t5.id
+		INNER JOIN `oa_jwb_fucktype` AS t6
+		ON f.saturday=t6.id
+		WHERE g.struts=1
+	</select>
+	<resultMap type="cn.tyyhoa.pojo.OaJwbFuckClass" id="FuckType">
+		<result column="id" property="id" />
+		<association property="grade" javaType="cn.tyyhoa.pojo.OaJwbGrade">
+			<result column="classId" property="id" />
+			<result column="grade" property="name" />
+			<result column="teacher" property="teacher" />
+			<result column="classTeacher" property="classTeacher" />
+			<result column="careerteacher" property="careerteacher" />
+		</association>
+		<association property="mon" javaType="cn.tyyhoa.pojo.OaJwbFuckType">
+			<result column="monId" property="id" />
+			<result column="mon" property="type" />
+		</association>
+		<association property="tue" javaType="cn.tyyhoa.pojo.OaJwbFuckType">
+			<result column="tueId" property="id" />
+			<result column="tue" property="type" />
+		</association>
+		<association property="wed" javaType="cn.tyyhoa.pojo.OaJwbFuckType">
+			<result column="wedId" property="id" />
+			<result column="wed" property="type" />
+		</association>
+		<association property="thu" javaType="cn.tyyhoa.pojo.OaJwbFuckType">
+			<result column="thuId" property="id" />
+			<result column="thu" property="type" />
+		</association>
+		<association property="tri" javaType="cn.tyyhoa.pojo.OaJwbFuckType">
+			<result column="triId" property="id" />
+			<result column="tri" property="type" />
+		</association>
+		<association property="sat" javaType="cn.tyyhoa.pojo.OaJwbFuckType">
+			<result column="satId" property="id" />
+			<result column="sat" property="type" />
+		</association>
+	</resultMap>
+</mapper>
+ 

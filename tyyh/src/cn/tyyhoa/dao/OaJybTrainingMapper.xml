@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybTrainingMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybTraining" >
+    <id column="training_id" property="training_id" jdbcType="INTEGER" />
+    <result column="training_studentId" property="training_studentId" jdbcType="INTEGER" />
+    <result column="training_score" property="training_score" jdbcType="INTEGER" />
+    <result column="training_time" property="training_time" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    training_id, training_studentId, training_score, training_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_training
+    where training_id = #{training_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_training
+    where training_id = #{training_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybTraining" >
+    insert into oa_jyb_training (training_id, training_studentId, 
+      training_score, training_time)
+    values (#{training_id,jdbcType=INTEGER}, #{training_studentId,jdbcType=INTEGER}, 
+      #{training_score,jdbcType=INTEGER}, #{training_time,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybTraining" >
+    insert into oa_jyb_training
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="training_id != null" >
+        training_id,
+      </if>
+      <if test="training_studentId != null" >
+        training_studentId,
+      </if>
+      <if test="training_score != null" >
+        training_score,
+      </if>
+      <if test="training_time != null" >
+        training_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="training_id != null" >
+        #{training_id,jdbcType=INTEGER},
+      </if>
+      <if test="training_studentId != null" >
+        #{training_studentId,jdbcType=INTEGER},
+      </if>
+      <if test="training_score != null" >
+        #{training_score,jdbcType=INTEGER},
+      </if>
+      <if test="training_time != null" >
+        #{training_time,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybTraining" >
+    update oa_jyb_training
+    <set >
+      <if test="training_studentId != null" >
+        training_studentId = #{training_studentId,jdbcType=INTEGER},
+      </if>
+      <if test="training_score != null" >
+        training_score = #{training_score,jdbcType=INTEGER},
+      </if>
+      <if test="training_time != null" >
+        training_time = #{training_time,jdbcType=DATE},
+      </if>
+    </set>
+    where training_id = #{training_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybTraining" >
+    update oa_jyb_training
+    set training_studentId = #{training_studentId,jdbcType=INTEGER},
+      training_score = #{training_score,jdbcType=INTEGER},
+      training_time = #{training_time,jdbcType=DATE}
+    where training_id = #{training_id,jdbcType=INTEGER}
+  </update>
+</mapper>

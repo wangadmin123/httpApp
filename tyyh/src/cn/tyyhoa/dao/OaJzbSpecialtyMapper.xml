@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbSpecialtyMapper" >
+  <insert id="addInsert" parameterType="OaJzbSpecialty" >
+    insert into oa_jzb_specialty(Specialty_name)
+    values (#{specialty_name})
+  </insert>
+ 
+  
+  <!-- 查询所有的专业 -->
+  <select id="getSecialtys" resultType="OaJzbSpecialty">
+  		SELECT specialty_Id,Specialty_name FROM oa_jzb_specialty
+  </select>
+</mapper>

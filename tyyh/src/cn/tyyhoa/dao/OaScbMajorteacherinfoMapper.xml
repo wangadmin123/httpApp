@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbMajorteacherinfoMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaScbMajorteacherinfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="schoolId" property="schoolId" jdbcType="INTEGER" />
+    <result column="specialtId" property="specialtId" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="VARCHAR" />
+    <result column="Sex" property="sex" jdbcType="INTEGER" />
+    <result column="Hobbies" property="hobbies" jdbcType="VARCHAR" />
+    <result column="specialSkill" property="specialSkill" jdbcType="VARCHAR" />
+    <result column="teacherClass" property="teacherClass" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, schoolId, specialtId, Name, Sex, Hobbies, specialSkill, teacherClass, comments
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_scb_majorteacherinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_scb_majorteacherinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaScbMajorteacherinfo" >
+    insert into oa_scb_majorteacherinfo (id, schoolId, specialtId, 
+      Name, Sex, Hobbies, 
+      specialSkill, teacherClass, comments
+      )
+    values (#{id,jdbcType=INTEGER}, #{schoolId,jdbcType=INTEGER}, #{specialtId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{hobbies,jdbcType=VARCHAR}, 
+      #{specialSkill,jdbcType=VARCHAR}, #{teacherClass,jdbcType=VARCHAR}, #{comments,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaScbMajorteacherinfo" >
+    insert into oa_scb_majorteacherinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="schoolId != null" >
+        schoolId,
+      </if>
+      <if test="specialtId != null" >
+        specialtId,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="sex != null" >
+        Sex,
+      </if>
+      <if test="hobbies != null" >
+        Hobbies,
+      </if>
+      <if test="specialSkill != null" >
+        specialSkill,
+      </if>
+      <if test="teacherClass != null" >
+        teacherClass,
+      </if>
+      <if test="comments != null" >
+        comments,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="specialtId != null" >
+        #{specialtId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="hobbies != null" >
+        #{hobbies,jdbcType=VARCHAR},
+      </if>
+      <if test="specialSkill != null" >
+        #{specialSkill,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherClass != null" >
+        #{teacherClass,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaScbMajorteacherinfo" >
+    update oa_scb_majorteacherinfo
+    <set >
+      <if test="schoolId != null" >
+        schoolId = #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="specialtId != null" >
+        specialtId = #{specialtId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        Sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="hobbies != null" >
+        Hobbies = #{hobbies,jdbcType=VARCHAR},
+      </if>
+      <if test="specialSkill != null" >
+        specialSkill = #{specialSkill,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherClass != null" >
+        teacherClass = #{teacherClass,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaScbMajorteacherinfo" >
+    update oa_scb_majorteacherinfo
+    set schoolId = #{schoolId,jdbcType=INTEGER},
+      specialtId = #{specialtId,jdbcType=INTEGER},
+      Name = #{name,jdbcType=VARCHAR},
+      Sex = #{sex,jdbcType=INTEGER},
+      Hobbies = #{hobbies,jdbcType=VARCHAR},
+      specialSkill = #{specialSkill,jdbcType=VARCHAR},
+      teacherClass = #{teacherClass,jdbcType=VARCHAR},
+      comments = #{comments,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

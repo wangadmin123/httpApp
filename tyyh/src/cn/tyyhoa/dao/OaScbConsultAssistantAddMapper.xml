@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tyyhoa.dao.OaScbConsultAssistantAddMapper">
+
+		<!-- 新增咨询量，新增 -->
+	<!-- <insert id="ConsultAssistantAdd" parameterType="OaScbConsulter">
+	INSERT INTO tyyhoa.oa_scb_consulter 
+		(id, NAME, age, sex, province, city, district, wechat, 
+		telphone1, urgentTelpeople,specialty, STATUS, schoolName, education,
+		TYPE, infoSource, keywords, consultWay,  rank, consultTeacher, comments, 
+		consultLesson, ungenTelphone,allotstatus
+		)
+		VALUES
+		(#{id}, #{name},#{age},#{sex},#{province},#{city},#{district},
+		#{wechat},#{telphone1},#{urgentTelpeople},#{specialty},#{status},#{schoolName},
+		#{education},#{type},#{infoSource},#{keywords},#{consultWay},#{rank},#{consultTeacher},#{comments},
+		#{consultLesson},#{ungenTelphone},#{allotstatus}
+		);
+	</insert> -->
+	<!-- 新增咨询量，新增 -->
+	<insert id="ConsultAssistantAdd" parameterType="OaScbConsulter">
+	INSERT INTO
+		oa_scb_consulter
+		(
+		name,
+		phoneticize,
+		age,
+		sex,
+		telphone1,
+		ungenTelphone,
+		education,
+		place,
+		province,
+		city,
+		district,
+		street,
+		status,
+		infoSource,
+		consultWay,
+		mediaName,
+		consultLesson,
+		schoolName,
+		schoolClass,
+		computer,
+		specialty,
+		keywords,
+		comments,
+		consultTeacher,
+		allotstatus,
+		infoStatus,
+		allotTime,
+		firstConsultTime
+		)
+		VALUES
+		(
+		#{name},
+		#{phoneticize},
+		#{age},
+		#{sex},
+		#{telphone1},
+		#{ungenTelphone},
+		#{education},
+		#{place},
+		#{province},
+		#{city},
+		#{district},
+		#{street},
+		#{status},
+		#{infoSource},
+		#{consultWay},
+		#{mediaName},
+		#{consultLesson},
+		#{schoolName},
+		#{schoolClass},
+		#{computer},
+		#{specialty},
+		#{keywords},
+		#{comments},
+		#{consultTeacher},
+		#{allotstatus},
+		#{infoStatus},
+		#{allotTime},
+		#{firstConsultTime}
+		);
+	</insert>
+
+	<!-- 编辑页面-咨询量编辑 -->
+	<update id="AssistantReviseEditor" parameterType="OaScbConsulter">
+	UPDATE tyyhoa.oa_scb_consulter 
+	<set>
+	<if test="name!=null and name!=''">
+	NAME = #{name} ,
+	</if>
+	 <if test="phoneticize!=null and phoneticize!=''">
+	 phoneticize = #{phoneticize} , 
+	 </if>
+	<if test="age!=null and age!=''">
+	age = #{age} , 
+	</if>
+	<if test="sex!=null and sex!=''">
+	sex = #{sex} , 
+	</if>
+	<if test="province!=null and province!='省份'">
+	province = #{province} , 
+	</if>
+	<if test="city!=null and city!='地级市' ">
+	city = #{city}, 
+	</if>
+	<if test="district!=null and district!='市、县级市、县'">
+	district = #{district} , 
+	</if>
+	<if test="wechat!=null and wechat!=''">
+	wechat = #{wechat} , 
+	</if>
+	<if test="telphone1!=null and telphone1!=''">
+	telphone1 = #{telphone1} , 
+	</if>
+	<if test="urgentTelpeople!=null and urgentTelpeople!='' ">
+	urgentTelpeople = #{urgentTelpeople} , 
+	</if>
+	<if test="familyCondition !=null and familyCondition!='' ">
+	familyCondition = #{familyCondition} , 
+	</if>
+	<if test="hobbies!=null and hobbies!='' ">
+	hobbies = #{hobbies} , 
+	</if>
+	<if test="specialSkill !=null and specialSkill!='' ">
+	specialSkill = #{specialSkill} , 
+	</if>
+	<if test="status!=null and status!=0 ">
+	STATUS = #{status} , 
+	</if>
+	<if test="schoolName!=null and schoolName!='' ">
+	schoolName = #{schoolName} , 
+	</if>
+	<if test="education!=null and education!=0">
+	education = #{education} , 
+	</if>
+	<if test="specialty!=null and specialty!='' ">
+	specialty = #{specialty} , 
+	</if>
+	<if test="schoolClass!=null and schoolClass!='' ">
+	schoolClass = #{schoolClass} , 
+	</if>
+	<if test="schoolJob!=null and schoolJob!='' ">
+	schoolJob = #{schoolJob} ,
+	</if>
+	<if test="schoolDorm!=null and schoolDorm!='' ">
+	schoolDorm = #{schoolDorm} , 
+	</if>
+	<if test="type!=null and type!=0">
+	TYPE = #{type} , 
+	</if>
+	<if test="infoSource!=null and infoSource!=''">
+	infoSource = #{infoSource} , 
+	</if>
+	<if test="keywords!=null and keywords!='' ">
+	 keywords = #{keywords} , 
+	</if>
+	<if test="firstConsultTime!=null">
+	firstConsultTime = #{firstConsultTime} , 
+	</if>
+	<if test="firstComeTime!=null">
+	firstComeTime = #{firstComeTime} , 
+	</if>
+	<if test="come!=null and  come!=0 ">
+	Come = #{come} , 
+	</if>
+	<if test="consultWay!=null and consultWay!=0 ">
+	consultWay = #{consultWay} , 
+	</if>
+	<if test="mediaName!=null and mediaName!=0 ">
+	mediaName = #{mediaName} , 
+	</if>
+	<if test="allotstatus!=null and allotstatus!=0 ">
+	allotstatus = #{allotstatus} , 
+	</if>
+	<if test="rank!=null and rank!=0">
+	rank = #{rank} , 
+	</if>
+	<if test="consultTeacher!=null and consultTeacher!=0">
+	consultTeacher = #{consultTeacher} , 
+	</if>
+	<if test="comments!=null and comments!='' ">
+	comments = #{comments} , 
+	</if>
+	<if test="consultLesson!=null and consultLesson!=0">
+	consultLesson = #{consultLesson} , 
+	</if>
+	<if test="invalid!=null and invalid!=0 ">
+	invalid = #{invalid} , 
+	</if>
+	<if test="uselessCause!=null and uselessCause!='' ">
+	uselessCause = #{uselessCause},
+	</if>
+	<if test="enrollStatus!=null and enrollStatus!='' ">
+	enrollStatus = #{enrollStatus} , 
+	</if>
+	<if test="enrollTime!=null ">
+	enrollTime = #{enrollTime} , 
+	</if>
+	<if test="declareTime!=null ">
+	declareTime = #{declareTime} , 
+	</if>
+	<if test="payType!=null">
+	payType = #{payType} ,
+	</if>
+	<if test="payMoney!=null ">
+	 payMoney = #{payMoney} , 
+	</if>
+	<if test="payTime!=null ">
+	payTime = #{payTime} , 
+	</if>
+	<if test="allotClass!=null and allotClass!=0 ">
+	allotClass = #{allotClass} , 
+	</if>
+	<if test="enlistLesson!=null and enlistLesson!=0">
+	enlistLesson = #{enlistLesson} , 
+	</if>
+	<if test="dorm!=null and dorm!=0 ">
+	dorm = #{dorm} , 
+	</if>
+	<if test="insurance!=null">
+	insurance = #{insurance} , 
+	</if>
+	<if test="ungenTelphone!=null and ungenTelphone!='' ">
+	ungenTelphone = #{ungenTelphone} , 
+	</if>
+	<if test="allotTime!=null ">
+	allotTime = #{allotTime} , 
+	</if>
+	<if test="declareStatus!=null and declareStatus!=0">
+	declareStatus = #{declareStatus} , 
+	</if>
+	<if test="place!=null and place!=''">
+	place = #{place} , 
+	</if>
+	<if test="computer!=null and computer!=0 ">
+	computer = #{computer} , 
+	</if>
+	<if test="street!=null">
+	street = #{street} , 
+	</if>
+	<if test="infoStatus!=null and infoStatus!=0">
+	infoStatus = #{infoStatus} , 
+	</if>
+	<if test="allMoneyTime!=null">
+	allMoneyTime = #{allMoneyTime},
+	</if>
+	</set>
+	WHERE
+	id = #{id} ;
+	</update>
+	
+	<!-- 回访表-新增 -->
+	<insert id="OaScbVisitAdd" parameterType="OaScbVisit">
+	INSERT INTO tyyhoa.oa_scb_visit 
+	(id, 
+	consultId, 
+	returnvisitTime, 
+	returnvisitRecord, 
+	nextvisitTime, 
+	returnvisitPeopleName
+	)
+	VALUES
+	(#{id}, 
+	#{consultId}, 
+	#{returnvisitTime}, 
+	#{returnvisitRecord}, 
+	#{nextvisitTime}, 
+	#{returnvisitPeopleName}
+	);
+	
+	
+	</insert>
+	
+	<!-- 删除 -->
+	<update id="displayNone">
+		UPDATE oa_scb_consulter SET display=2 WHERE id=#{id}
+	
+	</update>
+	
+	<update id="checkSome">
+ 	
+ 		UPDATE  oa_scb_consulter SET invalid=1 where id  in
+ 			<foreach collection="array" item="id" index ="index" open ="(" close =")" separator =",">
+ 			     #{id}
+ 			</foreach>
+ 	
+ 	</update>
+ 	<!-- 记事 -->
+ 	<insert id="insertRecord" parameterType="OaScbRecord">
+	 	insert into oa_scb_record (	
+	 			recordId, 
+				consulterId, 
+				eventTime, 
+				eventName, 
+				enterPeople, 
+				enterTime)		 		
+		 		values(
+		 		#{recordId},
+		 		#{consulterId},
+		 		#{eventTime},
+		 		#{eventName},
+		 		#{enterPeople},
+		 		#{enterTime}
+		 		)		
+ 	
+ 	</insert>
+ 	
+	<!-- 查询最近id -->
+	<select id="maxId" resultType="int">
+		SELECT MAX(id) FROM oa_scb_consulter
+	</select>
+</mapper>

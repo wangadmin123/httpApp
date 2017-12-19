@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybCompanyMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybCompany" >
+    <id column="company_id" property="company_id" jdbcType="INTEGER" />
+    <result column="company_name" property="company_name" jdbcType="VARCHAR" />
+    <result column="company_city" property="company_city" jdbcType="VARCHAR" />
+    <result column="company_person" property="company_person" jdbcType="VARCHAR" />
+    <result column="company_phone" property="company_phone" jdbcType="VARCHAR" />
+    <result column="company_job" property="company_job" jdbcType="VARCHAR" />
+    <result column="company_station" property="company_station" jdbcType="VARCHAR" />
+    <result column="company_scope" property="company_scope" jdbcType="VARCHAR" />
+    <result column="company_property" property="company_property" jdbcType="VARCHAR" />
+    <result column="company_category" property="company_category" jdbcType="VARCHAR" />
+    <result column="company_type" property="company_type" jdbcType="VARCHAR" />
+    <result column="company_trade" property="company_trade" jdbcType="VARCHAR" />
+    <result column="company_Email" property="company_Email" jdbcType="VARCHAR" />
+    <result column="company_Address" property="company_Address" jdbcType="VARCHAR" />
+    <result column="company_remarks" property="company_remarks" jdbcType="VARCHAR" />
+    <result column="company_zuoji" property="company_zuoji" jdbcType="VARCHAR" />
+    <result column="company_web" property="company_web" jdbcType="VARCHAR" />
+    <result column="company_pinyin" property="company_pinyin" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    company_id, company_name, company_city, company_person, company_phone, company_job, 
+    company_station, company_scope, company_property, company_category, company_type, 
+    company_trade, company_Email, company_Address, company_remarks,company_zuoji,company_web,company_pinyin
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_company
+    where company_id = #{company_id}
+  </select>
+       <!-- 按条件查询公司 -->
+       <select id="GetCompanyByContent" resultMap="BaseResultMap" >
+        select 
+        <include refid="Base_Column_List" /> from oa_jyb_company
+     <where>
+			<if test="company_name != null and company_name != ''">
+				and company_name like concat('%',#{company_name},'%') 
+			</if>
+			<if test="company_pinyin != null and company_pinyin != ''">
+				and company_pinyin like concat('%',#{company_pinyin},'%') 
+			</if>
+			<if test="company_station != null and company_station != ''">
+				and company_station = #{company_station}
+			</if>
+            <if test="company_city != null and company_city  != ''">
+				and company_city  = #{company_city }
+			</if>
+			<if test="company_category != null and company_category != ''">
+				and company_category = #{company_category}
+			</if>
+			</where> 
+			order by company_pinyin
+			limit #{index},#{pageSize}
+       
+       
+       
+       </select>
+       
+        <!--    查询所有的企业 -->
+    <select id="GetAllComList" resultMap="BaseResultMap" >
+    select company_id,company_name from oa_jyb_company 
+    </select>
+    
+    <!-- 查询某企业招聘岗位-->   
+     <select id="GetByComLEnglist" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select company_station from oa_jyb_company 
+      where company_id = #{company_id}  
+    </select>
+       
+       
+       
+    <!--    查询所有的城市 -->
+    <select id="GetCitys" resultMap="BaseResultMap" >
+    select company_city from oa_jyb_company group by company_city
+    </select>
+    <!-- 查询所有的招聘岗位 -->
+       <select id="GetStations" resultMap="BaseResultMap" >
+    select company_station from oa_jyb_company group by company_station
+    </select>
+       <!--  查询符合条件的总记录数 -->
+        <select id="GetCountsByContent"  resultType="int" >
+        select 
+        count(1) from oa_jyb_company
+     <where>
+			<if test="company_name != null and company_name != ''">
+				and company_name like concat('%',#{company_name},'%') 
+			</if>
+			<if test="company_pinyin != null and company_pinyin != ''">
+				and company_pinyin like concat('%',#{company_pinyin},'%') 
+			</if>
+			<if test="company_station != null and company_station != ''">
+				and company_station = #{company_station}
+			</if>
+            <if test="company_city != null and company_city  != ''">
+				and company_city  = #{company_city }
+			</if>
+			<if test="company_category != null and company_category != ''">
+				and company_category = #{company_category}
+			</if>
+			</where> 
+        </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_company
+    where company_id = #{company_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybCompany" >
+    insert into oa_jyb_company (company_id, company_name, company_city, 
+      company_person, company_phone, company_job, 
+      company_station, company_scope, company_property, 
+      company_category, company_type, company_trade, 
+      company_Email, company_Address, company_remarks,company_zuoji,company_web,company_pinyin
+      )
+    values (#{company_id,jdbcType=INTEGER}, #{company_name,jdbcType=VARCHAR}, #{company_city,jdbcType=VARCHAR}, 
+      #{company_person,jdbcType=VARCHAR}, #{company_phone,jdbcType=VARCHAR}, #{company_job,jdbcType=VARCHAR}, 
+      #{company_station,jdbcType=VARCHAR}, #{company_scope,jdbcType=VARCHAR}, #{company_property,jdbcType=VARCHAR}, 
+      #{company_category,jdbcType=VARCHAR}, #{company_type,jdbcType=VARCHAR}, #{company_trade,jdbcType=VARCHAR}, 
+      #{company_Email,jdbcType=VARCHAR}, #{company_Address,jdbcType=VARCHAR}, #{company_remarks,jdbcType=VARCHAR},
+      #{company_zuoji,jdbcType=VARCHAR},#{company_web,jdbcType=VARCHAR},#{company_pinyin,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybCompany" >
+    insert into oa_jyb_company
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="company_id != null" >
+        company_id,
+      </if>
+      <if test="company_name != null" >
+        company_name,
+      </if>
+      <if test="company_city != null" >
+        company_city,
+      </if>
+      <if test="company_person != null" >
+        company_person,
+      </if>
+      <if test="company_phone != null" >
+        company_phone,
+      </if>
+      <if test="company_job != null" >
+        company_job,
+      </if>
+      <if test="company_station != null" >
+        company_station,
+      </if>
+      <if test="company_scope != null" >
+        company_scope,
+      </if>
+      <if test="company_property != null" >
+        company_property,
+      </if>
+      <if test="company_category != null" >
+        company_category,
+      </if>
+      <if test="company_type != null" >
+        company_type,
+      </if>
+      <if test="company_trade != null" >
+        company_trade,
+      </if>
+      <if test="company_Email != null" >
+        company_Email,
+      </if>
+      <if test="company_Address != null" >
+        company_Address,
+      </if>
+      <if test="company_remarks != null" >
+        company_remarks,
+      </if>
+      <if test="company_zuoji != null" >
+        company_zuoji,
+      </if>
+      <if test="company_web != null" >
+        company_web,
+      </if>
+      <if test="company_pinyin != null" >
+        company_pinyin,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="company_id != null" >
+        #{company_id,jdbcType=INTEGER},
+      </if>
+      <if test="company_name != null" >
+        #{company_name,jdbcType=VARCHAR},
+      </if>
+      <if test="company_city != null" >
+        #{company_city,jdbcType=VARCHAR},
+      </if>
+      <if test="company_person != null" >
+        #{company_person,jdbcType=VARCHAR},
+      </if>
+      <if test="company_phone != null" >
+        #{company_phone,jdbcType=VARCHAR},
+      </if>
+      <if test="company_job != null" >
+        #{company_job,jdbcType=VARCHAR},
+      </if>
+      <if test="company_station != null" >
+        #{company_station,jdbcType=VARCHAR},
+      </if>
+      <if test="company_scope != null" >
+        #{company_scope,jdbcType=VARCHAR},
+      </if>
+      <if test="company_property != null" >
+        #{company_property,jdbcType=VARCHAR},
+      </if>
+      <if test="company_category != null" >
+        #{company_category,jdbcType=VARCHAR},
+      </if>
+      <if test="company_type != null" >
+        #{company_type,jdbcType=VARCHAR},
+      </if>
+      <if test="company_trade != null" >
+        #{company_trade,jdbcType=VARCHAR},
+      </if>
+      <if test="company_Email != null" >
+        #{company_Email,jdbcType=VARCHAR},
+      </if>
+      <if test="company_Address != null" >
+        #{company_Address,jdbcType=VARCHAR},
+      </if>
+      <if test="company_remarks != null" >
+        #{company_remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="company_zuoji != null" >
+        #{company_zuoji,jdbcType=VARCHAR},
+      </if>
+      <if test="company_web != null" >
+        #{company_web,jdbcType=VARCHAR},
+      </if>
+      <if test="company_pinyin != null" >
+        #{company_pinyin,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybCompany" >
+    update oa_jyb_company
+    <set >
+      <if test="company_name != null" >
+        company_name = #{company_name,jdbcType=VARCHAR},
+      </if>
+      <if test="company_city != null" >
+        company_city = #{company_city,jdbcType=VARCHAR},
+      </if>
+      <if test="company_person != null" >
+        company_person = #{company_person,jdbcType=VARCHAR},
+      </if>
+      <if test="company_phone != null" >
+        company_phone = #{company_phone,jdbcType=VARCHAR},
+      </if>
+      <if test="company_job != null" >
+        company_job = #{company_job,jdbcType=VARCHAR},
+      </if>
+      <if test="company_station != null" >
+        company_station = #{company_station,jdbcType=VARCHAR},
+      </if>
+      <if test="company_scope != null" >
+        company_scope = #{company_scope,jdbcType=VARCHAR},
+      </if>
+      <if test="company_property != null" >
+        company_property = #{company_property,jdbcType=VARCHAR},
+      </if>
+      <if test="company_category != null" >
+        company_category = #{company_category,jdbcType=VARCHAR},
+      </if>
+      <if test="company_type != null" >
+        company_type = #{company_type,jdbcType=VARCHAR},
+      </if>
+      <if test="company_trade != null" >
+        company_trade = #{company_trade,jdbcType=VARCHAR},
+      </if>
+      <if test="company_Email != null" >
+        company_Email = #{company_Email,jdbcType=VARCHAR},
+      </if>
+      <if test="company_Address != null" >
+        company_Address = #{company_Address,jdbcType=VARCHAR},
+      </if>
+      <if test="company_remarks != null" >
+        company_remarks = #{company_remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="company_zuoji != null" >
+        company_zuoji = #{company_zuoji,jdbcType=VARCHAR},
+      </if>
+      <if test="company_web != null" >
+        company_web = #{company_web,jdbcType=VARCHAR},
+      </if>
+      <if test="company_pinyin != null" >
+        company_pinyin = #{company_pinyin,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where company_id = #{company_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybCompany" >
+    update oa_jyb_company
+    set company_name = #{company_name,jdbcType=VARCHAR},
+      company_city = #{company_city,jdbcType=VARCHAR},
+      company_person = #{company_person,jdbcType=VARCHAR},
+      company_phone = #{company_phone,jdbcType=VARCHAR},
+      company_job = #{company_job,jdbcType=VARCHAR},
+      company_station = #{company_station,jdbcType=VARCHAR},
+      company_scope = #{company_scope,jdbcType=VARCHAR},
+      company_property = #{company_property,jdbcType=VARCHAR},
+      company_category = #{company_category,jdbcType=VARCHAR},
+      company_type = #{company_type,jdbcType=VARCHAR},
+      company_trade = #{company_trade,jdbcType=VARCHAR},
+      company_Email = #{company_Email,jdbcType=VARCHAR},
+      company_Address = #{company_Address,jdbcType=VARCHAR},
+      company_remarks = #{company_remarks,jdbcType=VARCHAR},
+      company_zuoji = #{company_zuoji,jdbcType=VARCHAR},
+      company_web = #{company_web,jdbcType=VARCHAR},
+      company_pinyin = #{company_pinyin,jdbcType=VARCHAR}
+      
+    where company_id = #{company_id,jdbcType=INTEGER}
+  </update>
+</mapper>

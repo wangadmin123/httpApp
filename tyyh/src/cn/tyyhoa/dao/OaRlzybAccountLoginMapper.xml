@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybAccountLoginMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybAccountLogin" >
+    <id column="account_login_id" property="account_login_id" jdbcType="INTEGER" />
+    <result column="account_login_name" property="account_login_name" jdbcType="VARCHAR" />
+    <result column="account_login_time" property="account_login_time" />
+    <result column="account_login_ipaddress" property="account_login_ipaddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    account_login_id, account_login_name, account_login_time, account_login_ipaddress
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_account_login
+    where account_login_id = #{account_login_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_account_login
+    where account_login_id = #{account_login_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybAccountLogin" >
+    INSERT INTO oa_rlzyb_account_login (account_login_id,account_login_name, 
+      account_login_time, account_login_ipaddress
+      )
+    VALUES (#{account_login_id,jdbcType=INTEGER},#{account_login_name,jdbcType=VARCHAR}, 
+      NOW(),  #{account_login_ipaddress,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybAccountLogin" >
+    insert into oa_rlzyb_account_login
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="account_login_id != null" >
+        account_login_id,
+      </if>
+      <if test="account_login_name != null" >
+        account_login_name,
+      </if>
+        account_login_time,
+      <if test="account_login_ipaddress != null" >
+        account_login_ipaddress,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="account_login_id != null" >
+        #{account_login_id,jdbcType=INTEGER},
+      </if>
+      <if test="account_login_name != null" >
+        #{account_login_name,jdbcType=VARCHAR},
+      </if>
+         now(),
+      <if test="account_login_ipaddress != null" >
+        #{account_login_ipaddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybAccountLogin" >
+    update oa_rlzyb_account_login
+    <set >
+      <if test="account_login_name != null" >
+        account_login_name = #{account_login_name,jdbcType=VARCHAR},
+      </if>
+      <if test="account_login_time != null" >
+        account_login_time = #{account_login_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="account_login_ipaddress != null" >
+        account_login_ipaddress = #{account_login_ipaddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where account_login_id = #{account_login_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybAccountLogin" >
+    update oa_rlzyb_account_login
+    set account_login_name = #{account_login_name,jdbcType=VARCHAR},
+      account_login_time = #{account_login_time,jdbcType=TIMESTAMP},
+      account_login_ipaddress = #{account_login_ipaddress,jdbcType=VARCHAR}
+    where account_login_id = #{account_login_id,jdbcType=INTEGER}
+  </update>
+  <select id="lastLoginInfo" resultMap="BaseResultMap" parameterType="cn.tyyhoa.pojo.OaRlzybAccountLogin">
+  	SELECT 	account_login_id,
+	account_login_name, 
+	account_login_time, 
+	account_login_ipaddress
+	FROM
+	tyyhoa.oa_rlzyb_account_login
+	WHERE account_login_id = #{account_login_id,jdbcType=INTEGER}
+	GROUP BY account_login_time DESC
+  </select>
+</mapper>

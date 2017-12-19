@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbIndividualinterviewMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJzbIndividualinterview" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="student_id" property="student_id" jdbcType="INTEGER" />
+    <result column="formal_id" property="formal_id" jdbcType="INTEGER" />
+    <result column="interviewContent" property="interviewContent" jdbcType="VARCHAR" />
+    <result column="writerTest" property="writerTest" jdbcType="INTEGER" />
+    <result column="engineTest" property="engineTest" jdbcType="INTEGER" />
+    <result column="interviewTime" property="interviewTime" jdbcType="DATE" />
+    <result column="interviewName_id" property="interviewName_id" jdbcType="INTEGER" />
+    <result column="monthPunish" property="monthPunish" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJzbIndividualinterview" >
+    insert into oa_jzb_individualinterview (id, student_id, formal_id, 
+      interviewContent, writerTest, engineTest, 
+      interviewTime, interviewName_id, monthPunish, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{student_id,jdbcType=INTEGER}, #{formal_id,jdbcType=INTEGER}, 
+      #{interviewContent,jdbcType=VARCHAR}, #{writerTest,jdbcType=INTEGER}, #{engineTest,jdbcType=INTEGER}, 
+      #{interviewTime,jdbcType=DATE}, #{interviewName_id,jdbcType=INTEGER}, #{monthPunish,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJzbIndividualinterview" >
+    insert into oa_jzb_individualinterview
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="student_id != null" >
+        student_id,
+      </if>
+      <if test="formal_id != null" >
+        formal_id,
+      </if>
+      <if test="interviewContent != null" >
+        interviewContent,
+      </if>
+      <if test="writerTest != null" >
+        writerTest,
+      </if>
+      <if test="engineTest != null" >
+        engineTest,
+      </if>
+      <if test="interviewTime != null" >
+        interviewTime,
+      </if>
+      <if test="interviewName_id != null" >
+        interviewName_id,
+      </if>
+      <if test="monthPunish != null" >
+        monthPunish,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="student_id != null" >
+        #{student_id,jdbcType=INTEGER},
+      </if>
+      <if test="formal_id != null" >
+        #{formal_id,jdbcType=INTEGER},
+      </if>
+      <if test="interviewContent != null" >
+        #{interviewContent,jdbcType=VARCHAR},
+      </if>
+      <if test="writerTest != null" >
+        #{writerTest,jdbcType=INTEGER},
+      </if>
+      <if test="engineTest != null" >
+        #{engineTest,jdbcType=INTEGER},
+      </if>
+      <if test="interviewTime != null" >
+        #{interviewTime,jdbcType=DATE},
+      </if>
+      <if test="interviewName_id != null" >
+        #{interviewName_id,jdbcType=INTEGER},
+      </if>
+      <if test="monthPunish != null" >
+        #{monthPunish,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  
+  
+  
+  
+  
+  	<select id="stuList" resultType="OaJzbStuInterview">
+	SELECT stu_name,
+	emp.emp_name AS emp_name,
+	sem.stage AS stage,
+	InterviewTime,
+	interviewContent,
+	remark,
+	teacherScene,
+	writerTest,
+	engineTest,
+	month
+	FROM oa_jzb_stu_interview inter
+	INNER JOIN oa_jzb_student stu ON inter.studentName_id = stu.stu_Id
+	INNER JOIN oa_rlzyb_employee emp ON emp.emp_id = inter.InterviewName_id
+	INNER JOIN oa_jwb_semester sem ON sem.id = inter.Term_id
+	WHERE 1=1
+	<if test="stu_name!=null and stu_name!=''">
+		and stu_name like concat('%',#{stu_name},'%')
+	</if>
+	<if test="Term_id != 0">
+		and Term_id = #{Term_id}
+	</if>
+	<if test="month !=null and month!=''">
+		and month = #{month}
+	</if>
+	<if test="grade_id!=0">
+		AND stu.grade_id = #{grade_id}
+	</if>
+	</select>
+	
+	<!-- <insert id="addIndividualinterview" parameterType="OaJzbIndividualinterview">
+	INSERT INTO
+	oa_jzb_individualinterview(stu_name,stage_id,interviewContent,writerTest,
+	engineTest,interviewTime,classTeacherName,teacherName,monthPunish,remark,deleteStatus,grade_id,month)
+	VALUES(#{stu_name},#{stage_id},#{interviewContent},#{writerTest},#{engineTest},#{interviewTime},#{classTeacherName},#{teacherName},#{monthPunish},#{remark},#{deleteStatus},#{grade_id},#{month})
+	</insert>
+	
+	<select id="getStuIndividualinterviewById" resultType="OaJzbIndividualinterview">
+	SELECT
+	oa_jzb_individualinterview.id,stu_name,stage_id,oa_jwb_semester.stage AS stage,interviewContent,writerTest,
+	engineTest,InterviewTime,classTeacherName,teacherName,monthPunish,remark
+	FROM
+	oa_jzb_individualinterview
+	INNER JOIN oa_jwb_semester
+	ON oa_jzb_individualinterview.stage_id = oa_jwb_semester.id
+	WHERE oa_jzb_individualinterview.id = #{id}
+	</select>
+	<update id="editStuIndividualinterview" parameterType="OaJzbIndividualinterview">
+	UPDATE oa_jzb_individualinterview
+	SET stu_name=#{stu_name},stage_id=#{stage_id},interviewContent=#{interviewContent},writerTest=#{writerTest},
+	engineTest=#{engineTest},InterviewTime=#{interviewTime},classTeacherName=#{classTeacherName},teacherName=#{teacherName},monthPunish=#{monthPunish},remark=#{remark},month=#{month}
+	WHERE id = #{id}
+	</update>
+	<update id="deleteStuIndividualinterview">
+	UPDATE oa_jzb_individualinterview
+	SET deleteStatus = 1
+	WHERE id = #{id}
+	</update> -->
+	
+	<select id="semesters" resultType="OaJwbSemester">
+		SELECT id,stage FROM oa_jwb_semester
+	</select>
+	
+	
+	
+</mapper>

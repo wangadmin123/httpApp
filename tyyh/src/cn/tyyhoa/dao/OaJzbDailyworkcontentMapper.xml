@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbDailyworkcontentMapper" >
+ 	<!-- 查询教质部所有员工日报表 -->
+ 	<select id="getDailyWorkcontents" resultType="OaJzbDailyworkcontent">
+ 	SELECT  Dailyworkcontent_id,teacher_id,emp_id,Entrytime,emp_name,emp_name_simple,depart_name,position_name
+	FROM oa_jzb_dailyworkcontent
+	left JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_dailyworkcontent.teacher_id
+	left JOIN oa_rlzyb_department ON oa_rlzyb_department.depart_id=oa_rlzyb_employee.emp_department
+	left JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id=oa_rlzyb_employee.emp_position
+	WHERE deleteStatus = 0 AND oa_rlzyb_department.depart_id=7 
+	<if test="emp_id!=0">
+	AND emp_id=#{emp_id}
+	</if>
+	<if test="bieTime!=null and bieTime!='' and outTime!=null and outTime!=''">
+	AND Entrytime BETWEEN #{bieTime} AND #{outTime}
+	</if>
+	ORDER BY Entrytime DESC
+	LIMIT #{pageindex},#{pagesize}
+ 	</select>
+ 	<!-- 查询教质部所有员工 -->
+ 	<select id="getJzbEmp_names" resultType="OaRlzybEmployee">
+ 	SELECT emp_id,emp_name FROM oa_rlzyb_employee WHERE emp_department=7
+ 	</select>
+ 	<!-- 查询总记录数 -->
+ 	<select id="getCount" resultType="int">
+ 	SELECT  COUNT(1)
+	FROM oa_jzb_dailyworkcontent
+	left JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_dailyworkcontent.teacher_id
+	left JOIN oa_rlzyb_department ON oa_rlzyb_department.depart_id=oa_rlzyb_employee.emp_department
+	left JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id=oa_rlzyb_employee.emp_position
+	WHERE deleteStatus = 0 AND oa_rlzyb_department.depart_id=7
+	<if test="emp_id!=0">
+	AND emp_id=#{emp_id}
+	</if>
+	<if test="bieTime!=null and bieTime!='' and outTime!=null and outTime!=''">
+	AND Entrytime BETWEEN #{bieTime} AND #{outTime}
+	</if>
+	
+ 	</select>
+ 	<!-- 查询日报表详情 今天、上下午主要工作、备注 -->
+ 	<select id="getDailyworkcontentById" resultType="OaJzbDailyworkcontent">
+ 	SELECT Dailyworkcontent_id,Entrytime,emp_name,TheContentOfThework,Morningwork,Afternoonjobcontent,remarks
+	FROM oa_jzb_dailyworkcontent 
+	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_dailyworkcontent.teacher_id
+	WHERE oa_jzb_dailyworkcontent.deleteStatus = 0 and Entrytime=#{Entrytime} AND teacher_id=#{teacher_id}
+ 	</select>
+ 	<!-- 查询日报表巡班记录 -->
+ 	<select id="getDailyschedulsByteacher_id" resultType="OaJzbDailyschedule">
+ 	SELECT Dailyschedule_id,Starttime,Outtime,Entrytime,Contentsoftheclass,classteacher_id
+	FROM oa_jzb_dailyschedule
+	WHERE oa_jzb_dailyschedule.deleteStatus = 0 and  Entrytime=#{Entrytime} AND classteacher_id=#{teacher_id}
+	ORDER BY Entrytime
+ 	</select>
+ 	<!-- 修改当天主要工作内容 -->
+ 	<update id="UpdateDailyworkconte">
+ 	UPDATE tyyhoa.oa_jzb_dailyworkcontent 
+ 	<trim prefix="set" suffixOverrides=",">
+ 	<if test="TheContentOfThework!=null and TheContentOfThework!=''">
+ 	TheContentOfThework = #{TheContentOfThework}, 
+ 	</if>
+ 	<if test="Morningwork!=null and Morningwork!=''">
+ 	Morningwork = #{Morningwork}, 
+ 	</if>
+ 	<if test="Afternoonjobcontent!=null and Afternoonjobcontent!=''">
+ 	Afternoonjobcontent = #{Afternoonjobcontent}, 
+ 	</if>
+ 	<if test="remarks!=null and remarks!=''">
+ 	remarks = #{remarks}, 
+ 	</if>
+ 	</trim>
+	WHERE
+	Dailyworkcontent_id = #{Dailyworkcontent_id};
+ 	</update>
+ 	<!-- 批量修改巡班时间 -->
+ 	<update id="UpdateDailschedul">
+ 	UPDATE tyyhoa.oa_jzb_dailyschedule 
+	<trim prefix="set">
+	<if test="Contentsoftheclass!=null and Contentsoftheclass!=''">
+	Contentsoftheclass = #{Contentsoftheclass}	
+	</if>
+	</trim>
+	WHERE
+	Dailyschedule_id = #{Dailyschedule_id};
+ 	</update>
+ 	<!-- 批量插入巡班时间和内容 -->
+ 	<insert id="addDailyschedule">
+ 	INSERT INTO tyyhoa.oa_jzb_dailyschedule (
+	Starttime,Outtime,Entrytime,Contentsoftheclass,classteacher_id,deleteStatus
+	)
+	VALUES(#{Starttime},#{Outtime},#{Entrytime},#{Contentsoftheclass},#{classteacher_id},0
+	);	
+ 	</insert>
+ 	<!-- 插入上午 下午 当天主要工作内容 -->
+ 	<insert id="addDailyworkconten">
+ 	INSERT INTO tyyhoa.oa_jzb_dailyworkcontent 
+	(Entrytime,teacher_id,TheContentOfThework,Morningwork,Afternoonjobcontent,remarks,deleteStatus)
+	VALUES
+	(#{Entrytime},#{teacher_id},#{TheContentOfThework},#{Morningwork},#{Afternoonjobcontent},#{remarks},0);
+ 	</insert>
+ 	<!-- 删除 -->
+ 	<update id="deleteDaily">
+ 	UPDATE tyyhoa.oa_jzb_dailyworkcontent 
+	SET
+	deleteStatus = 1
+	WHERE
+	Dailyworkcontent_id = #{Dailyworkcontent_id};
+ 	</update>
+ 	<update id="deleteDilyworkcontent">
+ 	UPDATE tyyhoa.oa_jzb_dailyschedule 
+	SET
+	deleteStatus = 1
+	WHERE
+	Entrytime = #{Entrytime} AND classteacher_id=#{classteacher_id};
+ 	</update>
+ 	<!--                       以下为查询个人列表                                               -->
+ 	<!-- 查询个人员工日报表 -->
+ 	<select id="getDailyWorkcontent" resultType="OaJzbDailyworkcontent">
+ 	SELECT  Dailyworkcontent_id,teacher_id,emp_id,Entrytime,emp_name,emp_name_simple,depart_name,position_name
+	FROM oa_jzb_dailyworkcontent
+	left JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_dailyworkcontent.teacher_id
+	left JOIN oa_rlzyb_department ON oa_rlzyb_department.depart_id=oa_rlzyb_employee.emp_department
+	left JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id=oa_rlzyb_employee.emp_position
+	WHERE deleteStatus = 0 
+	AND emp_id=#{emp_id}
+	<if test="bieTime!=null and bieTime!='' and outTime!=null and outTime!=''">
+	AND Entrytime BETWEEN #{bieTime} AND #{outTime}
+	</if>
+	ORDER BY Entrytime DESC
+	LIMIT #{pageindex},#{pagesize}
+ 	</select>
+ 	<!-- 查询总记录数 -->
+ 	<select id="getCountDaily" resultType="int">
+ 	SELECT  COUNT(1)
+	FROM oa_jzb_dailyworkcontent
+	left JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_dailyworkcontent.teacher_id
+	left JOIN oa_rlzyb_department ON oa_rlzyb_department.depart_id=oa_rlzyb_employee.emp_department
+	left JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id=oa_rlzyb_employee.emp_position
+	WHERE deleteStatus = 0 
+	<if test="emp_id!=0">
+	AND emp_id=#{emp_id}
+	</if>
+	<if test="bieTime!=null and bieTime!='' and outTime!=null and outTime!=''">
+	AND Entrytime BETWEEN #{bieTime} AND #{outTime}
+	</if>
+	</select>
+</mapper>

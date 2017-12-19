@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybHatProvinceMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybHatProvince" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="provinceID" property="provinceID" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, provinceID, province
+  </sql>
+  <select id="selectAllOaRlzybHatProvince" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_hat_province
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_hat_province
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_hat_province
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybHatProvince" >
+    insert into oa_rlzyb_hat_province (id, provinceID, province
+      )
+    values (#{id,jdbcType=INTEGER}, #{provinceID,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybHatProvince" >
+    insert into oa_rlzyb_hat_province
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="provinceID != null" >
+        provinceID,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="provinceID != null" >
+        #{provinceID,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybHatProvince" >
+    update oa_rlzyb_hat_province
+    <set >
+      <if test="provinceID != null" >
+        provinceID = #{provinceID,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybHatProvince" >
+    update oa_rlzyb_hat_province
+    set provinceID = #{provinceID,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

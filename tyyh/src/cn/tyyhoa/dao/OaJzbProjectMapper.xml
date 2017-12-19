@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbProjectMapper" >
+<!--   跟班级分组 -->
+  <insert id="addGrupus">
+	INSERT INTO tyyhoa.oa_jzb_group (group_name,grade_id,deleteStatus)
+	VALUES	(#{group_name},#{grade_id},0);
+  </insert>
+<!--    小组分学生 -->
+<insert id="addProject">
+	INSERT INTO tyyhoa.oa_jzb_project 	(Student_id,group_id,entering_time,stage_id,deleteStatus)
+	VALUES(#{Student_id},#{group_id},#{entering_time},#{stage_id},0);
+</insert>
+<!-- 查询最新插入组的ID -->
+<select id="getGroupID" resultType="OaJzbGroup">
+SELECT id FROM oa_jzb_group ORDER BY id DESC LIMIT 0,1
+</select>
+<!-- 根据班级ID查询项目答辩表 -->
+<select id="getProjdectsByGrade_id" resultType="OaJzbProject">
+SELECT oa_jzb_project.Id,stu_name,Score,Group_score,Group_expression,remarks,group_name,entering_time,stage_id,oa_jwb_semester.stage as stage
+FROM oa_jzb_project
+INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id = oa_jzb_project.Student_id
+INNER JOIN oa_jzb_group ON oa_jzb_group.id = oa_jzb_project.group_id
+INNER JOIN oa_jwb_semester ON oa_jwb_semester.id=oa_jzb_project.stage_id
+WHERE oa_jzb_project.deleteStatus = 0 AND oa_jzb_group.grade_id=#{grade_id}
+ORDER BY stage_id DESC  , oa_jzb_group.id    
+</select>
+<!-- 根据ID查询项目答辩表 -->
+<select id="getProjectByID" resultType="OaJzbProject">
+SELECT oa_jzb_project.Id,stu_name,Score,Group_score,Group_expression,remarks,group_name,entering_time,stage_id,oa_jwb_semester.stage as stage
+FROM oa_jzb_project
+INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id = oa_jzb_project.Student_id
+INNER JOIN oa_jzb_group ON oa_jzb_group.id = oa_jzb_project.group_id
+INNER JOIN oa_jwb_semester ON oa_jwb_semester.id=oa_jzb_project.stage_id
+WHERE oa_jzb_project.deleteStatus = 0 AND oa_jzb_project.Id=#{id}
+</select>
+<!-- 修改页面 -->
+<update id="updateProjectByID">
+UPDATE tyyhoa.oa_jzb_project 
+	<trim prefix="set" suffixOverrides=",">
+	<if test="Score!=0 and Score!=''">Score = #{Score},</if>
+	<if test="Group_score!=0 and Group_score!=null">Group_score = #{Group_score},</if>
+	<if test="Group_expression!=null and Group_expression!=''">Group_expression = #{Group_expression},</if>
+	<if test="remarks!=null and remarks!=''">remarks = #{remarks},</if>
+	</trim>
+	WHERE
+	Id = #{id};
+</update>
+<!-- 删除 -->
+<update id="deleteProjectById">
+UPDATE tyyhoa.oa_jzb_project 
+	SET
+	deleteStatus = 1
+	WHERE
+	Id = #{id};
+</update>
+</mapper>

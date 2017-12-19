@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybActivityMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybActivity" >
+    <id column="activity_id" property="activity_id" jdbcType="INTEGER" />
+    <result column="activity_class" property="activity_class" jdbcType="VARCHAR" />
+    <result column="activity_figure" property="activity_figure" jdbcType="VARCHAR" />
+    <result column="activity_address" property="activity_address" jdbcType="VARCHAR" />
+    <result column="activity_theme" property="activity_theme" jdbcType="VARCHAR" />
+    <result column="activity_type" property="activity_type" jdbcType="VARCHAR" />
+    <result column="activity_photoid" property="activity_photoid" jdbcType="VARCHAR" />
+    <result column="activity_time" property="activity_time" jdbcType="DATE" />
+    <result column="activity_remarks" property="activity_remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    activity_id, activity_class, activity_figure, activity_address, activity_theme, activity_type, 
+    activity_photoid, activity_time, activity_remarks
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_activity
+    where activity_id = #{activity_id,jdbcType=INTEGER}
+  </select>
+  
+   
+  
+   <select id="AllCounts" resultType="int"  >
+    select  count(1) from oa_jyb_activity
+   </select>
+  
+   <select id="GetAllActivity" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_activity
+    limit #{index},#{pageSize}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_activity
+    where activity_id = #{activity_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybActivity" >
+    insert into oa_jyb_activity (activity_id, activity_class, activity_figure, 
+      activity_address, activity_theme, activity_type, 
+      activity_photoid, activity_time, activity_remarks
+      )
+    values (#{activity_id,jdbcType=INTEGER}, #{activity_class,jdbcType=VARCHAR}, #{activity_figure,jdbcType=VARCHAR}, 
+      #{activity_address,jdbcType=VARCHAR}, #{activity_theme,jdbcType=VARCHAR}, #{activity_type,jdbcType=VARCHAR}, 
+      #{activity_photoid,jdbcType=VARCHAR}, #{activity_time,jdbcType=DATE}, #{activity_remarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybActivity" >
+    insert into oa_jyb_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="activity_id != null" >
+        activity_id,
+      </if>
+      <if test="activity_class != null" >
+        activity_class,
+      </if>
+      <if test="activity_figure != null" >
+        activity_figure,
+      </if>
+      <if test="activity_address != null" >
+        activity_address,
+      </if>
+      <if test="activity_theme != null" >
+        activity_theme,
+      </if>
+      <if test="activity_type != null" >
+        activity_type,
+      </if>
+      <if test="activity_photoid != null" >
+        activity_photoid,
+      </if>
+      <if test="activity_time != null" >
+        activity_time,
+      </if>
+      <if test="activity_remarks != null" >
+        activity_remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="activity_id != null" >
+        #{activity_id,jdbcType=INTEGER},
+      </if>
+      <if test="activity_class != null" >
+        #{activity_class,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_figure != null" >
+        #{activity_figure,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_address != null" >
+        #{activity_address,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_theme != null" >
+        #{activity_theme,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_type != null" >
+        #{activity_type,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_photoid != null" >
+        #{activity_photoid,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_time != null" >
+        #{activity_time,jdbcType=DATE},
+      </if>
+      <if test="activity_remarks != null" >
+        #{activity_remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybActivity" >
+    update oa_jyb_activity
+    <set >
+      <if test="activity_class != null" >
+        activity_class = #{activity_class,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_figure != null" >
+        activity_figure = #{activity_figure,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_address != null" >
+        activity_address = #{activity_address,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_theme != null" >
+        activity_theme = #{activity_theme,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_type != null" >
+        activity_type = #{activity_type,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_photoid != null" >
+        activity_photoid = #{activity_photoid,jdbcType=VARCHAR},
+      </if>
+      <if test="activity_time != null" >
+        activity_time = #{activity_time,jdbcType=DATE},
+      </if>
+      <if test="activity_remarks != null" >
+        activity_remarks = #{activity_remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where activity_id = #{activity_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybActivity" >
+    update oa_jyb_activity
+    set activity_class = #{activity_class,jdbcType=VARCHAR},
+      activity_figure = #{activity_figure,jdbcType=VARCHAR},
+      activity_address = #{activity_address,jdbcType=VARCHAR},
+      activity_theme = #{activity_theme,jdbcType=VARCHAR},
+      activity_type = #{activity_type,jdbcType=VARCHAR},
+      activity_photoid = #{activity_photoid,jdbcType=VARCHAR},
+      activity_time = #{activity_time,jdbcType=DATE},
+      activity_remarks = #{activity_remarks,jdbcType=VARCHAR}
+    where activity_id = #{activity_id,jdbcType=INTEGER}
+  </update>
+</mapper>

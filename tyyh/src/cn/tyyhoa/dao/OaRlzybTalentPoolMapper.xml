@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybTalentPoolMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybTalentPool" >
+    <id column="talent_pool_id" property="talent_pool_id" jdbcType="INTEGER" />
+    <result column="talent_pool_name" property="talent_pool_name" jdbcType="VARCHAR" />
+    <result column="talent_pool_sex" property="talent_pool_sex" jdbcType="VARCHAR" />
+    <result column="talent_pool_age" property="talent_pool_age" jdbcType="INTEGER" />
+    <result column="position_id" property="position_id" jdbcType="INTEGER" />
+    <result column="talent_pool_birthday" property="talent_pool_birthday" />
+    <result column="talent_pool_addTime" property="talent_pool_addTime"/>
+    <result column="talent_pool_salaryExpect" property="talent_pool_salaryExpect" jdbcType="VARCHAR" />
+    <result column="talent_pool_phone" property="talent_pool_phone" jdbcType="VARCHAR" />
+    <result column="talent_pool_work_experience" property="talent_pool_work_experience" jdbcType="VARCHAR" />
+    <result column="talent_pool_delectStatus" property="talent_pool_delectStatus" jdbcType="INTEGER" />
+    <result column="position_name" property="position_name" jdbcType="VARCHAR" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    talent_pool_id, talent_pool_name, talent_pool_sex, talent_pool_age, oa_rlzyb_talent_pool.position_id, talent_pool_birthday,
+    talent_pool_salaryExpect, talent_pool_phone, talent_pool_work_experience, talent_pool_delectStatus,talent_pool_addTime,oa_rlzyb_talent_pool.create_time
+  </sql>
+  <!-- zl -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_talent_pool
+    where talent_pool_id = #{talent_pool_id,jdbcType=INTEGER} and oa_rlzyb_talent_pool.talent_pool_delectStatus = 1
+  </select>
+  <!-- zl -->
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select oa_rlzyb_position.position_name AS  position_name,
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_talent_pool
+    INNER JOIN oa_rlzyb_position
+	ON oa_rlzyb_talent_pool.position_id = oa_rlzyb_position.position_id
+    <where>
+    	<if test="position_id != 0">
+    		oa_rlzyb_talent_pool.position_id = #{position_id,jdbcType=INTEGER } and
+    	</if>
+    	oa_rlzyb_talent_pool.talent_pool_delectStatus =1
+    </where>
+    ORDER BY talent_pool_id DESC
+    limit #{startPos},#{PageSize}
+  </select>
+  <!-- zl -->
+  <select id="selectAllCount" resultType="java.lang.Integer" >
+    select count( talent_pool_id)
+    from oa_rlzyb_talent_pool
+    INNER JOIN oa_rlzyb_position
+	ON oa_rlzyb_talent_pool.position_id = oa_rlzyb_position.position_id
+    <where>
+    	<if test="position_id != 0">
+    		oa_rlzyb_talent_pool.position_id = #{position_id,jdbcType=INTEGER } and
+    	</if>
+    	 oa_rlzyb_talent_pool.talent_pool_delectStatus = 1
+    </where>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_talent_pool
+    where talent_pool_id = #{talent_pool_id,jdbcType=INTEGER}
+  </delete>
+  <delete id="updateByTalentPoolId" parameterType="java.lang.Integer" >
+    update oa_rlzyb_talent_pool
+    set talent_pool_delectStatus = 2
+    where talent_pool_id = #{talent_pool_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybTalentPool" >
+    insert into oa_rlzyb_talent_pool (talent_pool_name, 
+      talent_pool_sex, talent_pool_birthday, talent_pool_age, talent_pool_addTime, position_id, 
+      talent_pool_salaryExpect, talent_pool_phone, 
+      talent_pool_work_experience
+      )
+    values ( #{talent_pool_name,jdbcType=VARCHAR}, 
+      #{talent_pool_sex,jdbcType=VARCHAR},#{talent_pool_birthday}, #{talent_pool_age,jdbcType=INTEGER},
+      #{talent_pool_addTime }, #{position_id,jdbcType=INTEGER}, 
+      #{talent_pool_salaryExpect,jdbcType=VARCHAR}, #{talent_pool_phone,jdbcType=VARCHAR}, 
+      #{talent_pool_work_experience,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybTalentPool" >
+    insert into oa_rlzyb_talent_pool
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="talent_pool_id != null" >
+        talent_pool_id,
+      </if>
+      <if test="talent_pool_name != null" >
+        talent_pool_name,
+      </if>
+      <if test="talent_pool_sex != null" >
+        talent_pool_sex,
+      </if>
+      <if test="talent_pool_age != null" >
+        talent_pool_age,
+      </if>
+      <if test="talent_pool_birthday != null" >
+        talent_pool_birthday,
+      </if>
+      <if test="position_id != null" >
+        position_id,
+      </if>
+      <if test="talent_pool_salaryExpect != null" >
+        talent_pool_salaryExpect,
+      </if>
+      <if test="talent_pool_addTime != null" >
+        talent_pool_addTime,
+      </if>
+      <if test="talent_pool_phone != null" >
+        talent_pool_phone,
+      </if>
+      <if test="talent_pool_work_experience != null" >
+        talent_pool_work_experience,
+      </if>
+      <if test="talent_pool_delectStatus != null" >
+        talent_pool_delectStatus,
+      </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="talent_pool_id != null" >
+        #{talent_pool_id,jdbcType=INTEGER},
+      </if>
+      <if test="talent_pool_name != null" >
+        #{talent_pool_name,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_sex != null" >
+        #{talent_pool_sex,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_age != null" >
+        #{talent_pool_age,jdbcType=INTEGER},
+      </if>
+      <if test="talent_pool_birthday != null" >
+        #{talent_pool_birthday},
+      </if>
+      <if test="position_id != null" >
+        #{position_id,jdbcType=INTEGER},
+      </if>
+      <if test="talent_pool_salaryExpect != null" >
+        #{talent_pool_salaryExpect,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_addTime != null" >
+        #{talent_pool_addTime},
+      </if>
+      <if test="talent_pool_phone != null" >
+        #{talent_pool_phone,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_work_experience != null" >
+        #{talent_pool_work_experience,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_delectStatus != null" >
+        #{talent_pool_delectStatus,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null" >
+        #{create_time,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybTalentPool" >
+    update oa_rlzyb_talent_pool
+    <set >
+      <if test="talent_pool_name != null" >
+        talent_pool_name = #{talent_pool_name,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_sex != null" >
+        talent_pool_sex = #{talent_pool_sex,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_age != null" >
+        talent_pool_age = #{talent_pool_age,jdbcType=INTEGER},
+      </if>
+      <if test="position_id != null" >
+        position_id = #{position_id,jdbcType=INTEGER},
+      </if>
+      <if test="talent_pool_salaryExpect != null" >
+        talent_pool_salaryExpect = #{talent_pool_salaryExpect,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_phone != null" >
+        talent_pool_phone = #{talent_pool_phone,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_work_experience != null" >
+        talent_pool_work_experience = #{talent_pool_work_experience,jdbcType=VARCHAR},
+      </if>
+      <if test="talent_pool_delectStatus != null" >
+        talent_pool_delectStatus = #{talent_pool_delectStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where talent_pool_id = #{talent_pool_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybTalentPool" >
+    update oa_rlzyb_talent_pool
+    set talent_pool_name = #{talent_pool_name,jdbcType=VARCHAR},
+      talent_pool_sex = #{talent_pool_sex,jdbcType=VARCHAR},
+      talent_pool_age = #{talent_pool_age,jdbcType=INTEGER},
+      position_id = #{position_id,jdbcType=INTEGER},
+      talent_pool_salaryExpect = #{talent_pool_salaryExpect,jdbcType=VARCHAR},
+      talent_pool_phone = #{talent_pool_phone,jdbcType=VARCHAR},
+      talent_pool_work_experience = #{talent_pool_work_experience,jdbcType=VARCHAR},
+      talent_pool_delectStatus = #{talent_pool_delectStatus,jdbcType=INTEGER}
+    where talent_pool_id = #{talent_pool_id,jdbcType=INTEGER}
+  </update>
+</mapper>

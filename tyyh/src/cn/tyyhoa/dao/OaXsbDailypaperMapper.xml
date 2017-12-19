@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaXsbDailypaperMapper">
+
+	<!-- 添加日报表 -->
+	<insert id="insertDaily" parameterType="java.util.List">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into
+		oa_xsb_dailypaper(preparation,manami,obu,homework,classId,studentId,createtime,writetime)
+		values
+		<foreach collection="list" item="reddemCode" index="index"
+			separator=",">
+			(#{reddemCode.preparation},#{reddemCode.manami},#{reddemCode.obu},#{reddemCode.homework},
+			#{reddemCode.classId},#{reddemCode.studentId},#{reddemCode.createtime},#{reddemCode.writetime})
+		</foreach>
+	</insert>
+
+	<!-- 根据班级Id查询最近一天数据 -->
+	<select id="getAlldaily" resultType="OaXsbDailypaper">
+		SELECT
+		oa_xsb_dailypaper.id,stu_number,stu_name,preparation,manami,obu,homework,classId,studentId,oa_xsb_dailypaper.createTime,oa_xsb_dailypaper.writeTime
+		FROM oa_xsb_dailypaper
+		INNER JOIN oa_jzb_student ON
+		oa_jzb_student.stu_id=oa_xsb_dailypaper.studentId
+		INNER JOIN
+		oa_jwb_grade
+		ON oa_jwb_grade.id=oa_xsb_dailypaper.classId
+		WHERE
+		oa_xsb_dailypaper.createTime =
+		(SELECT createTime FROM
+		oa_xsb_dailypaper WHERE classId=#{classId} ORDER BY
+		createTime DESC
+		LIMIT 1)
+		AND classId=#{classId}
+	</select>
+
+	<!-- 根据Id查看日报表 -->
+	<select id="selectDailyById" resultType="OaXsbDailypaper">
+		SELECT
+		oa_xsb_dailypaper.id,stu_number,stu_name,preparation,manami,obu,homework,classId
+		FROM oa_xsb_dailypaper
+		INNER JOIN oa_jzb_student ON
+		oa_jzb_student.stu_id=oa_xsb_dailypaper.studentId
+		where
+		oa_xsb_dailypaper.id=#{id}
+	</select>
+
+	<!-- 根据班级Id和时间查询 -->
+	<select id="selectDailyByClassIdAndCreatetime" resultType="OaXsbDailypaper">
+		SELECT
+		oa_xsb_dailypaper.id,stu_number,stu_name,preparation,manami,obu,homework,classId,studentId,oa_xsb_dailypaper.createTime,oa_xsb_dailypaper.writeTime
+		FROM oa_xsb_dailypaper
+		INNER JOIN oa_jzb_student ON
+		oa_jzb_student.stu_id=oa_xsb_dailypaper.studentId
+		INNER JOIN
+		oa_jwb_grade
+		ON oa_jwb_grade.id=oa_xsb_dailypaper.classId
+		<where>
+			<if test="classId!=null and classId!=''">
+				and classId=#{classId}
+			</if>
+			<if test="createTime!=null and createTime!=''">
+				and oa_xsb_dailypaper.createTime =#{createTime}
+			</if>
+		</where>
+
+		ORDER BY stu_number
+
+	</select>
+
+	<!-- 修改日报表 -->
+	<update id="updateDailystatement">
+		UPDATE oa_xsb_dailypaper SET
+		preparation=#{preparation},manami =#{manami}, obu =#{obu}, homework
+		=#{homework},modifytime=#{modifytime}
+		WHERE id =#{id}
+	</update>
+
+	<select id="zy" resultType="int">
+		SELECT COUNT(*) FROM oa_xsb_dailypaper WHERE classID = #{studentClassId} AND createTime = #{dateStyle}
+	</select>
+</mapper>

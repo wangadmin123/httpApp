@@ -1,0 +1,59 @@
+
+
+/* 学校信息下一步 */
+.searchBotton-school{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+    text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+/* 新增专业下一步 */
+.searchBotton-specialty{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+    text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+
+/* 院系负责人下一步 */
+.searchBotton-responsible{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+    text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+
+/* 继续添加专业 */
+.searchBotton-add{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+    text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+
+/* 继续添加班主任 */
+.searchBottons{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+    text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+/* 下一步院校时间 */
+.searchBotton-time{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+    text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+/* 保存 */
+.saveBotton-conserve{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+    text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+/* 取消 */
+.saveBotton-cancel{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+    text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+
+.searchBotton-school{
+	 display: none;
+}
+
+.responsible{
+    display: none;
+}
+
+
+.specialty{
+    display: none;
+}
+.teacher{
+    display: none;
+}
+
+
+.timeplan{
+    display: none;
+}
+

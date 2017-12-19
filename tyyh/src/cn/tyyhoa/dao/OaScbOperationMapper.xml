@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbOperationMapper" >
+<insert id="Insertoperation" parameterType="cn.tyyhoa.pojo.OaScbOperation">
+INSERT INTO oa_scb_operation(employee_id,consulter_id,emp_id,Time,content) VALUES(#{employee_id},#{consulter_id},#{emp_id},#{Time},#{content});
+</insert>
+<select id="Emp_id" resultType="java.lang.String" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+SELECT emp_id FROM oa_rlzyb_employee WHERE emp_name=#{emp_name};
+</select>
+<select id="consulter_id" resultType="java.lang.String" parameterType="cn.tyyhoa.pojo.OaScbConsulter">
+SELECT id FROM oa_scb_consulter WHERE `name`=#{name} AND telphone1=#{telphone1}
+</select>
+<select id="SelectOperation" resultType="cn.tyyhoa.pojo.OaScbOperation" parameterType="cn.tyyhoa.pojo.OaScbOperation">
+SELECT operation.`id`,employee.`emp_name` AS employee_name,consulter.`name` AS consulter_name,emp.`emp_name` AS emp_name, 
+operation.`content` as content,operation.`Time` AS Time
+FROM oa_scb_operation AS operation
+LEFT JOIN oa_rlzyb_employee AS employee ON employee.`emp_id`=operation.`employee_id`
+LEFT JOIN oa_scb_consulter AS consulter ON consulter.`id`=operation.`consulter_id`
+LEFT JOIN oa_rlzyb_employee AS emp ON emp.`emp_id`=operation.`emp_id`
+where 1=1
+<if test="employee_id!=null">
+ AND  employee.`emp_id`=#{employee_id} OR  emp.`emp_id`=#{employee_id}
+</if>
+<if test="Time!=null and Time!=''">
+ AND operation.Time like concat("%",#{Time},"%")
+</if>
+<if test="emp_name!=null and emp_name!=0">
+ AND employee.`emp_id` =#{emp_name} OR emp.`emp_id` = #{emp_name}
+</if>
+<if test="consulter_name!=null and consulter_name!=''">
+ AND consulter.`name` like concat("%",#{consulter_name},"%") 
+</if>
+ORDER BY operation.`Time` DESC
+  limit #{currPageNo},#{pageNo}
+</select>
+<select id="SelectOperationCount" resultType="java.lang.Integer" parameterType="cn.tyyhoa.pojo.OaScbOperation">
+SELECT count(*)
+FROM oa_scb_operation AS operation
+LEFT JOIN oa_rlzyb_employee AS employee ON employee.`emp_id`=operation.`employee_id`
+LEFT JOIN oa_scb_consulter AS consulter ON consulter.`id`=operation.`consulter_id`
+LEFT JOIN oa_rlzyb_employee AS emp ON emp.`emp_id`=operation.`emp_id`
+where 1=1
+<if test="employee_id!=null">
+ AND operation.`employee_id`=#{employee_id} OR operation.`emp_id`=#{employee_id}
+</if>
+<if test="Time!=null and Time!=''">
+ AND operation.Time like concat("%",#{Time},"%")
+</if>
+<if test="emp_name!=null and emp_name!=0">
+ AND employee.`emp_id` =#{emp_name} OR emp.`emp_id` = #{emp_name}
+</if>
+<if test="consulter_name!=null and consulter_name!=''">
+ AND consulter.`name` like concat("%",#{consulter_name},"%")
+</if>
+</select>
+<select id="EmployeeList" resultType="cn.tyyhoa.pojo.OaRlzybEmployee">
+SELECT * FROM oa_rlzyb_employee WHERE emp_position=11 OR emp_position=12 OR emp_position=13
+</select>
+<delete id="operationDelete">
+DELETE FROM oa_scb_operation  WHERE emp_id=#{emp_id}
+</delete>
+<select id="operationSelect" resultType="java.lang.String">
+SELECT `name` FROM oa_scb_consulter WHERE id=#{consult_id}
+</select>
+</mapper>

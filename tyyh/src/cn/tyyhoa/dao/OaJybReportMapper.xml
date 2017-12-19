@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybReportMapper" >
+   <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybReport" >
+    <id column="report_id" property="report_id" jdbcType="INTEGER" />
+    <result column="report_people" property="report_people" jdbcType="VARCHAR" />
+    <result column="report_pioneer_enterprise" property="report_pioneer_enterprise" jdbcType="INTEGER" />
+    <result column="report_maintenance_enterprise" property="report_maintenance_enterprise" jdbcType="INTEGER" />
+    <result column="report_interview" property="report_interview" jdbcType="INTEGER" />
+    <result column="report_entrystu" property="report_entrystu" jdbcType="INTEGER" />
+    <result column="report_employment" property="report_employment" jdbcType="INTEGER" />
+    <result column="report_photo" property="report_photo" jdbcType="INTEGER" />
+    <result column="report_testimonials" property="report_testimonials" jdbcType="INTEGER" />
+    <result column="report_employment_statistics" property="report_employment_statistics" jdbcType="INTEGER" />
+    <result column="report_abandonstu" property="report_abandonstu" jdbcType="INTEGER" />
+    <result column="report_recommendstu" property="report_recommendstu" jdbcType="INTEGER" />
+    <result column="report_deferstu" property="report_deferstu" jdbcType="INTEGER" />
+    <result column="report_entry_summary" property="report_entry_summary" jdbcType="VARCHAR" />
+    <result column="report_interview_summary" property="report_interview_summary" jdbcType="VARCHAR" />
+    <result column="report_otherjob" property="report_otherjob" jdbcType="VARCHAR" />
+    <result column="report_createtime" property="report_createtime" jdbcType="DATE" />
+    <result column="work_plan_job_content" property="work_plan_job_content" jdbcType="VARCHAR"/>
+    <result column="work_plan_needhelp" property="work_plan_needhelp" jdbcType="VARCHAR"/>
+    <result column="work_plan_plantime" property="work_plan_plantime" jdbcType="DATE"/>
+    <result column="work_plan_remarks" property="work_plan_remarks" jdbcType="VARCHAR"/>
+     <result column="report_type" property="report_type" jdbcType="VARCHAR"/>
+     <result column="teacterid" property="teacterid" jdbcType="INTEGER" />
+     <result column="tablestruts" property="tablestruts" jdbcType="INTEGER" />
+      
+  </resultMap> 
+  <sql id="Base_Column_List" >
+    report_id, report_people, report_pioneer_enterprise,report_maintenance_enterprise,
+    report_interview, report_entrystu, report_employment, report_photo, report_testimonials, 
+    report_employment_statistics, report_abandonstu, report_recommendstu, report_deferstu, 
+    report_entry_summary, report_interview_summary, report_otherjob, report_createtime,report_type,
+    work_plan_job_content,work_plan_needhelp,work_plan_plantime,work_plan_remarks,teacterid,tablestruts
+  </sql>
+  <select id="selectByPrimaryKey" resultType="cn.tyyhoa.pojo.OaJybReport" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_report
+    where report_id = #{report_id,jdbcType=INTEGER}
+  </select>
+  
+ 
+    <select id="GetAllReport" resultType="cn.tyyhoa.pojo.OaJybReport"  >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_report
+    inner join oa_rlzyb_user on oa_jyb_report.teacterid=oa_rlzyb_user.emp_id
+    <where>
+     	emp_id=#{emp_id}
+			<if test="report_type != null and report_type != ''">
+				and report_type =#{report_type}
+			</if>
+			<if test="report_createtime != null and report_createtime != ''">
+				and DATE_FORMAT(report_createtime,'%Y-%m-%d')=DATE_FORMAT(#{report_createtime},'%Y-%m-%d') 
+			</if>
+		
+			</where> 
+    
+    limit #{index},#{pageSize}
+  </select>
+  <select id="allcounts"  resultType="int" >
+        select 
+        count(1) from oa_jyb_report
+         inner join oa_rlzyb_user on oa_jyb_report.teacterid=oa_rlzyb_user.emp_id
+          <where>
+          	emp_id=#{emp_id}
+			<if test="report_type != null and report_type != ''">
+				and report_type =#{report_type}
+			</if>
+			<if test="report_createtime != null and report_createtime != ''">
+				and DATE_FORMAT(report_createtime,'%Y-%m-%d')=DATE_FORMAT(#{report_createtime},'%Y-%m-%d') 
+			</if>
+			
+			</where> 
+        </select>
+       <!-- 主管 查询 -->
+       
+       
+       
+       
+       
+           <select id="GetbumenReport" resultType="cn.tyyhoa.pojo.OaJybReport"  >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_report
+    
+    <where>
+			<if test="report_type != null and report_type != ''">
+				and report_type =#{report_type}
+			</if>
+			<if test="report_createtime != null and report_createtime != ''">
+				and DATE_FORMAT(report_createtime,'%Y-%m-%d')=DATE_FORMAT(#{report_createtime},'%Y-%m-%d') 
+			</if>
+			<if test="report_people != null and report_people != ''">
+				and report_people =#{report_people}
+			</if>
+			and tablestruts>0
+			</where> 
+     order by report_createtime desc
+    limit #{index},#{pageSize}
+  </select>
+       
+       
+         <select id="allbumencounts"  resultType="int" >
+        select 
+        count(1) from oa_jyb_report
+          <where>
+			<if test="report_type != null and report_type != ''">
+				and report_type =#{report_type}
+			</if>
+			<if test="report_createtime != null and report_createtime != ''">
+				and DATE_FORMAT(report_createtime,'%Y-%m-%d')=DATE_FORMAT(#{report_createtime},'%Y-%m-%d') 
+			</if>
+			<if test="report_people != null and report_people != ''">
+				and report_people =#{report_people}
+			</if>
+			and tablestruts>0
+			</where> 
+        </select>
+       
+       
+       
+       
+       
+       
+       
+       
+  
+  
+   
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_report
+    where report_id = #{report_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybReport" >
+    insert into oa_jyb_report (report_id, report_people, report_pioneer_enterprise,report_maintenance_enterprise, report_interview, 
+report_entrystu, report_employment, report_photo, 
+      report_testimonials, report_employment_statistics, 
+      report_abandonstu, report_recommendstu, 
+      report_deferstu, report_entry_summary, 
+      report_interview_summary, report_otherjob, 
+      report_createtime,work_plan_job_content,work_plan_needhelp,work_plan_plantime,work_plan_remarks)
+    values (#{report_id,jdbcType=INTEGER}, #{report_people,jdbcType=VARCHAR}, #{report_pioneer_enterprise,jdbcType=INTEGER}, 
+      #{report_maintenance_enterprise,jdbcType=INTEGER}, #{report_interview,jdbcType=INTEGER}, 
+      #{report_entrystu,jdbcType=INTEGER}, #{report_employment,jdbcType=INTEGER}, #{report_photo,jdbcType=INTEGER}, 
+      #{report_testimonials,jdbcType=INTEGER}, #{report_employment_statistics,jdbcType=INTEGER}, 
+      #{report_abandonstu,jdbcType=INTEGER}, #{report_recommendstu,jdbcType=INTEGER}, 
+      #{report_deferstu,jdbcType=INTEGER}, #{report_entry_summary,jdbcType=VARCHAR}, 
+      #{report_interview_summary,jdbcType=VARCHAR}, #{report_otherjob,jdbcType=VARCHAR}, 
+      #{report_createtime,jdbcType=DATE},#{work_plan_job_content,jdbcType=VARCHAR},#{work_plan_needhelp,jdbcType=VARCHAR},#{work_plan_plantime,jdbcType=DATE},#{work_plan_remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybReport" >
+    insert into oa_jyb_report
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="report_id != null" >
+        report_id,
+      </if>
+      <if test="report_people != null" >
+        report_people,
+      </if>
+      <if test="report_pioneer_enterprise != null" >
+        report_pioneer_enterprise,
+      </if>
+      <if test="report_maintenance_enterprise != null" >
+        report_maintenance_enterprise,
+      </if>
+      <if test="report_interview != null" >
+        report_interview,
+      </if>
+      <if test="report_entrystu != null" >
+        report_entrystu,
+      </if>
+      <if test="report_employment != null" >
+        report_employment,
+      </if>
+      <if test="report_photo != null" >
+        report_photo,
+      </if>
+      <if test="report_testimonials != null" >
+        report_testimonials,
+      </if>
+      <if test="report_employment_statistics != null" >
+        report_employment_statistics,
+      </if>
+      <if test="report_abandonstu != null" >
+        report_abandonstu,
+      </if>
+      <if test="report_recommendstu != null" >
+        report_recommendstu,
+      </if>
+      <if test="report_deferstu != null" >
+        report_deferstu,
+      </if>
+      <if test="report_entry_summary != null" >
+        report_entry_summary,
+      </if>
+      <if test="report_interview_summary != null" >
+        report_interview_summary,
+      </if>
+      <if test="report_otherjob != null" >
+        report_otherjob,
+      </if>
+      <if test="report_createtime != null" >
+        report_createtime,
+      </if>
+      <if test="work_plan_job_content != null" >
+        work_plan_job_content,
+      </if>
+      <if test="work_plan_needhelp != null" >
+        work_plan_needhelp,
+      </if>
+      <if test="work_plan_plantime != null" >
+        work_plan_plantime,
+      </if>
+      <if test="work_plan_remarks != null" >
+        work_plan_remarks,
+      </if>
+      <if test="report_type != null" >
+       report_type,
+      </if>
+      
+       <if test="teacterid != null" >
+        teacterid,
+      </if>
+      <if test="tablestruts != null" >
+       tablestruts,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="report_id != null" >
+        #{report_id,jdbcType=INTEGER},
+      </if>
+      <if test="report_people != null" >
+        #{report_people,jdbcType=VARCHAR},
+      </if>
+      <if test="report_pioneer_enterprise != null" >
+        #{report_pioneer_enterprise,jdbcType=INTEGER},
+      </if>
+      <if test="report_maintenance_enterprise != null" >
+        #{report_maintenance_enterprise,jdbcType=INTEGER},
+      </if>
+      <if test="report_interview != null" >
+        #{report_interview,jdbcType=INTEGER},
+      </if>
+      <if test="report_entrystu != null" >
+        #{report_entrystu,jdbcType=INTEGER},
+      </if>
+      <if test="report_employment != null" >
+        #{report_employment,jdbcType=INTEGER},
+      </if>
+      <if test="report_photo != null" >
+        #{report_photo,jdbcType=INTEGER},
+      </if>
+      <if test="report_testimonials != null" >
+        #{report_testimonials,jdbcType=INTEGER},
+      </if>
+      <if test="report_employment_statistics != null" >
+        #{report_employment_statistics,jdbcType=INTEGER},
+      </if>
+      <if test="report_abandonstu != null" >
+        #{report_abandonstu,jdbcType=INTEGER},
+      </if>
+      <if test="report_recommendstu != null" >
+        #{report_recommendstu,jdbcType=INTEGER},
+      </if>
+      <if test="report_deferstu != null" >
+        #{report_deferstu,jdbcType=INTEGER},
+      </if>
+      <if test="report_entry_summary != null" >
+        #{report_entry_summary,jdbcType=VARCHAR},
+      </if>
+      <if test="report_interview_summary != null" >
+        #{report_interview_summary,jdbcType=VARCHAR},
+      </if>
+      <if test="report_otherjob != null" >
+        #{report_otherjob,jdbcType=VARCHAR},
+      </if>
+      <if test="report_createtime != null" >
+        #{report_createtime,jdbcType=DATE},
+      </if>
+      <if test="work_plan_job_content != null" >
+        #{work_plan_job_content,jdbcType=VARCHAR},
+      </if>
+      <if test="work_plan_needhelp != null" >
+        #{work_plan_needhelp,jdbcType=VARCHAR},
+      </if>
+     <if test="work_plan_plantime != null" >
+        #{work_plan_plantime,jdbcType=DATE},
+      </if>
+      <if test="work_plan_remarks != null" >
+        #{work_plan_remarks,jdbcType=VARCHAR},
+      </if>
+       <if test="report_type != null" >
+        #{report_type,jdbcType=VARCHAR},
+      </if>
+      
+         <if test="teacterid != null" >
+        #{teacterid,jdbcType=INTEGER},
+      </if>
+         <if test="tablestruts != null" >
+        #{tablestruts,jdbcType=INTEGER},
+      </if>
+      
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybReport" >
+    update oa_jyb_report
+    <set >
+      <if test="report_people != null" >
+        report_people = #{report_people,jdbcType=VARCHAR},
+      </if>
+      <if test="report_pioneer_enterprise != null" >
+        report_pioneer_enterprise = #{report_pioneer_enterprise,jdbcType=INTEGER},
+      </if>
+      <if test="report_maintenance_enterprise != null" >
+        report_maintenance_enterprise = #{report_maintenance_enterprise,jdbcType=INTEGER},
+      </if>
+      <if test="report_interview != null" >
+        report_interview = #{report_interview,jdbcType=INTEGER},
+      </if>
+      <if test="report_entrystu != null" >
+        report_entrystu = #{report_entrystu,jdbcType=INTEGER},
+      </if>
+      <if test="report_employment != null" >
+        report_employment = #{report_employment,jdbcType=INTEGER},
+      </if>
+      <if test="report_photo != null" >
+        report_photo = #{report_photo,jdbcType=INTEGER},
+      </if>
+      <if test="report_testimonials != null" >
+        report_testimonials = #{report_testimonials,jdbcType=INTEGER},
+      </if>
+      <if test="report_employment_statistics != null" >
+        report_employment_statistics = #{report_employment_statistics,jdbcType=INTEGER},
+      </if>
+      <if test="report_abandonstu != null" >
+        report_abandonstu = #{report_abandonstu,jdbcType=INTEGER},
+      </if>
+      <if test="report_recommendstu != null" >
+        report_recommendstu = #{report_recommendstu,jdbcType=INTEGER},
+      </if>
+      <if test="report_deferstu != null" >
+        report_deferstu = #{report_deferstu,jdbcType=INTEGER},
+      </if>
+      <if test="report_entry_summary != null" >
+        report_entry_summary = #{report_entry_summary,jdbcType=VARCHAR},
+      </if>
+      <if test="report_interview_summary != null" >
+        report_interview_summary = #{report_interview_summary,jdbcType=VARCHAR},
+      </if>
+      <if test="report_otherjob != null" >
+        report_otherjob = #{report_otherjob,jdbcType=VARCHAR},
+      </if>
+      <if test="report_createtime != null" >
+        report_createtime = #{report_createtime,jdbcType=DATE},
+      </if>
+      
+      
+            <if test="tablestruts != null" >
+        tablestruts = #{tablestruts},
+      </if>
+       
+      <if test="work_plan_job_content != null" >
+        work_plan_job_content=#{work_plan_job_content},
+      </if>
+      <if test="work_plan_needhelp != null" >
+       work_plan_needhelp=#{work_plan_needhelp},
+      </if>
+     <if test="work_plan_plantime != null" >
+       work_plan_plantime=#{work_plan_plantime},
+      </if>
+      <if test="work_plan_remarks != null" >
+       work_plan_remarks=#{work_plan_remarks},
+      </if>
+       <if test="report_type != null" >
+       report_type=#{report_type},
+      </if>
+      
+    </set>
+    where report_id = #{report_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybReport" >
+    update oa_jyb_report
+    set report_people = #{report_people,jdbcType=VARCHAR},
+      report_pioneer_enterprise = #{report_pioneer_enterprise,jdbcType=INTEGER},
+      report_maintenance_enterprise = #{report_maintenance_enterprise,jdbcType=INTEGER},
+      report_interview = #{report_interview,jdbcType=INTEGER},
+      report_entrystu = #{report_entrystu,jdbcType=INTEGER},
+      report_employment = #{report_employment,jdbcType=INTEGER},
+      report_photo = #{report_photo,jdbcType=INTEGER},
+      report_testimonials = #{report_testimonials,jdbcType=INTEGER},
+      report_employment_statistics = #{report_employment_statistics,jdbcType=INTEGER},
+      report_abandonstu = #{report_abandonstu,jdbcType=INTEGER},
+      report_recommendstu = #{report_recommendstu,jdbcType=INTEGER},
+      report_deferstu = #{report_deferstu,jdbcType=INTEGER},
+      report_entry_summary = #{report_entry_summary,jdbcType=VARCHAR},
+      report_interview_summary = #{report_interview_summary,jdbcType=VARCHAR},
+      report_otherjob = #{report_otherjob,jdbcType=VARCHAR},
+      report_createtime = #{report_createtime,jdbcType=DATE}
+    where report_id = #{report_id,jdbcType=INTEGER}
+  </update>
+  <select id="GetAllpeople" resultType="cn.tyyhoa.pojo.OaJybReport">
+  SELECT report_people FROM  oa_jyb_report GROUP BY report_people
+</select>
+  
+</mapper>

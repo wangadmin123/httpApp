@@ -1,0 +1,14 @@
+/* CSS Document */
+
+.student{margin:0 auto; text-align:center; width:1000px;}
+.studentStyle { border-width:1px 0px 0px 1px; border-style:solid; border-color:#000; text-align:center;}
+.studentStyle tr td{ border-width:0px 1px 1px 0px; border-style:solid;border-color:#000;}
+.tableheader{ border:0px; font-size:12px;}
+.tablefooter{border:0px; text-align:right;}
+.studentStyle{ line-height:30px; font-size:18px; font-family:"微软雅黑";}
+.studentStyle td{height:50px;}
+.tableheader{ line-height:40px; font-size:18px; font-family:"微软雅黑";}
+.tableheader td{height:50px;}
+.tablefooter{ line-height:30px; font-size:18px; font-family:"微软雅黑";}
+.tablefooter td{height:50px;}
+.alignLeft{text-align:left; text-indent:20pt;}

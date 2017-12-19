@@ -1,0 +1,12 @@
+.searchTable tr td span{
+    text-decoration:none;
+    cursor: pointer;
+    margin-right:20px;
+    
+    
+}
+.searchTable tr td span:hover{
+    text-decoration:underline;
+    cursor: pointer;
+    
+}

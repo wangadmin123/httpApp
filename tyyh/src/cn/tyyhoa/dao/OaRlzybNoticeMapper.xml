@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybNoticeMapper">
+	<resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybNotice">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="sendid" property="sendid" jdbcType="INTEGER" />
+		<result column="fstime" property="fstime" jdbcType="TIMESTAMP" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="notice_uid" property="notice_uid" jdbcType="INTEGER" />
+	    <result column="user_name" property="user_name" jdbcType="VARCHAR" />
+	    <result column="npid" property="npid" jdbcType="INTEGER" />
+	<result column="name" property="name" jdbcType="VARCHAR" />
+	<result column="position_name" property="position_name" jdbcType="VARCHAR" />
+	
+	
+	
+	
+	
+	
+	
+	</resultMap>
+	<!-- 查询通知信息 -->
+	<select id="selectnotice" resultMap="BaseResultMap" >
+		SELECT nc.id AS id,sendid,user_name,fstime,title,content,np.status as status
+		,np.notice_uid as notice_uid
+		FROM oa_rlzyb_notice AS nc
+		INNER JOIN oa_rlzyb_notified_party AS np ON nc.id=np.nid
+		INNER JOIN oa_rlzyb_user AS u ON u.user_id=nc.sendid
+		where np.status= #{status}
+		and np.notice_uid= #{user_id}
+	</select>
+
+	<!-- 插入通知信息 -->
+	<insert id="insertNotice" parameterType="cn.tyyhoa.pojo.OaRlzybNotice"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO oa_rlzyb_notice (sendid, fstime, title, content)
+		VALUES(#{sendid}, NOW(), #{title},#{content})
+	</insert>
+	<!-- 根据用户id查询已读通知信息 -->
+	<select id="selectYdNoticeByUid"  parameterType="cn.tyyhoa.pojo.OaRlzybNotice" resultMap="BaseResultMap">
+		SELECT nc.id AS id,sendid,user_name,fstime,title,content,np.status as status
+		,nc.notice_uid as notice_uid,e.emp_name as name,position_name
+		FROM oa_rlzyb_notice AS nc
+		INNER JOIN oa_rlzyb_notified_party AS np ON nc.id=np.nid
+		INNER JOIN oa_rlzyb_user AS u ON u.user_id=nc.sendid
+		inner join oa_rlzyb_employee e on e.emp_id = nc.sendid
+		inner join oa_rlzyb_position p on e.emp_position = p.position_id
+		<where>
+		    np.status=2
+			<if test="notice_uid!=null || notice_uid!=''">
+				and np.notice_uid=#{notice_uid}
+			</if>
+			
+		</where>
+		ORDER BY fstime DESC
+	</select>
+<!-- 根据用户id查询未读通知信息 -->
+	<select id="selectWdNoticeByUid"  parameterType="cn.tyyhoa.pojo.OaRlzybNotice" resultMap="BaseResultMap">
+		SELECT nc.id AS id,sendid,user_name,fstime,title,content,np.status as status
+		,nc.notice_uid as notice_uid,e.emp_name as name,position_name
+		FROM oa_rlzyb_notice AS nc
+		INNER JOIN oa_rlzyb_notified_party AS np ON nc.id=np.nid
+		INNER JOIN oa_rlzyb_user AS u ON u.user_id=nc.sendid
+		inner join oa_rlzyb_employee e on e.emp_id = nc.sendid
+		inner join oa_rlzyb_position p on e.emp_position = p.position_id
+		<where>
+		    np.status=1
+			<if test="notice_uid!=null || notice_uid!=''">
+				and np.notice_uid=#{notice_uid}
+			</if>
+			
+		</where>
+		ORDER BY fstime DESC
+	</select>
+<!-- 根据通知id查询详情 -->
+<select id="selectXqNotice" parameterType="int" resultMap="BaseResultMap">
+SELECT nc.id AS id,np.id as npid,sendid,user_name,fstime,title,content,np.status AS STATUS
+		,np.notice_uid as notice_uid,e.emp_name as name,position_name
+		FROM oa_rlzyb_notice AS nc
+		INNER JOIN oa_rlzyb_notified_party AS np ON nc.id=np.nid
+		INNER JOIN oa_rlzyb_user AS u ON u.user_id=nc.sendid
+		inner join oa_rlzyb_employee e on e.emp_id = nc.sendid
+		inner join oa_rlzyb_position p on e.emp_position = p.position_id
+		<where>
+		<if test="id!=null ||id!=''">
+		nc.id=#{id}
+		</if>
+		<if test="notice_uid!=null||notice_uid!=''">
+		AND np.notice_uid=#{notice_uid}
+		</if>
+		</where>
+		
+        
+</select>
+
+
+
+
+
+
+
+
+
+	<sql id="Base_Column_List">
+		id, sendid, fstime, title, content, status
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from oa_rlzyb_notice
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from oa_rlzyb_notice
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybNotice">
+		insert into oa_rlzyb_notice (id, sendid, fstime,
+		title, content, status
+		)
+		values (#{id,jdbcType=INTEGER}, #{sendid,jdbcType=INTEGER},
+		#{fstime,jdbcType=TIMESTAMP},
+		#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybNotice">
+		insert into oa_rlzyb_notice
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="sendid != null">
+				sendid,
+			</if>
+			<if test="fstime != null">
+				fstime,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="sendid != null">
+				#{sendid,jdbcType=INTEGER},
+			</if>
+			<if test="fstime != null">
+				#{fstime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybNotice">
+		update oa_rlzyb_notice
+		<set>
+			<if test="sendid != null">
+				sendid = #{sendid,jdbcType=INTEGER},
+			</if>
+			<if test="fstime != null">
+				fstime = #{fstime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybNotice">
+		update oa_rlzyb_notice
+		set sendid = #{sendid,jdbcType=INTEGER},
+		fstime = #{fstime,jdbcType=TIMESTAMP},
+		title = #{title,jdbcType=VARCHAR},
+		content = #{content,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

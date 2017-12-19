@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJwbArrangingCourseMapper" >
+	<resultMap id="course" type="cn.tyyhoa.pojo.OaJwbArrangingCourse">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="course" property="course" jdbcType="INTEGER" />
+		<association property="classId" javaType="cn.tyyhoa.pojo.OaJwbGrade">
+			<id property="id" column="id"/>
+			<result property="name" column="name"/>
+			<result property="specialtyID" column="specialtyID"/>
+			<result property="motorid" column="motorid"/>
+			<result property="struts" column="struts"/>
+			<result property="stage" column="stage"/>
+			<result property="createTime" column="createTime"/>
+		</association>
+	</resultMap>
+	<select id="getArrange" resultMap="course" parameterType="Map">
+		select * from oa_jwb_arranging_course as ojac,oa_jwb_grade as ojg where ojac.classId=ojg.id
+		<if test="Arrange.classId.specialtyID!=0 and Arrange.classId.specialtyID!=null">
+			and ojg.specialtyID=#{Arrange.classId.specialtyID}
+		</if>
+		<if test="Arrange.classId.name!=null and Arrange.classId.name!=''">
+			and ojg.name like concat('%',#{Arrange.classId.name},'%') 
+		</if>
+		<if test="Arrange.course!=0 and Arrange.course!=null">
+			and ojac.course=#{Arrange.course}
+		</if>
+		<if test="Arrange.classId.stage!=0 and Arrange.classId.stage!=null">
+			<if test="Arrange.classId.stage==1 or Arrange.classId.stage==2">
+				and ojg.stage=#{Arrange.classId.stage}
+			</if>
+			<if test="Arrange.classId.stage==3">
+				and ojg.stage BETWEEN #{Arrange.classId.stage} and 4
+			</if>
+		</if>
+		order by createTime desc
+		limit #{pon},#{psize}
+	</select>
+	
+	<insert id="addArrange" parameterType="cn.tyyhoa.pojo.OaJwbArrangingCourse">
+		insert into oa_jwb_arranging_course values(default,#{classId.id},#{course})
+	</insert>
+	
+	<update id="updateArrange">
+		update oa_jwb_arranging_course set course=#{course} where id=#{cid}
+	</update>
+	
+	<delete id="delArrange">
+		delete from oa_jwb_arranging_course where id=#{cid}
+	</delete>
+	
+	<select id="getUnArranging" resultType="cn.tyyhoa.pojo.OaJwbGrade">
+		select * from oa_jwb_grade 
+		where id not in (select classId from oa_jwb_arranging_course) 
+		and struts=1
+		order by createTime desc
+		limit #{pon},#{psize}
+	</select>
+	
+	<select id="getUnArrangingcount" resultType="int">
+		select count(1) from oa_jwb_grade 
+		where id not in (select classId from oa_jwb_arranging_course) 
+		and struts=1
+	</select>
+	
+	<select id="getArrangecount" resultType="int" parameterType="Map">
+		select count(1) from oa_jwb_arranging_course as ojac,oa_jwb_grade as ojg where ojac.classId=ojg.id
+		<if test="Arrange.classId.specialtyID!=0 and Arrange.classId.specialtyID!=null">
+			and ojg.specialtyID=#{Arrange.classId.specialtyID}
+		</if>
+		<if test="Arrange.classId.name!=null and Arrange.classId.name!=''">
+			and ojg.name like concat('%',#{Arrange.classId.name},'%') 
+		</if>
+		<if test="Arrange.classId.stage!=0 and Arrange.classId.stage!=null">
+			<if test="Arrange.classId.stage==1 or Arrange.classId.stage==2">
+				and ojg.stage=#{Arrange.classId.stage}
+			</if>
+			<if test="Arrange.classId.stage==3">
+				and ojg.stage BETWEEN #{Arrange.classId.stage} and 4
+			</if>
+		</if>
+		<if test="Arrange.course!=0 and Arrange.course!=null">
+			and ojac.course=#{Arrange.course}
+		</if>
+	</select>
+</mapper>

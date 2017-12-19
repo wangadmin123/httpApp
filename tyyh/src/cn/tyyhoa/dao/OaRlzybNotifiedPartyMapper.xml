@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybNotifiedPartyMapper">
+	<resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybNotifiedParty">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="nid" property="nid" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="notice_uid" property="notice_uid" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- 根据通知id修改通知状态 -->
+	<update id="updateNoticeById" parameterType="int">
+		UPDATE oa_rlzyb_notified_party
+		SET
+		STATUS =2
+		WHERE
+		id = #{id} ;
+	</update>
+
+
+	<!-- 插入通知信息 -->
+	<insert id="addNotified_party" parameterType="cn.tyyhoa.pojo.OaRlzybNotifiedParty">
+		INSERT INTO oa_rlzyb_notified_party ( nid, notice_uid)
+		VALUES(#{nid},#{notice_uid});
+	</insert>
+
+	<!-- 根据用户id查询未读通知信息 -->
+	<select id="selectWdCountByUid" parameterType="java.lang.Integer"
+		resultType="int">
+		SELECT COUNT(1)AS COUNT
+		FROM oa_rlzyb_notified_party AS p
+		INNER JOIN oa_rlzyb_user AS u ON u.user_id=p.notice_uid
+		WHERE p.status=1
+		AND p.notice_uid=#{notice_uid}
+
+	</select>
+
+
+
+
+
+	<sql id="Base_Column_List">
+		id, nid, notice_uid
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from oa_rlzyb_notified_party
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from oa_rlzyb_notified_party
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybNotifiedParty">
+		insert into oa_rlzyb_notified_party (id, nid, notice_uid
+		)
+		values (#{id,jdbcType=INTEGER}, #{nid,jdbcType=INTEGER},
+		#{notice_uid,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybNotifiedParty">
+		insert into oa_rlzyb_notified_party
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="nid != null">
+				nid,
+			</if>
+			<if test="notice_uid != null">
+				notice_uid,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="nid != null">
+				#{nid,jdbcType=INTEGER},
+			</if>
+			<if test="notice_uid != null">
+				#{notice_uid,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybNotifiedParty">
+		update oa_rlzyb_notified_party
+		<set>
+			<if test="nid != null">
+				nid = #{nid,jdbcType=INTEGER},
+			</if>
+			<if test="notice_uid != null">
+				notice_uid = #{notice_uid,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybNotifiedParty">
+		update oa_rlzyb_notified_party
+		set nid = #{nid,jdbcType=INTEGER},
+		notice_uid = #{notice_uid,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

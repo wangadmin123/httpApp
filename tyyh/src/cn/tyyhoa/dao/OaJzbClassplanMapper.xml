@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbClassplanMapper" >
+  	<!-- 根据ID查询带班计划 -->
+ 	<select id="getClassPlanById" resultType="cn.tyyhoa.pojo.OaJzbClassplan">
+ 		SELECT Id,emp_name,question,WORK,termStage_name,coursecontent,enteringTime 
+		FROM oa_jzb_classplan
+		INNER JOIN oa_rlzyb_employee ON oa_jzb_classplan.emp_id=oa_rlzyb_employee.emp_id
+		INNER JOIN oa_jzb_termstage ON oa_jzb_termstage.termStage_id=oa_jzb_classplan.Stage_id
+		WHERE deleteStatus=0 and oa_jzb_classplan.grade_id=#{id}
+		ORDER BY oa_jzb_classplan.Stage_id,oa_rlzyb_employee.emp_id
+ 	</select>
+ 	<!-- 新增带班计划 -->
+ 	<insert id="addClassplan" >
+	INSERT INTO tyyhoa.oa_jzb_classplan (emp_id,question,WORK,grade_id,deleteStatus,Stage_id,coursecontent,enteringTime
+	)
+	VALUES
+	(#{emp_id},#{question},#{WORK},#{grade_id},0,#{Stage_id},#{coursecontent},#{enteringTime});
+ 	</insert>	
+ 		<!-- 修改带班计划 -->
+ 		<update id="UpdateClassplan">
+ 		UPDATE tyyhoa.oa_jzb_classplan 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="question!=null and question!=''">question =#{question} ,</if>
+			<if test="WORK!=null and WORK!=''">WORK =#{WORK} ,</if>
+			<if test="Stage_id!=0">Stage_id =#{Stage_id} ,</if>
+			<if test="coursecontent!=null and coursecontent!=''">coursecontent =#{coursecontent} ,</if>
+		</trim> 
+		WHERE
+		Id = #{Id};
+ 		</update>
+		<!-- 删除带班计划 -->
+		<update id="deteleClassplan">
+			UPDATE tyyhoa.oa_jzb_classplan 
+			SET
+			deleteStatus = 1
+			WHERE
+			Id = #{id} ;
+		</update>
+		<!-- 查询所有的阶段 -->
+		<select id="gettermstages" resultType="OaJzbTermstage">
+		SELECT termStage_id,termStage_name FROM oa_jzb_termstage
+		</select>
+		<select id="getClassPlanCount" resultType="int">
+		SELECT COUNT(1) FROM oa_jzb_classplan 
+		WHERE grade_id=#{grade_id}
+		</select>
+		
+		<!-- 查询周考成绩 -->
+		<select id="getWeeksByGradeId" resultType="OaXsbWeek">
+		SELECT stu_number,stu_name,written,scjd,(written+scjd) AS a,NAME
+		FROM  oa_xsb_week
+		LEFT  JOIN oa_jzb_student ON oa_jzb_student.stu_Id = oa_xsb_week.studentId
+		LEFT  JOIN oa_jwb_grade ON oa_jwb_grade.id = oa_xsb_week.classId
+		WHERE  oa_xsb_week.classId = #{gradeID} 
+		<if test="stu_number!=null and stu_number!=''">
+		AND  oa_jzb_student.stu_number = #{stu_number}
+		</if>
+		<if test="stu_name!=null and stu_name!=''">
+		AND oa_jzb_student.stu_name LIKE CONCAT("%",#{stu_name},"%")
+		</if>
+		<if test="whatweek!=0">
+		and whatweek=#{whatweek}
+		</if>
+		ORDER BY a DESC 
+		LIMIT #{pageindex},#{pagesize}
+		</select>
+		<!-- 得到总记录数 -->
+		<select id="getCountWeek" resultType="int">
+		  SELECT COUNT(1) FROM oa_xsb_week     
+LEFT JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_xsb_week.studentId   
+LEFT JOIN oa_jwb_grade ON oa_jwb_grade.id=oa_xsb_week.classId  
+		  WHERE oa_xsb_week.classId=#{gradeID} 
+		<if test="stu_number!=null and stu_number!=''">
+		AND oa_jzb_student.stu_number=#{stu_number}
+		</if>
+		<if test="stu_name!=null and stu_name!=''">
+		AND oa_jzb_student.stu_name LIKE CONCAT("%",#{stu_name},"%")
+		</if>
+		<if test="whatweek!=0">
+		and whatweek=#{whatweek}
+		</if>
+		</select>
+		<!-- 得到所有的周 -->
+		<select id="getWhatweek" resultType="OaXsbWeek">
+		SELECT whatweek FROM oa_xsb_week
+		GROUP BY whatweek 
+		ORDER BY whatweek DESC 
+		</select>
+		<!--   查询所有的班主任 -->
+  <select id="getClassTeacher" resultType="OaRlzybEmployee">
+ SELECT 	oa_rlzyb_employee.emp_id,
+	oa_rlzyb_employee.emp_name, 
+	oa_rlzyb_position.position_name 
+	FROM 
+	oa_rlzyb_employee
+	INNER JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id  = oa_rlzyb_employee.emp_position
+	WHERE oa_rlzyb_position.position_id = 23 
+  </select>
+  <!--   查询所有的教员 -->
+  <select id="getTeacher" resultType="OaRlzybEmployee">
+  SELECT 	oa_rlzyb_employee.emp_id,
+	oa_rlzyb_employee.emp_name, 
+	oa_rlzyb_position.position_name 
+	FROM 
+	oa_rlzyb_employee
+	INNER JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id  = oa_rlzyb_employee.emp_position
+	WHERE oa_rlzyb_position.position_id = 21 
+  </select>
+  <!--   查询所有的就业老师 -->
+  <select id="getCareerteacher" resultType="OaRlzybEmployee">
+  SELECT 	oa_rlzyb_employee.emp_id,
+	oa_rlzyb_employee.emp_name, 
+	oa_rlzyb_position.position_name 
+	FROM 
+	oa_rlzyb_employee
+	INNER JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id  = oa_rlzyb_employee.emp_position
+	WHERE oa_rlzyb_position.position_id = 26 
+  </select>
+  <!-- 以下班级信息 -->
+    <!-- 查询所有班级列表 -->
+   <select id="getGrades" resultType="OaJwbGrade">
+		SELECT oa_jwb_grade.id,oa_jwb_grade.NAME,a.emp_name AS classTeacher,b.emp_name AS teacher
+,c.emp_name AS careerteacher,oa_jwb_motor.name AS motor,oa_jzb_specialty.Specialty_name AS Specialtyname
+,createTime,firststudytime,secondstudytime,practicetime,strutsName,oa_jwb_semester.stage AS stagename,oa_jwb_semester.id AS stageId,graduateDate
+FROM oa_jwb_grade
+		LEFT JOIN oa_rlzyb_employee AS a ON a.emp_id=oa_jwb_grade.classTeacherID
+		LEFT JOIN oa_rlzyb_employee AS b ON b.emp_id=oa_jwb_grade.teacherID
+		LEFT JOIN oa_rlzyb_employee AS c ON c.emp_id=oa_jwb_grade.obtainID
+		LEFT JOIN oa_jzb_specialty ON oa_jzb_specialty.specialty_Id=oa_jwb_grade.specialtyID
+		LEFT JOIN oa_jwb_semester ON oa_jwb_semester.id=oa_jwb_grade.stage
+		LEFT JOIN oa_jwb_struts ON oa_jwb_struts.strutsId=oa_jwb_grade.struts
+		LEFT JOIN oa_jwb_motor ON oa_jwb_motor.id=oa_jwb_grade.motorid
+		WHERE 1=1
+		<if test="emp_id!=0 and emp_id!=''">
+		AND a.emp_id=#{emp_id} or b.emp_id=#{emp_id} or c.emp_id=#{emp_id} 
+		</if>
+		<trim prefix="and">
+			<choose>
+				 <when test="login_name!=null and login_name!=''">
+				 a.emp_name=#{login_name} 
+				 </when>
+				 <otherwise>
+				 a.emp_name=0
+				 </otherwise>
+		    </choose>
+			<if test="emp_name!=null and emp_name!=''">
+			 and a.emp_name=#{emp_name} or b.emp_name=#{emp_name} or c.emp_name=#{emp_name}
+			</if>
+		</trim>
+			<choose>
+			 	<when test="strutsId!=0 and strutsId!=null">
+			 	AND strutsId IN (#{strutsId})
+			 	</when>
+			 	<otherwise>
+			 	AND strutsId IN (1,2)
+			 	</otherwise>
+			</choose>
+		ORDER BY createTime DESC 
+	</select>
+	<!-- 查询班级详细信息 -->
+	<select id="getGradeByID" resultType="OaJwbGrade" >
+			SELECT oa_jwb_grade.id,NAME,a.emp_name AS classTeacher,b.emp_name AS teacher,c.emp_name AS careerteacher,motorid,oa_jzb_specialty.Specialty_name  AS Specialtyname,createTime,firststudytime,secondstudytime,practicetime,strutsName,oa_jwb_semester.stage AS stagename,graduateDate,oa_jwb_grade.stage
+FROM oa_jwb_grade
+		LEFT JOIN oa_rlzyb_employee AS a ON a.emp_id=oa_jwb_grade.classTeacherID
+		LEFT JOIN oa_rlzyb_employee AS b ON b.emp_id=oa_jwb_grade.teacherID
+		LEFT JOIN oa_rlzyb_employee AS c ON c.emp_id=oa_jwb_grade.obtainID
+		LEFT JOIN oa_jzb_specialty ON oa_jzb_specialty.specialty_Id=oa_jwb_grade.motorid
+		LEFT JOIN oa_jwb_semester ON oa_jwb_semester.id=oa_jwb_grade.stage
+	    LEFT JOIN oa_jwb_struts ON oa_jwb_struts.strutsId=oa_jwb_grade.struts
+		<where>
+			<if test="id!=null and id!=''">
+			 oa_jwb_grade.id = #{id}
+			</if>	
+		</where>
+	</select>	
+	<!-- 根据班级查询班级的总人数 -->
+	<select id="getGradeCountById" resultType="int">
+	SELECT COUNT(1) FROM oa_jzb_student WHERE grade_id = #{grade_id}
+	</select>
+	<select id="getGradeStruts" resultType="OaJwbStruts">
+	SELECT strutsId,strutsName FROM oa_jwb_struts
+	</select>
+	  <!-- 查询所有班级列表 -->
+    <select id="grade" resultType="OaJwbGrade" >
+SELECT oa_jzb_patrolgrade.Id,NAME FROM oa_jzb_patrolgrade
+INNER JOIN oa_jwb_grade ON oa_jzb_patrolgrade.Id=oa_jwb_grade.id
+
+  </select>
+
+  <!-- 查询班级数据 -->
+  <select id="getGradedata" resultType="OaJzbGradedata">
+  	SELECT gdata.ID,stu_number,stu.`stu_name`,gdata.amturn,gdata.pmturn,gdata.word  
+	,dai.`preparation`,dai.`manami`,dai.`obu`,dai.`homework`,dtest.`written`
+	FROM oa_jzb_gradedata AS gdata
+	LEFT JOIN oa_jzb_student AS stu ON stu.`stu_Id`=gdata.`student_id`
+	LEFT JOIN oa_xsb_dailypaper AS dai ON stu.`stu_Id`=dai.`studentId` AND dai.`classId`=gdata.`grade_id` AND dai.`createTime`=gdata.`time`
+	LEFT JOIN oa_xsb_daytext AS dtest ON stu.`stu_Id`=dtest.`studentId` AND dtest.`classID`=gdata.`grade_id` AND dtest.`createTime`=gdata.`time`
+	WHERE gdata.grade_id=#{classId} AND gdata.`time`=#{time}
+  </select>
+  <!-- 查询班级老师 -->
+  <select id="gettList" resultType="OaClassTeacher">
+  		SELECT oa_jwb_grade.`id`,oa_jwb_grade.`name`,(SELECT oa_rlzyb_employee.`emp_name` FROM oa_rlzyb_employee WHERE oa_rlzyb_employee.`emp_id`=oa_jwb_grade.`teacherID`) tName ,
+		(SELECT oa_rlzyb_employee.`emp_name` FROM oa_rlzyb_employee WHERE oa_rlzyb_employee.`emp_id`=oa_jwb_grade.`classTeacherID`) cName
+		FROM oa_jwb_grade WHERE id=#{classId}
+  </select>
+</mapper>

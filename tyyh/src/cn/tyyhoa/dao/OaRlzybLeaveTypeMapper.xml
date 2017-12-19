@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybLeaveTypeMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybLeaveType" >
+    <id column="leave_id" property="leave_id" jdbcType="VARCHAR" />
+    <result column="leave_type" property="leave_type" jdbcType="VARCHAR" />
+   </resultMap>
+   
+   <!-- 查询所有离岗类型 -->
+  <select id="selectAllOaRlzybLeaveType" resultMap="BaseResultMap">
+    select leave_type from oa_rlzyb_leavetype
+   
+  </select>
+  
+  
+  </mapper>

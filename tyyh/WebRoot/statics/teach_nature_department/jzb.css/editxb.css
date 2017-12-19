@@ -1,0 +1,52 @@
+
+.editxbdiv{
+	margin-top:50px;
+	width: 700px;
+	margin: auto;
+	border-top: 2px #C9C4C4 double;
+	border-bottom: 2px #C9C4C4 dashed;
+}
+h3{
+	float: right;
+	font-size: 25px;
+	color: red;
+	font-weight: 700;
+	background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(28, 121, 240, 1)), to(rgba(51, 51, 51, 1)));
+	 -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: "楷体";
+}
+.editxbdivone ul{
+	list-style: none;
+	margin-top: 80px;
+	font-family: "楷体";
+	font-size: 18px;
+}
+.editxbdivone ul li{
+	margin-top: 20px;
+	padding-top: 10px;
+	border:1px #fff solid;
+}
+.spana{
+	color: black;
+	font-family: "楷体";
+}
+.spanb{
+	font-family: "楷体";
+	font-size: 18px;
+	margin-left: 45px;
+}
+textarea{
+	margin-left: 5px;
+	vertical-align: middle;
+	border:1px #fff solid;
+}
+ .saveBotton{  cursor:pointer;background-color:#2A00E1;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+margin-left: 530px;
+}
+ .saveOut{  cursor:pointer;background-color:#2A00E1;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+float: right;
+}
+

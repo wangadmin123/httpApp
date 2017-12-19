@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybLeaveMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybLeave" >
+    <id column="leave_id" property="leave_id" jdbcType="INTEGER" />
+    <result column="emp_id" property="emp_id" jdbcType="INTEGER" />
+    <result column="leave_startDate" property="leave_startDate" jdbcType="TIMESTAMP" />
+    <result column="leave_endDate" property="leave_endDate" jdbcType="TIMESTAMP" />
+    <result column="leave_type" property="leave_type" jdbcType="VARCHAR" />
+    <result column="leave_reason" property="leave_reason" jdbcType="VARCHAR" />
+    <result column="leave_approver" property="leave_approver" jdbcType="VARCHAR" />
+    <result column="leave_delectStatus" property="leave_delectStatus" jdbcType="INTEGER" />
+    <result column="emp_name" property="emp_name" jdbcType="VARCHAR" />
+    <result column="depart_name" property="depart_name" jdbcType="VARCHAR" />
+    <result column="position_name" property="position_name" jdbcType="VARCHAR" />
+    <result column="leave_backTime" property="leave_backTime" jdbcType="DATE" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    leave_id, emp_id, leave_startDate, leave_endDate, leave_type, leave_reason, leave_approver, 
+    leave_delectStatus
+  </sql>
+  
+  
+  <update id="updateOaRlzybLeaveLeaveBackTimeByLeaveId" parameterType="cn.tyyhoa.pojo.OaRlzybLeave">
+    UPDATE tyyhoa.oa_rlzyb_leave 
+	SET
+	leave_backTime = #{leave_backTime}
+	WHERE
+	leave_id = #{leave_id}
+  </update>
+  
+  
+  <update id="deleteOaRlzybLeaveByLeaveId" parameterType="java.lang.Integer">
+UPDATE tyyhoa.oa_rlzyb_leave 
+	SET
+	leave_delectStatus = 0 
+	WHERE
+	leave_id = #{leave_id}
+  </update>
+  
+  
+  
+  
+  
+  
+  <!-- 查看页面 -->
+  <select id="selectAllByleave_id" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  		SELECT
+oa_rlzyb_department.depart_name as depart_name,oa_rlzyb_employee.emp_name as emp_name,oa_rlzyb_position.position_name as position_name,
+oa_rlzyb_leave.leave_startDate as leave_startDate ,oa_rlzyb_leave.leave_endDate  as leave_endDate ,
+oa_rlzyb_leave.leave_reason as leave_reason ,oa_rlzyb_leave.leave_type as leave_type ,oa_rlzyb_leave.leave_approver as leave_approver
+FROM oa_rlzyb_employee
+INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department=oa_rlzyb_department.depart_id
+INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position=oa_rlzyb_position.position_id
+INNER JOIN oa_rlzyb_leave ON oa_rlzyb_employee.emp_id=oa_rlzyb_leave.emp_id
+<where>
+ <if test="leave_id != null and leave_id !=''">
+and leave_id = #{leave_id}
+</if>
+</where>
+  </select>
+  
+  <!-- 通过条件查询所有数据 ,查询数据的条数-->
+ <select id="selectOaRlzybLeaveCountByCondition"  resultType="java.lang.Integer"    parameterType="Map">
+    SELECT 
+COUNT(1)
+FROM oa_rlzyb_employee e
+INNER JOIN oa_rlzyb_department  d ON e.emp_department = d.depart_id
+INNER JOIN oa_rlzyb_position  p ON e.emp_position = p.position_id
+INNER JOIN oa_rlzyb_leave l ON l.emp_id=e.emp_id
+<where>
+ <if test="depart_id != null and depart_id !=''">
+and depart_id = #{depart_id}
+</if>
+ <if test="leave_approver != null and leave_approver !=''">
+and emp_name = #{leave_approver}
+</if>
+ <if test="leave_type != null and leave_type !=''">
+and leave_type = #{leave_type}
+</if>
+ <if test="leave_startDate != null and leave_startDate !=''">
+and leave_startDate &gt;= #{leave_startDate}
+</if> 
+ <if test="leave_endDate != null and leave_endDate !=''">
+and leave_endDate &lt;= #{leave_endDate}
+</if>
+ <if test="true">
+and leave_delectStatus = 1
+</if>
+</where>
+  </select>
+    
+  
+ <!-- 通过分页查询所有数据,查询所有数据 -->
+  <select id="selectOaRlzybLeaveByPage" parameterType="Map" resultMap="BaseResultMap">
+  select 
+     l.emp_id,
+   	leave_id,
+	emp_name,  
+	position_name,
+	depart_name,
+	leave_type,
+	leave_reason,
+	leave_approver,
+	leave_delectStatus,
+	leave_startDate, 
+	leave_endDate,
+ leave_backTime,
+     l.create_time,
+	depart_id
+FROM oa_rlzyb_employee e
+INNER JOIN oa_rlzyb_department  d ON e.emp_department = d.depart_id
+INNER JOIN oa_rlzyb_position  p ON e.emp_position = p.position_id
+INNER JOIN oa_rlzyb_leave l ON l.emp_id=e.emp_id
+ <where>
+ 
+ <if test="depart_id != null and depart_id !=''">
+and depart_id = #{depart_id}
+</if>
+<if test="leave_approver != null and leave_approver !=''">
+<!-- and emp_name = #{leave_approver} -->
+and emp_name like concat('%',#{leave_approver},'%')
+</if>
+<if test="leave_type != null and leave_type !=''">
+and leave_type = #{leave_type}
+</if>
+<if test="leave_startDate != null and leave_startDate !=''">
+and leave_startDate &gt;= #{leave_startDate}
+</if>
+<if test="leave_endDate != null and leave_endDate !=''">
+and leave_endDate &lt;= #{leave_endDate}
+</if>
+ <if test="true">
+and leave_delectStatus = 1
+</if>
+</where>
+order by leave_id desc
+limit #{fromIndex},#{pageSize}
+  </select>
+  
+  
+  <!-- 查询所有离岗类型(填充离岗信息) -->
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_leave
+    where leave_id = #{leave_id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <!-- 查询所有离岗信息 -->
+  <select id="selectAllByPrimaryKey" resultMap="BaseResultMap"  >
+
+    SELECT 
+	leave_id,
+	emp_name,  
+	position_name,
+	depart_name,
+	leave_type,
+	leave_reason,
+	leave_approver,
+	leave_delectStatus,
+	leave_startDate, 
+	leave_endDate
+FROM oa_rlzyb_employee e
+INNER JOIN oa_rlzyb_department  d ON e.emp_department = d.depart_id
+INNER JOIN oa_rlzyb_position  p ON e.emp_position = p.position_id
+INNER JOIN oa_rlzyb_leave l ON l.emp_id=e.emp_id
+    
+    
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_leave
+    where leave_id = #{leave_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybLeave" >
+    insert into oa_rlzyb_leave (leave_id, emp_id, leave_startDate, 
+      leave_endDate, leave_type, leave_reason, 
+      leave_approver, leave_delectStatus)
+    values (#{leave_id,jdbcType=INTEGER}, #{emp_id,jdbcType=INTEGER}, #{leave_startDate,jdbcType=TIMESTAMP}, 
+      #{leave_endDate,jdbcType=TIMESTAMP}, #{leave_type,jdbcType=VARCHAR}, #{leave_reason,jdbcType=VARCHAR}, 
+      #{leave_approver,jdbcType=VARCHAR}, #{leave_delectStatus,jdbcType=INTEGER})
+  </insert>
+  
+  <!-- 选择性的，①通过id插入离岗原因字段 -->
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybLeave" >
+    insert into oa_rlzyb_leave
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="leave_id != null" >
+        leave_id,
+      </if>
+      <if test="emp_id != null" >
+        emp_id,
+      </if>
+      <if test="leave_startDate != null" >
+        leave_startDate,
+      </if>
+      <if test="leave_endDate != null" >
+        leave_endDate,
+      </if>
+      <if test="leave_type != null" >
+        leave_type,
+      </if>
+      <if test="leave_reason != null" >
+        leave_reason,
+      </if>
+      <if test="leave_approver != null" >
+        leave_approver,
+      </if>
+      <if test="leave_delectStatus != null" >
+        leave_delectStatus,
+      </if>
+        <if test="create_time != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="leave_id != null" >
+        #{leave_id,jdbcType=INTEGER},
+      </if>
+      <if test="emp_id != null" >
+        #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="leave_startDate != null" >
+        #{leave_startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leave_endDate != null" >
+        #{leave_endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leave_type != null" >
+        #{leave_type,jdbcType=VARCHAR},
+      </if>
+      <if test="leave_reason != null" >
+        #{leave_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="leave_approver != null" >
+        #{leave_approver,jdbcType=VARCHAR},
+      </if>
+      <if test="leave_delectStatus != null" >
+        #{leave_delectStatus,jdbcType=INTEGER},
+      </if>
+        <if test="create_time != null" >
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybLeave" >
+    update oa_rlzyb_leave
+    <set >
+      <if test="emp_id != null" >
+        emp_id = #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="leave_startDate != null" >
+        leave_startDate = #{leave_startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leave_endDate != null" >
+        leave_endDate = #{leave_endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leave_type != null" >
+        leave_type = #{leave_type,jdbcType=VARCHAR},
+      </if>
+      <if test="leave_reason != null" >
+        leave_reason = #{leave_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="leave_approver != null" >
+        leave_approver = #{leave_approver,jdbcType=VARCHAR},
+      </if>
+      <if test="leave_delectStatus != null" >
+        leave_delectStatus = #{leave_delectStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where leave_id = #{leave_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybLeave" >
+    update oa_rlzyb_leave
+    set emp_id = #{emp_id,jdbcType=INTEGER},
+      leave_startDate = #{leave_startDate,jdbcType=TIMESTAMP},
+      leave_endDate = #{leave_endDate,jdbcType=TIMESTAMP},
+      leave_type = #{leave_type,jdbcType=VARCHAR},
+      leave_reason = #{leave_reason,jdbcType=VARCHAR},
+      leave_approver = #{leave_approver,jdbcType=VARCHAR},
+      leave_delectStatus = #{leave_delectStatus,jdbcType=INTEGER}
+    where leave_id = #{leave_id,jdbcType=INTEGER}
+  </update>
+</mapper>

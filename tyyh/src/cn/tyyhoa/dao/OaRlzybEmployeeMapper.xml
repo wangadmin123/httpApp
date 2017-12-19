@@ -1,0 +1,1279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybEmployeeMapper">
+	<resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybEmployee">
+		<id column="emp_id" property="emp_id" jdbcType="INTEGER" />
+		<result column="emp_name" property="emp_name" jdbcType="VARCHAR" />
+		<result column="emp_idcard" property="emp_idcard" jdbcType="VARCHAR" />
+		<result column="emp_name_simple" property="emp_name_simple"
+			jdbcType="VARCHAR" />
+		<result column="emp_phone" property="emp_phone" jdbcType="VARCHAR" />
+		<result column="emp_political_status" property="emp_political_status"
+			jdbcType="VARCHAR" />
+		<result column="emp_sex" property="emp_sex" jdbcType="VARCHAR" />
+		<result column="emp_marital_status" property="emp_marital_status"
+			jdbcType="VARCHAR" />
+		<result column="nation_name" property="nation_name" jdbcType="VARCHAR" />
+		<result column="emp_Email" property="emp_Email" jdbcType="VARCHAR" />
+		<result column="emp_hobby" property="emp_hobby" jdbcType="VARCHAR" />
+		<result column="emp_province" property="emp_province" jdbcType="INTEGER" />
+		<result column="emp_city" property="emp_city" jdbcType="INTEGER" />
+		<result column="emp_county" property="emp_county" jdbcType="INTEGER" />
+		<result column="emp_address" property="emp_address" jdbcType="VARCHAR" />
+		<result column="emp_contact_name" property="emp_contact_name"
+			jdbcType="VARCHAR" />
+		<result column="emp_contact_phone" property="emp_contact_phone"
+			jdbcType="VARCHAR" />
+		<result column="emp_contact_relationship" property="emp_contact_relationship"
+			jdbcType="VARCHAR" />
+		<result column="emp_contact_address" property="emp_contact_address"
+			jdbcType="VARCHAR" />
+		<result column="emp_Employment_nature" property="emp_Employment_nature"
+			jdbcType="VARCHAR" />
+		<result column="emp_photo_path" property="emp_photo_path"
+			jdbcType="VARCHAR" />
+		<result column="emp_Entry_date" property="emp_Entry_date"
+			jdbcType="TIMESTAMP" />
+		<result column="emp_tryout_end_date" property="emp_tryout_end_date"
+			jdbcType="TIMESTAMP" />
+		<result column="emp_now_status" property="emp_now_status"
+			jdbcType="VARCHAR" />
+		<result column="emp_technical_title_name" property="emp_technical_title_name"
+			jdbcType="VARCHAR" />
+		<result column="emp_grade_id" property="emp_grade_id" jdbcType="INTEGER" />
+		<result column="emp_registrant" property="emp_registrant"
+			jdbcType="INTEGER" />
+		<result column="emp_salary_cardnumber" property="emp_salary_cardnumber"
+			jdbcType="VARCHAR" />
+		<result column="emp_medical_insurance_cardnumber" property="emp_medical_insurance_cardnumber"
+			jdbcType="VARCHAR" />
+		<result column="emp_endowment_insurance_cardnumber" property="emp_endowment_insurance_cardnumber"
+			jdbcType="VARCHAR" />
+		<result column="emp_idcard_front" property="emp_idcard_front"
+			jdbcType="VARCHAR" />
+		<result column="emp_idcard_reverse" property="emp_idcard_reverse"
+			jdbcType="VARCHAR" />
+		<result column="emp_Degree_certificate" property="emp_Degree_certificate"
+			jdbcType="VARCHAR" />
+		<result column="emp_Education_certificate" property="emp_Education_certificate"
+			jdbcType="VARCHAR" />
+		<result column="emp_technical_title_path" property="emp_technical_title_path"
+			jdbcType="VARCHAR" />
+		<result column="emp_Education_experience" property="emp_Education_experience"
+			jdbcType="VARCHAR" />
+		<result column="emp_work_experience" property="emp_work_experience"
+			jdbcType="VARCHAR" />
+		<result column="emp_train_experience" property="emp_train_experience"
+			jdbcType="VARCHAR" />
+		<result column="emp_society_relation" property="emp_society_relation"
+			jdbcType="VARCHAR" />
+		<result column="emp_remarks" property="emp_remarks" jdbcType="VARCHAR" />
+		<result column="emp_delectStatus" property="emp_delectStatus"
+			jdbcType="VARCHAR" />
+		<result column="emp_department" property="emp_department"
+			jdbcType="INTEGER" />
+		<result column="emp_position" property="emp_position" jdbcType="INTEGER" />
+		<result column="emp_educational_background" property="emp_educational_background"
+			jdbcType="VARCHAR" />
+		<result column="emp_age" property="emp_age" jdbcType="INTEGER" />
+		<result column="emp_birthday" property="emp_birthday" jdbcType="TIMESTAMP" />
+		<result column="emp_origin_detail" property="emp_origin_detail"
+			jdbcType="VARCHAR" />
+		<result column="emp_now_province" property="emp_now_province"
+			jdbcType="VARCHAR" />
+		<result column="emp_now_city" property="emp_now_city" jdbcType="VARCHAR" />
+		<result column="emp_now_county" property="emp_now_county"
+			jdbcType="VARCHAR" />
+		<result column="emp_now_detail" property="emp_now_detail"
+			jdbcType="VARCHAR" />
+		<result column="emp_contact_address_province" property="emp_contact_address_province"
+			jdbcType="VARCHAR" />
+		<result column="emp_contact_address_city" property="emp_contact_address_city"
+			jdbcType="VARCHAR" />
+		<result column="emp_contact_address_county" property="emp_contact_address_county"
+			jdbcType="VARCHAR" />
+		<result column="emp_contact_address_detail" property="emp_contact_address_detail"
+			jdbcType="VARCHAR" />
+		<result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+
+
+
+
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		emp_id, emp_name, emp_idcard, emp_name_simple, emp_phone,
+		emp_political_status, emp_sex,
+		emp_marital_status, nation_name, emp_Email, emp_hobby, emp_province, emp_city,
+		emp_county,
+		emp_address, emp_contact_name, emp_contact_phone, emp_contact_relationship,
+		emp_contact_address,
+		emp_Employment_nature, emp_photo_path, emp_Entry_date, emp_tryout_end_date, emp_now_status,
+		emp_technical_title_name, emp_grade_id, emp_registrant,
+		emp_salary_cardnumber, emp_medical_insurance_cardnumber,
+		emp_endowment_insurance_cardnumber, emp_idcard_front,
+		emp_idcard_reverse, emp_Degree_certificate,
+		emp_Education_certificate, emp_technical_title_path, emp_Education_experience,
+		emp_work_experience,
+		emp_train_experience, emp_society_relation, emp_remarks, emp_delectStatus, emp_department,
+		emp_position, emp_educational_background, emp_age, emp_birthday,
+		emp_origin_detail,
+		emp_now_province, emp_now_city, emp_now_county, emp_now_detail,
+		emp_contact_address_province,
+		emp_contact_address_city, emp_contact_address_county, emp_contact_address_detail,
+		create_time
+	</sql>
+	<!-- 人力资源部 -->
+	
+	<select id="getEmpByDept" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	  	SELECT e.emp_id,e.emp_name FROM oa_rlzyb_employee AS e
+		INNER JOIN oa_rlzyb_user AS u ON u.emp_id=e.emp_id
+		INNER JOIN oa_rlzyb_position AS p ON p.position_id=u.position_id
+		INNER JOIN oa_rlzyb_department AS d ON d.depart_id=p.department_id
+		WHERE d.depart_id=#{deptid}
+  </select>
+	
+	<!-- zl -->
+	<update id="updateStatus" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		update oa_rlzyb_employee
+		set
+		emp_now_status = #{emp_now_status,jdbcType=VARCHAR}
+		where emp_id = #{emp_id,jdbcType=INTEGER}
+	</update>
+	<select id="selectEmpNameByDepartId" resultMap="BaseResultMap">
+		SELECT
+		oa_rlzyb_employee.emp_id AS emp_id,
+		emp_name,
+		oa_rlzyb_employee.emp_department,
+		depart_name
+		FROM oa_rlzyb_employee
+		LEFT JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department =
+		oa_rlzyb_department.depart_id
+		<where>
+			<if test="emp_department != null and emp_department != ''">
+				oa_rlzyb_employee.emp_department = #{emp_department}
+			</if>
+		</where>
+	</select>
+	<select id="selectPositionByEmpName" resultMap="BaseResultMap">
+		SELECT
+		oa_rlzyb_employee.emp_id AS emp_id,
+		emp_name,
+		oa_rlzyb_employee.emp_position AS emp_position,
+		position_name,
+		oa_rlzyb_employee.emp_department,
+		depart_name
+		FROM oa_rlzyb_employee
+		LEFT JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department =
+		oa_rlzyb_department.depart_id
+		LEFT JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position =
+		oa_rlzyb_position.position_id
+		INNER JOIN oa_rlzyb_contract ON oa_rlzyb_employee.emp_id =
+		oa_rlzyb_contract.emp_id
+		<where>
+			<if test="emp_id != null and emp_id != ''">
+				oa_rlzyb_employee.emp_id = #{emp_id}
+			</if>
+		</where>
+	</select>
+
+
+
+
+
+
+
+
+
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		SELECT emp_id,emp_name,emp_department,depart_name,emp_position,position_name
+		FROM oa_rlzyb_employee
+		INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department =
+		oa_rlzyb_department.depart_id
+		INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position =
+		oa_rlzyb_position.position_id
+		where emp_name like concat("%",#{emp_name},"%")
+	</select>
+	<update id="updateByEmpId" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		UPDATE oa_rlzyb_employee
+		set emp_department = #{emp_department,jdbcType=INTEGER},emp_position =
+		#{emp_position,jdbcType=VARCHAR}
+		where oa_rlzyb_employee.emp_id = #{emp_id}
+	</update>
+	<select id="selectByDepart" resultMap="BaseResultMap">
+		<!-- SELECT emp_id,emp_name,emp_department,oa_rlzyb_employee.emp_position 
+			AS emp_position,position_name FROM oa_rlzyb_employee INNER JOIN oa_rlzyb_position 
+			ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id -->
+		SELECT
+		emp_id,
+		emp_name,
+		emp_department,
+		depart_name,
+		emp_position,
+		position_name
+		FROM oa_rlzyb_employee
+		INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department =
+		oa_rlzyb_department.depart_id
+		INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position =
+		oa_rlzyb_position.position_id
+		where emp_now_status = "在职" and emp_delectStatus = "未删除"
+		<if test="emp_department != null and emp_department != ''">
+			and emp_department = #{emp_department,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectByEmpId" resultMap="BaseResultMap">
+		SELECT oa_rlzyb_employee.emp_position,position_name FROM
+		oa_rlzyb_employee
+		INNER JOIN oa_rlzyb_position
+		ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+		<if test="emp_id != null and emp_id != ''">
+			where emp_id = #{emp_id,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="selectAllContract" resultMap="BaseResultMap">
+		SELECT contract_num,
+		oa_rlzyb_employee.emp_id AS emp_id,emp_name,
+		oa_rlzyb_employee.emp_department AS emp_department,depart_name,
+		oa_rlzyb_employee.emp_position AS emp_position,position_name,
+		contract_id,contract_status,contract_belong_company,contract_startDate,contract_endDate,contract_delectStatus
+		FROM oa_rlzyb_employee
+		LEFT JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department =
+		oa_rlzyb_department.depart_id
+		LEFT JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position =
+		oa_rlzyb_position.position_id
+		LEFT JOIN oa_rlzyb_contract ON oa_rlzyb_employee.emp_id =
+		oa_rlzyb_contract.emp_id
+		WHERE (oa_rlzyb_employee.emp_id NOT IN (
+		SELECT oa_rlzyb_contract.emp_id
+		FROM oa_rlzyb_contract
+		)
+		OR contract_num IN (SELECT MAX(contract_num)
+		FROM tyyhoa.oa_rlzyb_employee
+		LEFT JOIN oa_rlzyb_contract ON oa_rlzyb_employee.emp_id =
+		oa_rlzyb_contract.emp_id
+		GROUP BY oa_rlzyb_employee.emp_id) )
+		<if test="emp_name != null and emp_name != ''">
+			and emp_name = #{emp_name}
+		</if>
+		<if test="contract_id != 0">
+			and contract_id = #{contract_id}
+		</if>
+		<if test="contract_startDate != null and contract_startDate != ''">
+			and contract_startDate = #{contract_startDate}
+		</if>
+		<if test="contract_endDate != null and contract_endDate != ''">
+			and contract_endDate = #{contract_endDate}
+		</if>
+		<if test="contract_status != '' and contract_status == '已签订'">
+			and contract_status = #{contract_status}
+		</if>
+		<if test="contract_status != '' and contract_status == '已到期'">
+			and contract_status = #{contract_status}
+		</if>
+		<if
+			test="contract_status != '' and contract_status != '已签订' and contract_status != '已到期'">
+			and oa_rlzyb_employee.emp_id NOT IN (
+			SELECT oa_rlzyb_contract.emp_id FROM oa_rlzyb_contract)
+		</if>
+		ORDER BY contract_num DESC
+		limit #{startPos},#{PageSize}
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(oa_rlzyb_employee.emp_id)
+		FROM oa_rlzyb_employee
+		LEFT JOIN oa_rlzyb_contract ON oa_rlzyb_employee.emp_id =
+		oa_rlzyb_contract.emp_id
+		WHERE (oa_rlzyb_employee.emp_id NOT IN (
+		SELECT oa_rlzyb_contract.emp_id
+		FROM oa_rlzyb_contract
+		)
+		OR contract_num IN (SELECT MAX(contract_num)
+		FROM tyyhoa.oa_rlzyb_employee
+		LEFT JOIN oa_rlzyb_contract ON oa_rlzyb_employee.emp_id =
+		oa_rlzyb_contract.emp_id
+		GROUP BY oa_rlzyb_employee.emp_id))
+		<if test="emp_name != null and emp_name != ''">
+			and emp_name = #{emp_name}
+		</if>
+		<if test="contract_id != 0">
+			and contract_id = #{contract_id}
+		</if>
+		<if test="contract_startDate != null and contract_startDate != ''">
+			and contract_startDate = #{contract_startDate}
+		</if>
+		<if test="contract_endDate != null and contract_endDate != ''">
+			and contract_endDate = #{contract_endDate}
+		</if>
+		<if test="contract_status != '' and contract_status == '已签订'">
+			and contract_status = #{contract_status}
+		</if>
+		<if test="contract_status != '' and contract_status == '已到期'">
+			and contract_status = #{contract_status}
+		</if>
+		<if
+			test="contract_status != '' and contract_status != '已签订' and contract_status != '已到期'">
+			and oa_rlzyb_employee.emp_id NOT IN (
+			SELECT oa_rlzyb_contract.emp_id FROM oa_rlzyb_contract)
+		</if>
+	</select>
+
+	<select id="showInfo" resultMap="BaseResultMap">
+		SELECT
+		oa_rlzyb_employee.emp_id AS emp_id,
+		emp_name,
+		oa_rlzyb_employee.emp_position AS emp_position,
+		position_name,
+		oa_rlzyb_employee.emp_department,
+		depart_name
+		FROM oa_rlzyb_employee
+		LEFT JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department =
+		oa_rlzyb_department.depart_id
+		LEFT JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position =
+		oa_rlzyb_position.position_id
+		<where>
+			<if test="emp_id != null and emp_id != ''">
+				oa_rlzyb_employee.emp_id = #{emp_id}
+			</if>
+		</where>
+	</select>
+	<update id="updateByContractEndDate" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		UPDATE oa_rlzyb_employee
+		LEFT JOIN oa_rlzyb_contract ON oa_rlzyb_employee.emp_id =
+		oa_rlzyb_contract.emp_id
+		set contract_status = #{contract_status,jdbcType=VARCHAR}
+		where contract_endDate = #{contract_endDate} AND oa_rlzyb_employee.emp_id =
+		#{emp_id}
+	</update>
+	<!-- zl -->
+
+
+
+	<!-- db -->
+	<update id="updateOaRlzybEmployeeEmpNowStatusByEmpId">
+		UPDATE tyyhoa.oa_rlzyb_employee
+		SET
+		emp_now_status = #{emp_now_status}
+		WHERE
+		emp_id = #{emp_id} ;
+	</update>
+
+
+
+
+	<delete id="realDeleteInformationBugOaRlzybEmployee">
+		DELETE FROM
+		oa_rlzyb_employee
+		WHERE emp_name IS null
+	</delete>
+
+
+
+
+	<select id="selectOaRlzybEmployeeCountByEmailAddress"
+		parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1)
+		from oa_rlzyb_employee
+		where
+		emp_Email = #{emp_Email} and emp_delectStatus = '未删除'
+
+
+	</select>
+
+
+
+	<select id="selectOaRlzybEmployeeCountByPhoneNumber"
+		parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1)
+		from oa_rlzyb_employee
+		where
+		emp_phone = #{emp_phone} and emp_delectStatus = '未删除'
+
+
+
+	</select>
+
+	<update id="deleteOaRlzybEmployeeByEmpId" parameterType="java.lang.Integer">
+		update oa_rlzyb_employee
+		set emp_delectStatus = '已删除'
+		where emp_id = #{emp_id}
+	</update>
+	<update id="updateOaRlzybEmployeePhotoPathByEmpId"
+		parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		update oa_rlzyb_employee
+		set emp_photo_path = #{emp_photo_path}
+		where emp_id = #{emp_id} and emp_delectStatus = '未删除'
+	</update>
+	<select id="selectSomeOaRlzybEmployeeByfather" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		,d.depart_name AS emp_department_name
+		,p.position_name AS emp_position_name
+		FROM
+		tyyhoa.oa_rlzyb_employee e
+		left JOIN tyyhoa.oa_rlzyb_department d ON e.emp_department = d.depart_id
+		left JOIN tyyhoa.oa_rlzyb_position p ON e.emp_position = p.position_id
+		where emp_department = ${DepartId} and emp_delectStatus = '未删除' and
+		emp_now_status = '在职';
+	</select>
+	<select id="selectOaRlzybEmployeeCountByEmpIdCard" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(1)
+		from
+		tyyhoa.oa_rlzyb_employee
+		where
+		emp_idcard = #{emp_idcard} and emp_delectStatus = '未删除'
+	</select>
+	<select id="selectOaRlzybEmployeeByPage" parameterType="Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		,d.depart_name AS emp_department_name
+		,p.position_name AS emp_position_name
+		FROM
+		tyyhoa.oa_rlzyb_employee e
+		left JOIN tyyhoa.oa_rlzyb_department d ON e.emp_department = d.depart_id
+		left JOIN tyyhoa.oa_rlzyb_position p ON e.emp_position = p.position_id
+		<where>
+			<if test="true">
+				and emp_delectStatus = '未删除'
+			</if>
+			<if test="emp_name != null and emp_name !=''">
+				and emp_name like concat('%',#{emp_name},'%')
+			</if>
+			<if test="emp_name_simple != null and emp_name_simple !=''">
+				and emp_name_simple like concat('%',#{emp_name_simple},'%')
+			</if>
+			<if test="emp_age_begin != null and emp_age_begin !=''">
+				and emp_Entry_date &gt;= #{emp_age_begin}
+			</if>
+			<if test="emp_age_end != null and emp_age_end !=''">
+				and emp_Entry_date &lt;= #{emp_age_end}
+			</if>
+			<if test="birthday_year != null and birthday_year !=''">
+				and year(emp_birthday) = #{birthday_year}
+			</if>
+			<if test="birthday_month != null and birthday_month !=''">
+				and month(emp_birthday) = #{birthday_month}
+			</if>
+			<if test="birthday_day != null and birthday_day !=''">
+				and day(emp_birthday) = #{birthday_day}
+			</if>
+			<if test="emp_sex != null and emp_sex !='全部'">
+				and emp_sex = #{emp_sex}
+			</if>
+			<if test="emp_grade_id != null and emp_grade_id !=0">
+				and emp_grade_id = #{emp_grade_id}
+			</if>
+			<if test="emp_status2 != null and emp_status2 !=''">
+				and emp_now_status = #{emp_status2}
+			</if>
+			<if test="emp_status3 != null and emp_status3 !=''">
+				and emp_now_status = #{emp_status3}
+			</if>
+		</where>
+		order by emp_Entry_date desc
+		<if test="emp_status2 != null and emp_status2 !=''">
+			,emp_now_status asc
+		</if>
+		<if test="emp_status3 != null and emp_status3 !=''">
+			,emp_now_status asc
+		</if>
+		,e.create_time desc 
+		limit #{fromIndex},#{pageSize} 
+	</select>
+	<select id="selectOaRlzybEmployeeCountByCondition" resultType="java.lang.Integer"
+		parameterType="Map">
+		select
+		count(1)
+		from oa_rlzyb_employee
+		<where>
+			<if test="true">
+				and emp_delectStatus = '未删除'
+			</if>
+			<if test="emp_name != null and emp_name !=''">
+				and emp_name like concat('%',#{emp_name},'%')
+			</if>
+			<if test="emp_name_simple != null and emp_name_simple !=''">
+				and emp_name_simple like concat('%',#{emp_name_simple},'%')
+			</if>
+			<if test="emp_age_begin != null and emp_age_begin !=''">
+				and emp_age &gt;= #{emp_age_begin}
+			</if>
+			<if test="emp_age_end != null and emp_age_end !=''">
+				and emp_age &lt;= #{emp_age_end}
+			</if>
+			<if test="birthday_year != null and birthday_year !=''">
+				and year(emp_birthday) = #{birthday_year}
+			</if>
+			<if test="birthday_month != null and birthday_month !=''">
+				and month(emp_birthday) = #{birthday_month}
+			</if>
+			<if test="birthday_day != null and birthday_day !=''">
+				and day(emp_birthday) = #{birthday_day}
+			</if>
+			<if test="emp_sex != null and emp_sex !='全部'">
+				and emp_sex = #{emp_sex}
+			</if>
+			<if test="emp_grade_id != null and emp_grade_id !=0">
+				and emp_grade_id = #{emp_grade_id}
+			</if>
+			<if test="emp_status2 != null and emp_status2 !=''">
+				and emp_now_status = #{emp_status2}
+			</if>
+		</where>
+
+	</select>
+	<select id="selectEmpIdByByEmpIdCard" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee"
+		resultType="java.lang.Integer">
+		SELECT emp_id
+		FROM
+		tyyhoa.oa_rlzyb_employee
+		where emp_idcard = #{emp_idcard,jdbcType=VARCHAR} and emp_delectStatus =
+		'未删除'
+	</select>
+	<update id="updateByEmpIdCardSelective" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		update oa_rlzyb_employee
+		<set>
+			<if test="save_model=='AddBasicInfo'">
+				<if test="create_time !=null">
+					create_time = #{create_time,jdbcType=TIMESTAMP},
+				</if>
+				<if test="emp_delectStatus != null">
+					emp_delectStatus = #{emp_delectStatus,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_age != null">
+					emp_age = #{emp_age,jdbcType=INTEGER},
+				</if>
+				<if test="emp_birthday != null">
+					emp_birthday = #{emp_birthday,jdbcType=TIMESTAMP},
+				</if>
+				<if test="emp_name != null">
+					emp_name = #{emp_name,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_idcard != null">
+					emp_idcard = #{emp_idcard,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_name_simple != null">
+					emp_name_simple = #{emp_name_simple,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_phone != null">
+					emp_phone = #{emp_phone,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_political_status != null">
+					emp_political_status = #{emp_political_status,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_sex != null">
+					emp_sex = #{emp_sex,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_marital_status != null">
+					emp_marital_status = #{emp_marital_status,jdbcType=VARCHAR},
+				</if>
+				<if test="nation_name != null">
+					nation_name = #{nation_name,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_Email != null">
+					emp_Email = #{emp_Email,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_hobby != null">
+					emp_hobby = #{emp_hobby,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_province != null">
+					emp_province = #{emp_province,jdbcType=INTEGER},
+				</if>
+				<if test="emp_city != null">
+					emp_city = #{emp_city,jdbcType=INTEGER},
+				</if>
+				<if test="emp_county != null">
+					emp_county = #{emp_county,jdbcType=INTEGER},
+				</if>
+				<if test="emp_address != null">
+					emp_address = #{emp_address,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_origin_detail != null">
+					emp_origin_detail = #{emp_origin_detail,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_now_province != null">
+					emp_now_province = #{emp_now_province,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_now_city != null">
+					emp_now_city = #{emp_now_city,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_now_county != null">
+					emp_now_county = #{emp_now_county,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_now_detail != null">
+					emp_now_detail = #{emp_now_detail,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_educational_background != null">
+					emp_educational_background =
+					#{emp_educational_background,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_photo_path != null">
+					emp_photo_path = #{emp_photo_path,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="save_model=='AddExperienceInfo'">
+				<if test="emp_Education_experience != null">
+					emp_Education_experience =
+					#{emp_Education_experience,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_work_experience != null">
+					emp_work_experience = #{emp_work_experience,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_train_experience != null">
+					emp_train_experience = #{emp_train_experience,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_society_relation != null">
+					emp_society_relation = #{emp_society_relation,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_remarks != null">
+					emp_remarks = #{emp_remarks,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="save_model=='AddPositionInfo'">
+				<if test="emp_Employment_nature != null">
+					emp_Employment_nature = #{emp_Employment_nature,jdbcType=VARCHAR},
+				</if>
+
+				<if test="emp_Entry_date != null">
+					emp_Entry_date = #{emp_Entry_date,jdbcType=TIMESTAMP},
+				</if>
+				<if test="emp_tryout_end_date != null">
+					emp_tryout_end_date = #{emp_tryout_end_date,jdbcType=TIMESTAMP},
+				</if>
+				<if test="emp_now_status != null">
+					emp_now_status = #{emp_now_status,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_technical_title_name != null">
+					emp_technical_title_name =
+					#{emp_technical_title_name,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_grade_id != null">
+					emp_grade_id = #{emp_grade_id,jdbcType=INTEGER},
+				</if>
+				<if test="emp_registrant != null">
+					emp_registrant = #{emp_registrant,jdbcType=INTEGER},
+				</if>
+				<if test="emp_salary_cardnumber != null">
+					emp_salary_cardnumber = #{emp_salary_cardnumber,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_medical_insurance_cardnumber != null">
+					emp_medical_insurance_cardnumber =
+					#{emp_medical_insurance_cardnumber,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_endowment_insurance_cardnumber != null">
+					emp_endowment_insurance_cardnumber =
+					#{emp_endowment_insurance_cardnumber,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_department != null">
+					emp_department = #{emp_department,jdbcType=INTEGER},
+				</if>
+				<if test="emp_position != null">
+					emp_position = #{emp_position,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="save_model=='AddUrgentPersonInfo'">
+				<if test="emp_contact_name != null">
+					emp_contact_name = #{emp_contact_name,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_contact_phone != null">
+					emp_contact_phone = #{emp_contact_phone,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_contact_relationship != null">
+					emp_contact_relationship =
+					#{emp_contact_relationship,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_contact_address != null">
+					emp_contact_address = #{emp_contact_address,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_contact_address_province != null">
+					emp_contact_address_province =
+					#{emp_contact_address_province,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_contact_address_city != null">
+					emp_contact_address_city =
+					#{emp_contact_address_city,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_contact_address_county != null">
+					emp_contact_address_county =
+					#{emp_contact_address_county,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_contact_address_detail != null">
+					emp_contact_address_detail =
+					#{emp_contact_address_detail,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="save_model=='AddCertificateInfo'">
+				<if test="emp_idcard_front != null">
+					emp_idcard_front = #{emp_idcard_front,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_idcard_reverse != null">
+					emp_idcard_reverse = #{emp_idcard_reverse,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_Degree_certificate != null">
+					emp_Degree_certificate = #{emp_Degree_certificate,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_Education_certificate != null">
+					emp_Education_certificate =
+					#{emp_Education_certificate,jdbcType=VARCHAR},
+				</if>
+				<if test="emp_technical_title_path != null">
+					emp_technical_title_path =
+					#{emp_technical_title_path,jdbcType=VARCHAR},
+				</if>
+			</if>
+		</set>
+		<where>
+			<if test="emp_id!= null and emp_id != 0">
+				and emp_id = #{emp_id,jdbcType=INTEGER}
+			</if>
+			<if test="a_emp_idcard != null and a_emp_idcard != ''">
+				and emp_idcard = #{a_emp_idcard,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</update>
+	<select id="selectMaxEmpId" resultType="java.lang.Integer">
+		SELECT MAX(emp_id)
+		FROM
+		tyyhoa.oa_rlzyb_employee
+	</select>
+	<select id="selectHumanAffairsOaRlzybEmployee" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from oa_rlzyb_employee
+		where emp_position = 3 and emp_delectStatus = '未删除' and emp_now_status =
+		'在职'
+	</select>
+
+	<!-- db -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- 人力资源部 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from oa_rlzyb_employee
+		where emp_id = #{emp_id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByID" resultType="String" parameterType="java.lang.Integer">
+		SELECT emp_name FROM oa_rlzyb_employee
+		where emp_id = #{emp_id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from oa_rlzyb_employee
+		where emp_id = #{emp_id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		insert into oa_rlzyb_employee (emp_id, emp_name, emp_idcard,
+		emp_name_simple, emp_phone, emp_political_status,
+		emp_sex, emp_marital_status, nation_name,
+		emp_Email, emp_hobby, emp_province,
+		emp_city, emp_county, emp_address,
+		emp_contact_name, emp_contact_phone, emp_contact_relationship,
+		emp_contact_address, emp_Employment_nature,
+		emp_photo_path, emp_Entry_date, emp_tryout_end_date,
+		emp_now_status, emp_technical_title_name,
+		emp_grade_id, emp_registrant, emp_salary_cardnumber,
+		emp_medical_insurance_cardnumber, emp_endowment_insurance_cardnumber,
+		emp_idcard_front, emp_idcard_reverse, emp_Degree_certificate,
+		emp_Education_certificate, emp_technical_title_path,
+		emp_Education_experience, emp_work_experience,
+		emp_train_experience, emp_society_relation,
+		emp_remarks, emp_delectStatus)
+		values (#{emp_id,jdbcType=INTEGER}, #{emp_name,jdbcType=VARCHAR},
+		#{emp_idcard,jdbcType=VARCHAR},
+		#{emp_name_simple,jdbcType=VARCHAR}, #{emp_phone,jdbcType=VARCHAR},
+		#{emp_political_status,jdbcType=VARCHAR},
+		#{emp_sex,jdbcType=VARCHAR}, #{emp_marital_status,jdbcType=VARCHAR},
+		#{nation_name,jdbcType=VARCHAR},
+		#{emp_Email,jdbcType=VARCHAR}, #{emp_hobby,jdbcType=VARCHAR}, #{emp_province,jdbcType=VARCHAR},
+		#{emp_city,jdbcType=VARCHAR}, #{emp_county,jdbcType=VARCHAR},
+		#{emp_address,jdbcType=VARCHAR},
+		#{emp_contact_name,jdbcType=VARCHAR}, #{emp_contact_phone,jdbcType=VARCHAR},
+		#{emp_contact_relationship,jdbcType=VARCHAR},
+		#{emp_contact_address,jdbcType=VARCHAR},
+		#{emp_Employment_nature,jdbcType=VARCHAR},
+		#{emp_photo_path,jdbcType=VARCHAR},
+		#{emp_Entry_date,jdbcType=TIMESTAMP},
+		#{emp_tryout_end_date,jdbcType=TIMESTAMP},
+		#{emp_now_status,jdbcType=VARCHAR},
+		#{emp_technical_title_name,jdbcType=VARCHAR},
+		#{emp_grade_id,jdbcType=INTEGER}, #{emp_registrant,jdbcType=INTEGER},
+		#{emp_salary_cardnumber,jdbcType=VARCHAR},
+		#{emp_medical_insurance_cardnumber,jdbcType=VARCHAR},
+		#{emp_endowment_insurance_cardnumber,jdbcType=VARCHAR},
+		#{emp_idcard_front,jdbcType=VARCHAR},
+		#{emp_idcard_reverse,jdbcType=VARCHAR},
+		#{emp_Degree_certificate,jdbcType=VARCHAR},
+		#{emp_Education_certificate,jdbcType=VARCHAR},
+		#{emp_technical_title_path,jdbcType=VARCHAR},
+		#{emp_Education_experience,jdbcType=VARCHAR},
+		#{emp_work_experience,jdbcType=VARCHAR},
+		#{emp_train_experience,jdbcType=VARCHAR},
+		#{emp_society_relation,jdbcType=VARCHAR},
+		#{emp_remarks,jdbcType=VARCHAR}, #{emp_delectStatus,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		insert into oa_rlzyb_employee
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="emp_id != null">
+				emp_id,
+			</if>
+			<if test="emp_name != null">
+				emp_name,
+			</if>
+			<if test="emp_idcard != null">
+				emp_idcard,
+			</if>
+			<if test="emp_name_simple != null">
+				emp_name_simple,
+			</if>
+			<if test="emp_phone != null">
+				emp_phone,
+			</if>
+			<if test="emp_political_status != null">
+				emp_political_status,
+			</if>
+			<if test="emp_sex != null">
+				emp_sex,
+			</if>
+			<if test="emp_marital_status != null">
+				emp_marital_status,
+			</if>
+			<if test="nation_name != null">
+				nation_name,
+			</if>
+			<if test="emp_Email != null">
+				emp_Email,
+			</if>
+			<if test="emp_hobby != null">
+				emp_hobby,
+			</if>
+			<if test="emp_province != null">
+				emp_province,
+			</if>
+			<if test="emp_city != null">
+				emp_city,
+			</if>
+			<if test="emp_county != null">
+				emp_county,
+			</if>
+			<if test="emp_address != null">
+				emp_address,
+			</if>
+			<if test="emp_contact_name != null">
+				emp_contact_name,
+			</if>
+			<if test="emp_contact_phone != null">
+				emp_contact_phone,
+			</if>
+			<if test="emp_contact_relationship != null">
+				emp_contact_relationship,
+			</if>
+			<if test="emp_contact_address != null">
+				emp_contact_address,
+			</if>
+			<if test="emp_Employment_nature != null">
+				emp_Employment_nature,
+			</if>
+			<if test="emp_photo_path != null">
+				emp_photo_path,
+			</if>
+			<if test="emp_Entry_date != null">
+				emp_Entry_date,
+			</if>
+			<if test="emp_tryout_end_date != null">
+				emp_tryout_end_date,
+			</if>
+			<if test="emp_now_status != null">
+				emp_now_status,
+			</if>
+			<if test="emp_technical_title_name != null">
+				emp_technical_title_name,
+			</if>
+			<if test="emp_grade_id != null">
+				emp_grade_id,
+			</if>
+			<if test="emp_registrant != null">
+				emp_registrant,
+			</if>
+			<if test="emp_salary_cardnumber != null">
+				emp_salary_cardnumber,
+			</if>
+			<if test="emp_medical_insurance_cardnumber != null">
+				emp_medical_insurance_cardnumber,
+			</if>
+			<if test="emp_endowment_insurance_cardnumber != null">
+				emp_endowment_insurance_cardnumber,
+			</if>
+			<if test="emp_idcard_front != null">
+				emp_idcard_front,
+			</if>
+			<if test="emp_idcard_reverse != null">
+				emp_idcard_reverse,
+			</if>
+			<if test="emp_Degree_certificate != null">
+				emp_Degree_certificate,
+			</if>
+			<if test="emp_Education_certificate != null">
+				emp_Education_certificate,
+			</if>
+			<if test="emp_technical_title_path != null">
+				emp_technical_title_path,
+			</if>
+			<if test="emp_Education_experience != null">
+				emp_Education_experience,
+			</if>
+			<if test="emp_work_experience != null">
+				emp_work_experience,
+			</if>
+			<if test="emp_train_experience != null">
+				emp_train_experience,
+			</if>
+			<if test="emp_society_relation != null">
+				emp_society_relation,
+			</if>
+			<if test="emp_remarks != null">
+				emp_remarks,
+			</if>
+			<if test="emp_delectStatus != null">
+				emp_delectStatus,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="emp_id != null">
+				#{emp_id,jdbcType=INTEGER},
+			</if>
+			<if test="emp_name != null">
+				#{emp_name,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_idcard != null">
+				#{emp_idcard,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_name_simple != null">
+				#{emp_name_simple,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_phone != null">
+				#{emp_phone,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_political_status != null">
+				#{emp_political_status,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_sex != null">
+				#{emp_sex,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_marital_status != null">
+				#{emp_marital_status,jdbcType=VARCHAR},
+			</if>
+			<if test="nation_name != null">
+				#{nation_name,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Email != null">
+				#{emp_Email,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_hobby != null">
+				#{emp_hobby,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_province != null">
+				#{emp_province,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_city != null">
+				#{emp_city,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_county != null">
+				#{emp_county,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_address != null">
+				#{emp_address,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_contact_name != null">
+				#{emp_contact_name,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_contact_phone != null">
+				#{emp_contact_phone,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_contact_relationship != null">
+				#{emp_contact_relationship,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_contact_address != null">
+				#{emp_contact_address,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Employment_nature != null">
+				#{emp_Employment_nature,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_photo_path != null">
+				#{emp_photo_path,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Entry_date != null">
+				#{emp_Entry_date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="emp_tryout_end_date != null">
+				#{emp_tryout_end_date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="emp_now_status != null">
+				#{emp_now_status,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_technical_title_name != null">
+				#{emp_technical_title_name,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_grade_id != null">
+				#{emp_grade_id,jdbcType=INTEGER},
+			</if>
+			<if test="emp_registrant != null">
+				#{emp_registrant,jdbcType=INTEGER},
+			</if>
+			<if test="emp_salary_cardnumber != null">
+				#{emp_salary_cardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_medical_insurance_cardnumber != null">
+				#{emp_medical_insurance_cardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_endowment_insurance_cardnumber != null">
+				#{emp_endowment_insurance_cardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_idcard_front != null">
+				#{emp_idcard_front,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_idcard_reverse != null">
+				#{emp_idcard_reverse,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Degree_certificate != null">
+				#{emp_Degree_certificate,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Education_certificate != null">
+				#{emp_Education_certificate,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_technical_title_path != null">
+				#{emp_technical_title_path,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Education_experience != null">
+				#{emp_Education_experience,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_work_experience != null">
+				#{emp_work_experience,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_train_experience != null">
+				#{emp_train_experience,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_society_relation != null">
+				#{emp_society_relation,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_remarks != null">
+				#{emp_remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_delectStatus != null">
+				#{emp_delectStatus,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		update oa_rlzyb_employee
+		<set>
+			<if test="emp_name != null">
+				emp_name = #{emp_name,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_idcard != null">
+				emp_idcard = #{emp_idcard,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_name_simple != null">
+				emp_name_simple = #{emp_name_simple,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_phone != null">
+				emp_phone = #{emp_phone,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_political_status != null">
+				emp_political_status = #{emp_political_status,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_sex != null">
+				emp_sex = #{emp_sex,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_marital_status != null">
+				emp_marital_status = #{emp_marital_status,jdbcType=VARCHAR},
+			</if>
+			<if test="nation_name != null">
+				nation_name = #{nation_name,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Email != null">
+				emp_Email = #{emp_Email,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_hobby != null">
+				emp_hobby = #{emp_hobby,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_province != null">
+				emp_province = #{emp_province,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_city != null">
+				emp_city = #{emp_city,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_county != null">
+				emp_county = #{emp_county,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_address != null">
+				emp_address = #{emp_address,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_contact_name != null">
+				emp_contact_name = #{emp_contact_name,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_contact_phone != null">
+				emp_contact_phone = #{emp_contact_phone,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_contact_relationship != null">
+				emp_contact_relationship =
+				#{emp_contact_relationship,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_contact_address != null">
+				emp_contact_address = #{emp_contact_address,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Employment_nature != null">
+				emp_Employment_nature = #{emp_Employment_nature,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_photo_path != null">
+				emp_photo_path = #{emp_photo_path,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Entry_date != null">
+				emp_Entry_date = #{emp_Entry_date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="emp_tryout_end_date != null">
+				emp_tryout_end_date = #{emp_tryout_end_date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="emp_now_status != null">
+				emp_now_status = #{emp_now_status,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_technical_title_name != null">
+				emp_technical_title_name =
+				#{emp_technical_title_name,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_grade_id != null">
+				emp_grade_id = #{emp_grade_id,jdbcType=INTEGER},
+			</if>
+			<if test="emp_registrant != null">
+				emp_registrant = #{emp_registrant,jdbcType=INTEGER},
+			</if>
+			<if test="emp_salary_cardnumber != null">
+				emp_salary_cardnumber = #{emp_salary_cardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_medical_insurance_cardnumber != null">
+				emp_medical_insurance_cardnumber =
+				#{emp_medical_insurance_cardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_endowment_insurance_cardnumber != null">
+				emp_endowment_insurance_cardnumber =
+				#{emp_endowment_insurance_cardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_idcard_front != null">
+				emp_idcard_front = #{emp_idcard_front,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_idcard_reverse != null">
+				emp_idcard_reverse = #{emp_idcard_reverse,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Degree_certificate != null">
+				emp_Degree_certificate = #{emp_Degree_certificate,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Education_certificate != null">
+				emp_Education_certificate =
+				#{emp_Education_certificate,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_technical_title_path != null">
+				emp_technical_title_path =
+				#{emp_technical_title_path,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_Education_experience != null">
+				emp_Education_experience =
+				#{emp_Education_experience,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_work_experience != null">
+				emp_work_experience = #{emp_work_experience,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_train_experience != null">
+				emp_train_experience = #{emp_train_experience,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_society_relation != null">
+				emp_society_relation = #{emp_society_relation,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_remarks != null">
+				emp_remarks = #{emp_remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="emp_delectStatus != null">
+				emp_delectStatus = #{emp_delectStatus,jdbcType=INTEGER},
+			</if>
+		</set>
+		where emp_id = #{emp_id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		update oa_rlzyb_employee
+		set emp_name = #{emp_name,jdbcType=VARCHAR},
+		emp_idcard = #{emp_idcard,jdbcType=VARCHAR},
+		emp_name_simple = #{emp_name_simple,jdbcType=VARCHAR},
+		emp_phone = #{emp_phone,jdbcType=VARCHAR},
+		emp_political_status = #{emp_political_status,jdbcType=VARCHAR},
+		emp_sex = #{emp_sex,jdbcType=VARCHAR},
+		emp_marital_status = #{emp_marital_status,jdbcType=VARCHAR},
+		nation_name = #{nation_name,jdbcType=VARCHAR},
+		emp_Email = #{emp_Email,jdbcType=VARCHAR},
+		emp_hobby = #{emp_hobby,jdbcType=VARCHAR},
+		emp_province = #{emp_province,jdbcType=VARCHAR},
+		emp_city = #{emp_city,jdbcType=VARCHAR},
+		emp_county = #{emp_county,jdbcType=VARCHAR},
+		emp_address = #{emp_address,jdbcType=VARCHAR},
+		emp_contact_name = #{emp_contact_name,jdbcType=VARCHAR},
+		emp_contact_phone = #{emp_contact_phone,jdbcType=VARCHAR},
+		emp_contact_relationship = #{emp_contact_relationship,jdbcType=VARCHAR},
+		emp_contact_address = #{emp_contact_address,jdbcType=VARCHAR},
+		emp_Employment_nature = #{emp_Employment_nature,jdbcType=VARCHAR},
+		emp_photo_path = #{emp_photo_path,jdbcType=VARCHAR},
+		emp_Entry_date = #{emp_Entry_date,jdbcType=TIMESTAMP},
+		emp_tryout_end_date = #{emp_tryout_end_date,jdbcType=TIMESTAMP},
+		emp_now_status = #{emp_now_status,jdbcType=VARCHAR},
+		emp_technical_title_name = #{emp_technical_title_name,jdbcType=VARCHAR},
+		emp_grade_id = #{emp_grade_id,jdbcType=INTEGER},
+		emp_registrant = #{emp_registrant,jdbcType=INTEGER},
+		emp_salary_cardnumber = #{emp_salary_cardnumber,jdbcType=VARCHAR},
+		emp_medical_insurance_cardnumber =
+		#{emp_medical_insurance_cardnumber,jdbcType=VARCHAR},
+		emp_endowment_insurance_cardnumber =
+		#{emp_endowment_insurance_cardnumber,jdbcType=VARCHAR},
+		emp_idcard_front = #{emp_idcard_front,jdbcType=VARCHAR},
+		emp_idcard_reverse = #{emp_idcard_reverse,jdbcType=VARCHAR},
+		emp_Degree_certificate = #{emp_Degree_certificate,jdbcType=VARCHAR},
+		emp_Education_certificate =
+		#{emp_Education_certificate,jdbcType=VARCHAR},
+		emp_technical_title_path =
+		#{emp_technical_title_path,jdbcType=VARCHAR},
+		emp_Education_experience = #{emp_Education_experience,jdbcType=VARCHAR},
+		emp_work_experience = #{emp_work_experience,jdbcType=VARCHAR},
+		emp_train_experience = #{emp_train_experience,jdbcType=VARCHAR},
+		emp_society_relation = #{emp_society_relation,jdbcType=VARCHAR},
+		emp_remarks = #{emp_remarks,jdbcType=VARCHAR},
+		emp_delectStatus = #{emp_delectStatus,jdbcType=INTEGER}
+		where emp_id = #{emp_id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectById" resultType="Integer" parameterType="String">
+		SELECT emp_id FROM oa_rlzyb_employee WHERE emp_name=#{emp_name} <!-- like 
+			concat('%',#{emp_name},'%') -->
+	</select>
+</mapper>

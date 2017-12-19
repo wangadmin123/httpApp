@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbGradedataMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJzbGradedata" >
+    <id column="ID" property="ID" jdbcType="INTEGER" />
+    <result column="Student_id" property="student_id" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="VARCHAR" />
+    <result column="amturn" property="amturn" jdbcType="VARCHAR" />
+    <result column="pmturn" property="pmturn" jdbcType="VARCHAR" />
+    <result column="word" property="word" jdbcType="VARCHAR" />
+    <result column="OBU" property="obu" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="night" property="night" jdbcType="VARCHAR"/>
+  </resultMap>
+
+
+ <select id="selectgranddate" resultType="OaJzbGradedata" >
+ SELECT
+	student_id,
+	stu.stu_number AS stu_number,
+	stu.stu_name AS stu_name,
+	amturn,
+	pmturn,
+	word,
+	classHour,
+	remarks,
+	qijiaHour,
+	TIME
+	FROM oa_jzb_gradedata gra
+INNER JOIN oa_jzb_student stu ON stu.stu_Id = gra.student_id
+WHERE gra.grade_id = #{grade_id}
+  </select>
+  
+  <select id="toSelectGradeStu" resultType="OaJzbStudent">
+  	SELECT stu_Id,stu.stu_number,stu_name,grade_id
+	FROM oa_jzb_student stu
+	WHERE stu.grade_id = #{grade_id} AND stu.status_id=1 
+  </select>
+  
+  <select id="selectStuDataBytime" resultType="OaJzbGradedata">
+  	SELECT
+	student_id,
+	stu.stu_number AS stu_number,
+	stu.stu_name AS stu_name,
+	amturn,
+	pmturn,
+	word,
+	classHour,
+	remarks,
+	TIME
+	FROM oa_jzb_gradedata gra
+	INNER JOIN oa_jzb_student stu ON stu.stu_Id = gra.student_id
+	WHERE gra.grade_id = #{grade_id}
+	and TIME = #{time}
+  </select>
+  
+  
+  <select id="selecttime" resultType="OaJzbGradedata">
+  	SELECT
+	student_id,
+	stu.stu_number AS stu_number,
+	stu.stu_name AS stu_name,
+	amturn,
+	pmturn,
+	word,
+	classHour,
+	remarks,
+	qijiaHour,
+	TIME,
+	enteringTime
+	FROM oa_jzb_gradedata gra
+	INNER JOIN oa_jzb_student stu ON stu.stu_Id = gra.student_id
+	WHERE gra.grade_id = #{grade_id}
+	<if test="time != null and time != ''">
+		and TIME = #{time}
+	</if>
+	LIMIT #{index},#{pageSize}
+  </select>
+  
+  <select id="getDataByTime" resultType="int">
+  	SELECT
+	COUNT(1)
+	FROM oa_jzb_gradedata gra
+	INNER JOIN oa_jzb_student stu ON stu.stu_Id = gra.student_id
+	WHERE gra.grade_id = #{grade_id}  AND status_id=1
+	<if test="time != null and time != ''">
+		and TIME = #{time}
+	</if>
+  </select>
+  
+ 
+ <insert id ="insertGradedata" parameterType="OaJzbGradedata" >      
+	insert into oa_jzb_gradedata
+	(student_id,amturn,pmturn,word,classHour,remarks,time,grade_id,enteringTime,qijiaHour)
+	values(
+	#{student_id},
+	#{amturn},
+	#{pmturn},
+	#{word},
+	#{classHour},
+	#{remarks},
+	#{time},
+	#{grade_id},
+	#{enteringTime},#{qijiaHour} ) 
+      </insert > 
+      
+   <update id="updateGradeData" parameterType="OaJzbGradedata">
+   	 UPDATE oa_jzb_gradedata
+	<set>
+		<if test="amturn != null and amturn != ''">
+			amturn=#{amturn},
+		</if>
+		<if test="pmturn != null and pmturn != ''">
+			pmturn=#{pmturn},
+		</if>
+		<if test="word != null and word != ''">
+			word=#{word},
+		</if>
+		<if test="remarks != null and remarks != ''">
+			remarks=#{remarks},
+		</if>
+		<if test="classHour != null and classHour != ''">
+			classHour=#{classHour},
+		</if>
+	</set>
+	WHERE student_id = #{student_id}
+	AND DATE_FORMAT(time,'%Y-%m-%d')=DATE_FORMAT(#{time},'%Y-%m-%d')
+   </update>
+   
+   
+    <select id="selectStuDataBytimeAndStudent_id" resultType="OaJzbGradedata">
+   	SELECT
+	student_id,
+	stu.stu_number AS stu_number,
+	stu.stu_name AS stu_name,
+	amturn,
+	pmturn,
+	word,
+	classHour,
+	remarks,
+	TIME
+	FROM oa_jzb_gradedata gra
+	INNER JOIN oa_jzb_student stu ON stu.stu_Id = gra.student_id
+	WHERE gra.student_id = #{student_id}
+	AND TIME = #{time}
+   </select>
+   
+   <select id="selListDK" resultType="cn.tyyhoa.pojo.StudentDK">
+  SELECT  s1.`am_dk`,s1.`am_time`,s1.`pm_dk`,s2.`stu_Id`,s1.`pm_time`
+   FROM `oa_jzb_studk` s1,`oa_jzb_student` s2
+	WHERE s1.`stu_wx`=s2.`wechat` AND s2.`grade_id`=#{gradeId} AND status_id=1
+	AND (s1.`am_time` LIKE CONCAT ('%',#{time},'%') OR s1.`pm_time` LIKE CONCAT ('%',#{time},'%'))
+   </select>
+</mapper>

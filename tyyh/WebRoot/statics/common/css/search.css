@@ -1,0 +1,40 @@
+/* CSS Document */
+
+.searchTitle{
+    font-size:14px;
+    color:#333333;
+    text-indent:2pt;
+    height:40px;
+    line-height:40px;
+    border-bottom:1px solid #E5E5E5;
+    font-weight: bold;
+    position: relative;
+}
+.searchShow{ position:absolute; bottom: 10px;  left:95%; cursor: pointer; font-size: 12px;  color: #ff6600;}
+.searchShow:hover{color: #ff0000; text-decoration: underline;}
+.searchContent{display: none;}
+
+.serach{border:1px solid #eee; padding:10px;}
+
+.searchTable{
+    text-align:left;
+	width:100%;
+	font-size:12px;
+	color:#333333;
+   
+}
+.searchTable tr{
+   min-height:50px;
+   line-height:50px;
+  
+}
+ 
+.searchTable tr td{
+	padding:0px 3px;
+   min-height:50px;
+   line-height:50px;
+}
+
+
+
+

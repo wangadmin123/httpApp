@@ -1,0 +1,23 @@
+/* CSS Document */
+
+.serach{border:1px solid #eee; padding:10px;}
+
+.searchTable{
+    text-align:left;
+	width:100%;
+	font-size:12px;
+	color:#333333;
+   
+}
+.searchTable tr{
+   min-height:50px;
+   line-height:50px;
+  
+}
+ 
+.searchTable tr td{
+	padding:0px 3px;
+   min-height:50px;
+   line-height:50px;
+}
+

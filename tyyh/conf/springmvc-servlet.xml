@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+	<!--扫描注解 -->
+	<context:component-scan base-package="cn.tyyhoa.controller" />
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+						<value>*/*;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<mvc:resources location="/statics/" mapping="/statics/**"></mvc:resources>
+	<!-- 请求拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 拦截所以请求 -->
+			<mvc:mapping path="/**"/>
+			<!-- 不拦截的连接 -->
+			<mvc:exclude-mapping path="/statics/**"/>
+			<mvc:exclude-mapping path="/Consultway/ToAssistantConsultInfo/{id}"/>
+			<mvc:exclude-mapping path="/Consultway/ToAssistantConsultInfo/{id}"/>
+			<mvc:exclude-mapping path="/random/getrandom"/>
+			<mvc:exclude-mapping path="/login/**"/>
+			<mvc:exclude-mapping path="/getData/checkUsername"/>
+			<bean class="cn.tyyhoa.util.CommonInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.RuntimeException">error</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="524288000"></property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
+</beans>

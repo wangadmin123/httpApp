@@ -1,0 +1,22 @@
+/* CSS Document */
+*{
+	margin:0px;
+	padding:0px;
+	font-family:"微软雅黑";
+
+}
+a{text-decoration:none;}
+img{border:0;}
+a:focus {outline:none;}
+body{ background-color:#60a6e4;}
+.content{text-align:center; margin:0 auto;}
+.head{ font-size:30px; color:#fff;  line-height:150px; height:150px; font-weight:normal;  }
+.title{ font-size:18px; color:#fff; line-height:40px; height:40px;font-weight:normal; }
+.title1{font-size:14px; color:#fff; line-height:40px; height:40px; font-weight:normal; margin-bottom:30px; }
+/*.BrowserContent{ margin:0 auto; text-align:center; width:600px; border-top:1px solid #fff; padding-top:30px; display:block; overflow:hidden;}*/
+/*.Browser{float:left; margin:0 45px;}*/
+.BrowserContent{ margin:0 auto; text-align:center; width:600px; border-top:1px solid #fff; padding-top:30px; display:block; overflow:hidden;}
+.Browser{margin:0 45px;}
+.Browser p{ font-size:12px; }
+.Browser p a{ color:#fff; font-weight:normal;}
+.Browser p a:hover{color:#ff0000; text-decoration:underline;}

@@ -1,0 +1,32 @@
+.ygxm{height: 50px; line-height: 50px;  border-bottom:1px solid #CCCCCC; color:#606060; text-indent: 15pt;}
+
+.ygxm span{ margin: 0px 10px; cursor: pointer;}
+.ygxm span:hover{color:#ff0000; text-decoration: underline;}
+.qxfp{height: 50px; line-height: 50px;  border-bottom:1px solid #CCCCCC; color:#606060; text-indent: 15pt; }
+.qx_name{ color:#606060; text-indent: 15pt; font-size: 14px;}
+.bk{border-bottom: 1px solid #ccc;border-top: 1px solid #ccc; overflow: hidden;height: auto;width: 90%; text-align: center; margin: 40px auto; display: flex;}
+.bk_head{ flex: 1; width: 100px;  display: block; border-right: 1px solid #ccc; padding-top: 20px;}
+.bk_title{flex:9;}
+
+.gnmk{ float: left; margin: 15px 15px; cursor: pointer;
+    display: block; width: 100px; height:40px; line-height:40px; color:#606060;
+    border-radius: 2px; border:1px solid #CCCCCC; padding:5px 35px; position: relative;
+    background-image: url("../images/nav.png"); background-position: 10px 15px; background-repeat: no-repeat;
+}
+
+.gnmk label{ position: relative; width: 169px; height:50px; left:-35px; bottom: 5px;  display: block; cursor: pointer; }
+
+.gnmk:hover{background: #f9f9f9;background-image: url("../images/nav.png"); background-position: 10px 15px; background-repeat: no-repeat;}
+.gnmk span{ width: 18px; height: 18px; display: inline;position:relative; left: 77px; bottom: 64px;}
+.gnmk span input[type=checkbox]{width: 18px; height: 18px; overflow: hidden;}
+
+.tabTitle2{
+    height:30px;
+    border-bottom:1px solid #E5E5E5;
+    clear: both;
+}
+
+.btposition1{
+    margin-left:173px;
+    margin-top:20px;
+}

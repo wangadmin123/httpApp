@@ -1,0 +1,17 @@
+﻿
+
+.tdWidth{
+	width:100px;
+	height:55px;
+	line-height:35px;
+	font-size: 14px;
+}
+p{margin-bottom: 30px;}
+.saveBotton{margin-right: 30px;border-style: groove;border-radius:8px;width:60px;height:25px;float: right;}
+.addTable{margin: auto;}
+select,input{border: none;height: 30px;text-align: left;border-bottom: 1ps solid black;}
+.P_update_update{
+border:1px solid menu; width: 900px; height: 460px; font-size:13px;margin-left: 115px;margin-top:25px; margin-left: 60px;
+}
+.addstu{font-family:'楷体';width:200px;margin-bottom:5px;margin-left:10px;color: blue;font-size:25px; font-weight: bold;margin-top:15px;}
+.td{border-bottom: 1px solid black;width:200px;}

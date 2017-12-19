@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbClassnameMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaScbClassname" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="allotClass" property="allotClass" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, allotClass
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_scb_classname
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_scb_classname
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaScbClassname" >
+    insert into oa_scb_classname (id, allotClass)
+    values (#{id,jdbcType=INTEGER}, #{allotClass,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaScbClassname" >
+    insert into oa_scb_classname
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="allotClass != null" >
+        allotClass,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="allotClass != null" >
+        #{allotClass,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaScbClassname" >
+    update oa_scb_classname
+    <set >
+      <if test="allotClass != null" >
+        allotClass = #{allotClass,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaScbClassname" >
+    update oa_scb_classname
+    set allotClass = #{allotClass,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

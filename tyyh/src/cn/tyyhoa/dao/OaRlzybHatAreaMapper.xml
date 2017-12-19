@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybHatAreaMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybHatArea" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="areaID" property="areaID" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="father" property="father" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, areaID, area, father
+  </sql>
+  <select id="getSomeOaRlzybHatAreaByFather" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_hat_area
+    where father = #{CityId}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_hat_area
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_hat_area
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybHatArea" >
+    insert into oa_rlzyb_hat_area (id, areaID, area, 
+      father)
+    values (#{id,jdbcType=INTEGER}, #{areaID,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{father,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybHatArea" >
+    insert into oa_rlzyb_hat_area
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="areaID != null" >
+        areaID,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="father != null" >
+        father,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="areaID != null" >
+        #{areaID,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="father != null" >
+        #{father,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybHatArea" >
+    update oa_rlzyb_hat_area
+    <set >
+      <if test="areaID != null" >
+        areaID = #{areaID,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="father != null" >
+        father = #{father,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybHatArea" >
+    update oa_rlzyb_hat_area
+    set areaID = #{areaID,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      father = #{father,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

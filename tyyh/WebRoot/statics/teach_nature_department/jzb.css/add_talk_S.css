@@ -1,0 +1,12 @@
+﻿table{height:362px;}
+.div_table{float: left; height: 352px; margin-left: 60px;}
+.addstu{font-family:'楷体';width:200px;margin-bottom:5px;margin-left:10px;color: blue;font-size:25px; font-weight: bold;margin-top:15px;}
+.popupStyle{ border:1px solid menu; width: 960px; height: 540px; font-size: 15px;margin: auto;}
+.div{margin:auto; width:1200px;padding:20px;}
+.saveBotton{margin-right:30px;border-style: groove;border-radius:8px;width:60px;float:right;height:25px;}
+.textStyle{width:120px;}
+.addTable{height:362px;}
+input{border: none;border-bottom: 1px solid black;}
+.float{float: right;}
+.btposition1{float: right;margin: auto; width: 865px;padding-top: 20px;}
+.checkedStyle{width：160px;}

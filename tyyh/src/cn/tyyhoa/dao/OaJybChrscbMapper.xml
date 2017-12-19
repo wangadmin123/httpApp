@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybChrscbMapper" >
+     
+  <select id="GetChrscbById" resultType="cn.tyyhoa.pojo.OaScbRecord">
+  SELECT * FROM oa_scb_record 
+  INNER JOIN oa_jzb_student ON    oa_jzb_student.consulter_id=oa_scb_record.consulterId
+  WHERE stu_id=#{stu_id} 
+  GROUP BY  DATE_FORMAT(eventtime,'%Y-%m-%d')
+  ORDER BY eventtime DESC
+  </select>
+
+   
+  
+   <select id="GetChrscbByTime" resultType="cn.tyyhoa.pojo.OaScbRecord">
+   SELECT * FROM oa_scb_record 
+  INNER JOIN oa_jzb_student ON    oa_jzb_student.consulter_id=oa_scb_record.consulterId   
+   WHERE 
+  DATE_FORMAT(eventtime,'%Y-%m-%d')=DATE_FORMAT(#{eventtime},'%Y-%m-%d')
+  AND stu_id=#{stu_id} 
+  ORDER BY eventtime
+  </select>
+
+
+
+
+
+
+</mapper>

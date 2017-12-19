@@ -1,0 +1,104 @@
+*{
+	font-size: 12px;
+	padding: 0;
+}
+.xxzl{
+	width:96%;
+	margin: auto;
+	text-align: center;
+}
+.tabs{
+	margin-bottom: 5px;
+}
+input{
+	cursor: pointer;
+}
+.table th:nth-child(1),.table th:nth-child(3),.table th:nth-child(5){
+	border:1px solid gray;
+ 	background-color:silver;
+ 	width: 150px;
+ 	height: 32px;
+ 	border-top-style: none;
+}
+
+.table th:nth-child(2),.table th:nth-child(2)>input{
+  width:280px;
+}
+.table th:nth-child(4),.table th:nth-child(6),.table th:nth-child(6)>input,.table th:nth-child(4)>input{
+	width: 240px;
+}
+.btposition1{
+	margin-top:20px;
+	text-align: center;
+}
+ .table>th>input{ 
+ width:100%;
+ 	height: 32px;
+ }
+ /*------------------导入导出加分页页面css-------------*/
+.interview_button{
+	border:1px solid red;
+	height:20px;
+	width:300px;
+	float: right;
+	margin-top: 5px ;
+}
+.interview_button>input{
+	width: 50px;
+	height: 25px;
+	float: right;
+}
+.page{
+	float: left;
+	margin-top: 20px;
+	margin-right: 80px;
+	
+}
+.interview_button input:nth-child(1){
+	margin-left: 20px;	
+}
+/*-------------------end-------------*/
+.look,.se_edit,.P_talk_edit,.Stu_talk,{
+	background-image:url(../../images/edit.png);
+	background-repeat:no-repeat; 
+	width:60px; 
+	height:25px;  
+	display:block;
+	background-position:center left; 
+	float:left; line-height:25px; 
+	text-decoration:none; 
+	padding-left:5px;
+}
+.submit{ 
+	cursor:pointer;
+	background-color:#44bb00;
+	width:65px;
+	height:30px;
+	line-height:30px;
+	text-align:center; 
+	color:#fff;
+	font-size:12px;
+	font-weight:bold; 
+	border:0px; 
+	border-radius: 3px; 
+	margin-right:20px;
+}
+.info_p{
+	margin-bottom:5px;
+	margin-top:5px;
+
+	}
+.info_button{
+	cursor:pointer;
+	background-color:#44bb00;
+	padding:7px;
+	width:65px;
+	height:50px;
+	line-height:30px;
+	text-align:center; 
+	color:#fff;
+	font-size:12px;
+	font-weight:bold; 
+	
+	border-radius: 3px; 
+	margin-right:20px;}

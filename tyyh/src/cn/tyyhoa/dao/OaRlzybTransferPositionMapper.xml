@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybTransferPositionMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybTransferPosition" >
+    <id column="transfer_position_id" property="transfer_position_id" jdbcType="INTEGER" />
+    <result column="emp_id" property="emp_id" jdbcType="INTEGER" />
+    <result column="position_id" property="position_id" jdbcType="INTEGER" />
+    <result column="depart_id" property="depart_id" jdbcType="INTEGER" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="depart" property="depart" jdbcType="INTEGER" />
+    <result column="transfer_position_reason" property="transfer_position_reason" jdbcType="VARCHAR" />
+    <result column="transfer_position_time" property="transfer_position_time" jdbcType="VARCHAR" />
+    <result column="transfer_position_delectStatus" property="transfer_position_delectStatus" jdbcType="INTEGER" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    transfer_position_id, emp_id,depart_id, position_id, transfer_position_reason, transfer_position_time, position，depart
+    transfer_position_delectStatus, oa_rlzyb_transfer_position.create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_transfer_position
+    where transfer_position_id = #{transfer_position_id,jdbcType=INTEGER}   
+  </select>
+  <update id="updateDeleteStatus" parameterType="cn.tyyhoa.pojo.OaRlzybTransferPosition" >
+    update oa_rlzyb_transfer_position
+    set oa_rlzyb_transfer_position.transfer_position_delectStatus = 2
+    where transfer_position_id = #{transfer_position_id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllCount" resultType="java.lang.Integer">
+   SELECT COUNT(transfer_position_id) FROM oa_rlzyb_transfer_position
+   INNER JOIN oa_rlzyb_employee
+	ON oa_rlzyb_transfer_position.emp_id = oa_rlzyb_employee.emp_id
+   where oa_rlzyb_transfer_position.transfer_position_delectStatus = 1	
+   <if test="emp_name != null and emp_name != ''">
+   		and emp_name like CONCAT("%",#{emp_name},"%")  
+   </if>
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+     SELECT 
+	transfer_position_id,
+	oa_rlzyb_transfer_position.emp_id,
+	emp_name,
+	transfer_position_reason,
+	oa_rlzyb_position.position_id,
+	oa_rlzyb_position.position_name,
+	oa_rlzyb_department.depart_id,
+	oa_rlzyb_department.depart_name,
+	transfer_position_time,
+	oa_rlzyb_transfer_position.create_time
+	FROM oa_rlzyb_transfer_position
+	INNER JOIN oa_rlzyb_employee
+	ON oa_rlzyb_transfer_position.emp_id = oa_rlzyb_employee.emp_id
+	INNER JOIN oa_rlzyb_department
+	ON oa_rlzyb_transfer_position.depart_id = oa_rlzyb_department.depart_id
+	INNER JOIN oa_rlzyb_position
+	ON oa_rlzyb_transfer_position.position_id = oa_rlzyb_position.position_id
+    where oa_rlzyb_transfer_position.transfer_position_delectStatus = 1	
+    <if test="emp_name != null and emp_name != ''">
+    	 and emp_name like CONCAT("%",#{emp_name},"%") 
+    </if>
+    ORDER BY transfer_position_id DESC
+    limit #{startPos},#{PageSize}
+  </select>
+  <select id="selectAllShow" resultMap="BaseResultMap">
+     SELECT 
+	transfer_position_id,
+	oa_rlzyb_transfer_position.emp_id,
+	emp_name,
+	transfer_position_reason,
+	oa_rlzyb_position.position_id,
+	oa_rlzyb_position.position_name,
+	oa_rlzyb_department.depart_id,
+	oa_rlzyb_department.depart_name,
+	transfer_position_details,
+	transfer_position_time,
+	oa_rlzyb_transfer_position.create_time
+	FROM oa_rlzyb_transfer_position
+	INNER JOIN oa_rlzyb_employee
+	ON oa_rlzyb_transfer_position.emp_id = oa_rlzyb_employee.emp_id
+	INNER JOIN oa_rlzyb_department
+	ON oa_rlzyb_transfer_position.depart_id = oa_rlzyb_department.depart_id
+	INNER JOIN oa_rlzyb_position
+	ON oa_rlzyb_transfer_position.position_id = oa_rlzyb_position.position_id
+    
+    	where transfer_position_id = #{transfer_position_id} and oa_rlzyb_transfer_position.transfer_position_delectStatus = 1	
+  
+  </select>
+  <select id="selectBeforeShow" resultMap="BaseResultMap">
+    SELECT oa_rlzyb_transfer_position.emp_id,emp_name,POSITION,position_name,depart,depart_name FROM oa_rlzyb_transfer_position
+	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_transfer_position.emp_id = oa_rlzyb_employee.emp_id
+	INNER JOIN oa_rlzyb_position ON oa_rlzyb_transfer_position.position = oa_rlzyb_position.position_id
+	INNER JOIN oa_rlzyb_department ON oa_rlzyb_transfer_position.depart = oa_rlzyb_department.depart_id
+    where transfer_position_id = #{transfer_position_id} and oa_rlzyb_transfer_position.transfer_position_delectStatus = 1	
+  </select>
+  <select id="selectBeforePositionDepart" resultMap="BaseResultMap">
+    SELECT oa_rlzyb_transfer_position.emp_id,emp_name,POSITION,position_name,depart,depart_name FROM oa_rlzyb_transfer_position
+	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_transfer_position.emp_id = oa_rlzyb_employee.emp_id
+	INNER JOIN oa_rlzyb_position ON oa_rlzyb_transfer_position.position = oa_rlzyb_position.position_id
+	INNER JOIN oa_rlzyb_department ON oa_rlzyb_transfer_position.depart = oa_rlzyb_department.depart_id
+	where oa_rlzyb_transfer_position.transfer_position_delectStatus = 1	
+    <if test="emp_name != null and emp_name != ''">
+    	and emp_name like CONCAT("%",#{emp_name},"%") 	
+    </if>
+    ORDER BY transfer_position_id DESC
+    limit #{startPos},#{PageSize}
+  </select>
+  <select id="selectEmployeePositionDepart" resultMap="BaseResultMap">
+	SELECT emp_name,position_name,depart_name FROM oa_rlzyb_transfer_position
+LEFT JOIN oa_rlzyb_employee ON oa_rlzyb_transfer_position.emp_id = oa_rlzyb_employee.emp_id
+LEFT JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id = oa_rlzyb_employee.emp_position
+INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+where oa_rlzyb_transfer_position.transfer_position_delectStatus = 1	
+    <if test="emp_name != null and emp_name != ''">
+    	and emp_name like CONCAT("%",#{emp_name},"%") 
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_transfer_position
+    where transfer_position_id = #{transfer_position_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybTransferPosition" >
+    insert into oa_rlzyb_transfer_position (transfer_position_id, emp_id, position_id, 
+      transfer_position_reason, transfer_position_time, 
+      transfer_position_delectStatus)
+    values (#{transfer_position_id,jdbcType=INTEGER}, #{emp_id,jdbcType=INTEGER}, #{position_id,jdbcType=INTEGER}, 
+      #{transfer_position_reason,jdbcType=VARCHAR}, #{transfer_position_time,jdbcType=VARCHAR}, 
+      #{transfer_position_delectStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybTransferPosition" >
+    insert into oa_rlzyb_transfer_position
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="transfer_position_id != null" >
+        transfer_position_id,
+      </if>
+      <if test="emp_id != null" >
+        emp_id,
+      </if>
+      <if test="depart_id != null" >
+        depart_id,
+      </if>
+      <if test="position_id != null" >
+        position_id,
+      </if>
+      <if test="depart != null" >
+        depart,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="transfer_position_reason != null" >
+        transfer_position_reason,
+      </if>
+      <if test="transfer_position_details != null" >
+        transfer_position_details,
+      </if>
+      <if test="transfer_position_time != null" >
+        transfer_position_time,
+      </if>
+      <if test="transfer_position_delectStatus != null" >
+        transfer_position_delectStatus,
+      </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="transfer_position_id != null" >
+        #{transfer_position_id,jdbcType=INTEGER},
+      </if>
+      <if test="emp_id != null" >
+        #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="depart_id != null" >
+        #{depart_id,jdbcType=INTEGER},
+      </if>
+      <if test="position_id != null" >
+        #{position_id,jdbcType=INTEGER},
+      </if>
+      <if test="depart != null" >
+        #{depart,jdbcType=INTEGER},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=INTEGER},
+      </if>
+      <if test="transfer_position_reason != null" >
+        #{transfer_position_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="transfer_position_details != null" >
+        #{transfer_position_details,jdbcType=VARCHAR},
+      </if>
+      <if test="transfer_position_time != null" >
+        #{transfer_position_time,jdbcType=VARCHAR},
+      </if>
+      <if test="transfer_position_delectStatus != null" >
+        #{transfer_position_delectStatus,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null" >
+        #{create_time},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybTransferPosition" >
+    update oa_rlzyb_transfer_position
+    <set >
+      <if test="emp_id != null" >
+        emp_id = #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="position_id != null" >
+        position_id = #{position_id,jdbcType=INTEGER},
+      </if>
+      <if test="transfer_position_reason != null" >
+        transfer_position_reason = #{transfer_position_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="transfer_position_time != null" >
+        transfer_position_time = #{transfer_position_time,jdbcType=VARCHAR},
+      </if>
+      <if test="transfer_position_delectStatus != null" >
+        transfer_position_delectStatus = #{transfer_position_delectStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where transfer_position_id = #{transfer_position_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybTransferPosition" >
+    update oa_rlzyb_transfer_position
+    set emp_id = #{emp_id,jdbcType=INTEGER},
+      position_id = #{position_id,jdbcType=INTEGER},
+      transfer_position_reason = #{transfer_position_reason,jdbcType=VARCHAR},
+      transfer_position_time = #{transfer_position_time,jdbcType=VARCHAR},
+      transfer_position_delectStatus = #{transfer_position_delectStatus,jdbcType=INTEGER}
+    where transfer_position_id = #{transfer_position_id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

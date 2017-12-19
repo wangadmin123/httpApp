@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tyyhoa.dao.OakfbScoreMapper">
+	<resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OakfbScore">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="user_id" jdbcType="INTEGER" property="user_id" />
+		<result column="score" jdbcType="INTEGER" property="score" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="time" jdbcType="TIMESTAMP" property="time" />
+		<result column="clocktime" jdbcType="TIMESTAMP" property="clocktime" />
+		<result column="clockstatus" jdbcType="INTEGER" property="clockstatus" />
+		<result column="outtiam" jdbcType="TIMESTAMP" property="outtiam" />
+		<result column="outstatus" jdbcType="INTEGER" property="outstatus" />
+		<result column="operationid" jdbcType="INTEGER" property="operationid" />
+		<result column="stuname" jdbcType="VARCHAR" property="stuname" />
+		<result column="sumscore" jdbcType="INTEGER" property="sumscore" />
+		
+		
+	</resultMap>
+
+
+
+
+
+<!-- 根据员工id查询未签到次数 -->
+	<select id="selectScoreCountByUid" parameterType="cn.tyyhoa.pojo.OakfbScore"
+		resultType="Integer">
+		SELECT COUNT(1) AS COUNT,user_id
+		FROM oa_kfb_score
+		WHERE
+		clocktime IS NULL
+		AND outtiam IS NOT NULL
+		AND user_id=#{user_id}
+
+	</select>
+	<!-- 根据员工id查询未签到日期 -->
+	<select id="selectScoreTimeByUid" parameterType="cn.tyyhoa.pojo.OakfbScore"
+		resultMap="BaseResultMap">
+		SELECT outtiam,user_id,time
+		FROM oa_kfb_score
+		WHERE clocktime
+		IS NULL
+		AND outtiam IS NOT NULL
+		AND user_id=#{user_id}
+
+	</select>
+	<!-- 根据员工id查询近期总分 -->
+	<select id="selectScoreFsCount" parameterType="cn.tyyhoa.pojo.OakfbScore"
+		resultType="Integer">
+		SELECT SUM(score) AS sumscore FROM oa_kfb_user AS a
+		INNER
+		JOIN oa_kfb_score AS b ON a.id=b.user_id
+		WHERE b.user_id=#{user_id}
+
+	</select>
+	<!-- 根据员工id查询迟到次数 -->
+	<select id="selectCdCountByUid" parameterType="cn.tyyhoa.pojo.OakfbScore"
+		resultType="Integer">
+		SELECT COUNT(1)AS COUNT , user_id 
+		FROM oa_kfb_score
+		<where>
+		clockstatus>0
+		<if test="user_id!=0">
+		AND user_id=#{user_id}
+		</if>
+		</where>
+		</select>
+	<!-- 根据员工id查询迟到日期 -->
+	<select id="selectCdTimeByUid" parameterType="cn.tyyhoa.pojo.OakfbScore"
+		resultMap="BaseResultMap">
+		SELECT user_id, clocktime
+		FROM oa_kfb_score
+		<where>
+		clockstatus>0
+		<if test="user_id!=0">
+		AND user_id=#{user_id}
+		</if>
+		</where>
+		ORDER BY clocktime DESC
+	</select>
+	
+	
+<!-- 根据员工id查询早退次数 -->
+	<select id="selectZtCountByUid" parameterType="cn.tyyhoa.pojo.OakfbScore"
+		resultType="Integer">
+		SELECT COUNT(1)AS COUNT , user_id 
+		FROM oa_kfb_score
+		<where>
+		outstatus>0
+		<if test="user_id!=0">
+		AND user_id=#{user_id}
+		</if>
+		</where>
+		</select>
+	<!-- 根据员工id查询早退日期 -->
+	<select id="selectZtTimeByUid" parameterType="cn.tyyhoa.pojo.OakfbScore"
+		resultMap="BaseResultMap">
+		SELECT user_id, outtiam
+		FROM oa_kfb_score
+		<where>
+		outstatus>0
+		<if test="user_id!=0">
+		AND user_id=#{user_id}
+		</if>
+		</where>
+		ORDER BY outtiam DESC
+	</select>
+
+
+
+
+	<!-- 组长添加考勤 -->
+	<insert id="insert" parameterType="cn.tyyhoa.pojo.OakfbScore">
+		insert into oa_kfb_score (
+		user_id, score,
+		remark, time, clocktime,
+		clockstatus, outtiam,
+		outstatus,
+		operationid)
+		values ( #{user_id,jdbcType=INTEGER},
+		#{score,jdbcType=INTEGER},
+		#{remark,jdbcType=VARCHAR},
+		#{time,jdbcType=TIMESTAMP},
+		#{clocktime,jdbcType=TIMESTAMP},
+		#{clockstatus,jdbcType=INTEGER}, #{outtiam,jdbcType=TIMESTAMP},
+		#{outstatus,jdbcType=INTEGER},
+		#{operationid,jdbcType=INTEGER})
+	</insert>
+
+	<!-- 组长查看考勤详情的列表 -->
+	<select id="Byuserid" parameterType="cn.tyyhoa.pojo.OakfbScore"
+		resultMap="BaseResultMap">
+		SELECT a.id,a.user_id,c.stu_number,c.stu_name as stuname,a.clocktime,a.outtiam,a.clockstatus,a.outstatus,
+		a.score,a.remark
+		FROM oa_kfb_score AS a
+		INNER JOIN oa_kfb_user AS b ON b.id=a.user_id
+		INNER JOIN oa_jzb_student AS c ON c.stu_number=b.stu_id
+		WHERE a.user_id=#{user_id}
+		ORDER BY a.clocktime desc
+
+	</select>
+	
+	
+	<!-- 组长通过userid查看修改之前考勤的姓名 -->
+	<select id="selectByid" parameterType="cn.tyyhoa.pojo.OakfbScore"
+		resultMap="BaseResultMap">
+		SELECT a.id,a.score,a.user_id AS user_id,c.stu_name AS
+		stuname,a.remark
+		FROM oa_kfb_score AS a
+		INNER JOIN oa_kfb_user AS b ON
+		b.id=a.user_id
+		INNER JOIN oa_jzb_student AS c ON c.stu_number=b.stu_id
+		WHERE
+		a.id=#{id}
+
+	</select>
+
+
+
+
+	<!-- 组长修改考勤 -->
+	<update id="editbyuserid" parameterType="cn.tyyhoa.pojo.OakfbScore">
+		update oa_kfb_score
+		<set>
+			<if test="user_id != null">
+				user_id = #{user_id,jdbcType=INTEGER},
+			</if>
+			<if test="score != null">
+				score = #{score,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clocktime != null">
+				clocktime = #{clocktime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clockstatus != null">
+				clockstatus = #{clockstatus,jdbcType=INTEGER},
+			</if>
+			<if test="outtiam != null">
+				outtiam = #{outtiam,jdbcType=TIMESTAMP},
+			</if>
+			<if test="outstatus != null">
+				outstatus = #{outstatus,jdbcType=INTEGER},
+			</if>
+			<if test="operationid != null">
+				operationid = #{operationid,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id= #{id,jdbcType=INTEGER}
+	</update>
+
+
+
+
+
+
+
+
+
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, user_id, score, remark, time, clocktime, clockstatus,
+		outtiam,
+		outstatus, operationid
+	</sql>
+	<select id="selectByExample" parameterType="cn.tyyhoa.pojo.OakfbScoreExample"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from oa_kfb_score
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from oa_kfb_score
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		oa_kfb_score
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="cn.tyyhoa.pojo.OakfbScoreExample">
+		delete from oa_kfb_score
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+
+	<insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OakfbScore">
+    insert into oa_kfb_score
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="user_id != null">
+        user_id,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="clocktime != null">
+        clocktime,
+      </if>
+      <if test="clockstatus != null">
+        clockstatus,
+      </if>
+      <if test="outtiam != null">
+        outtiam,
+      </if>
+      <if test="outstatus != null">
+        outstatus,
+      </if>
+      <if test="operationid != null">
+        operationid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="user_id != null">
+        #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clocktime != null">
+        #{clocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clockstatus != null">
+        #{clockstatus,jdbcType=INTEGER},
+      </if>
+      <if test="outtiam != null">
+        #{outtiam,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outstatus != null">
+        #{outstatus,jdbcType=INTEGER},
+      </if>
+      <if test="operationid != null">
+        #{operationid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+	<update id="updateByExampleSelective" parameterType="map">
+		update oa_kfb_score
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.user_id != null">
+				user_id = #{record.user_id,jdbcType=INTEGER},
+			</if>
+			<if test="record.score != null">
+				score = #{record.score,jdbcType=INTEGER},
+			</if>
+			<if test="record.remark != null">
+				remark = #{record.remark,jdbcType=VARCHAR},
+			</if>
+			<if test="record.time != null">
+				time = #{record.time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.clocktime != null">
+				clocktime = #{record.clocktime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.clockstatus != null">
+				clockstatus = #{record.clockstatus,jdbcType=INTEGER},
+			</if>
+			<if test="record.outtiam != null">
+				outtiam = #{record.outtiam,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.outstatus != null">
+				outstatus = #{record.outstatus,jdbcType=INTEGER},
+			</if>
+			<if test="record.operationid != null">
+				operationid = #{record.operationid,jdbcType=INTEGER},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update oa_kfb_score
+		set id = #{record.id,jdbcType=INTEGER},
+		user_id =
+		#{record.user_id,jdbcType=INTEGER},
+		score =
+		#{record.score,jdbcType=INTEGER},
+		remark =
+		#{record.remark,jdbcType=VARCHAR},
+		time = #{record.time,jdbcType=TIMESTAMP},
+		clocktime = #{record.clocktime,jdbcType=TIMESTAMP},
+		clockstatus =
+		#{record.clockstatus,jdbcType=INTEGER},
+		outtiam =
+		#{record.outtiam,jdbcType=TIMESTAMP},
+		outstatus =
+		#{record.outstatus,jdbcType=INTEGER},
+		operationid =
+		#{record.operationid,jdbcType=INTEGER}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OakfbScore">
+		update
+		oa_kfb_score
+		set user_id = #{user_id,jdbcType=INTEGER},
+		score =
+		#{score,jdbcType=INTEGER},
+		remark = #{remark,jdbcType=VARCHAR},
+		time =
+		#{time,jdbcType=TIMESTAMP},
+		clocktime = #{clocktime,jdbcType=TIMESTAMP},
+		clockstatus = #{clockstatus,jdbcType=INTEGER},
+		outtiam =
+		#{outtiam,jdbcType=TIMESTAMP},
+		outstatus = #{outstatus,jdbcType=INTEGER},
+		operationid = #{operationid,jdbcType=INTEGER}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+	 <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OakfbScore">
+    update oa_kfb_score
+    <set>
+      <if test="user_id != null">
+        user_id = #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clocktime != null">
+        clocktime = #{clocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clockstatus != null">
+        clockstatus = #{clockstatus,jdbcType=INTEGER},
+      </if>
+      <if test="outtiam != null">
+        outtiam = #{outtiam,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outstatus != null">
+        outstatus = #{outstatus,jdbcType=INTEGER},
+      </if>
+      <if test="operationid != null">
+        operationid = #{operationid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

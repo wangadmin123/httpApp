@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbAdvicesMapper" >
+	<resultMap type="cn.tyyhoa.pojo.OaScbAdvices" id="message">
+		<id column="id" property="id"/>
+		<result column="content" property="content"/>
+		<result column="sendDate" property="date"/>
+		<result column="advicestate" property="advicestate"/>
+		<association property="from" javaType="cn.tyyhoa.pojo.OaRlzybEmployee">
+			<id property="emp_id" column="emp_id"/>
+			<result property="emp_name" column="emp_name"/>
+		</association>
+		<association property="to" javaType="cn.tyyhoa.pojo.OaRlzybEmployee">
+			<id property="emp_id" column="emp_id"/>
+			<result property="emp_name" column="emp_name"/>
+		</association>
+	</resultMap>
+	
+	<resultMap type="cn.tyyhoa.pojo.OaRlzybUser" id="user">
+		<id column="user_id" property="user_id" jdbcType="INTEGER" />
+    	<result column="emp_id" property="emp_id" jdbcType="INTEGER" />
+	</resultMap>  
+	
+	<select id="getById" resultMap="message">
+		select * from oa_scb_advices as os,(select * from oa_rlzyb_employee) as a,(select * from oa_rlzyb_employee) as b 
+		where receiverId=#{id} 
+		and a.emp_id=os.senderid 
+		and b.emp_id=os.receiverid 
+		 order by sendDate desc
+	</select>
+	
+	<select id="weidu" resultType="int">
+		select count(1) from oa_scb_advices 
+		where receiverId=#{id} 
+		and advicestate=0
+		order by sendDate desc
+	</select>
+	
+	 <select id="getByPname" resultMap="user">
+		select  oru.user_id,oru.emp_id from oa_rlzyb_user as oru,oa_rlzyb_position as orp 
+		where oru.position_id=orp.position_id 
+		and orp.position_name=#{pname}
+	</select> 
+	
+	<update id="yidu">
+		update oa_scb_advices set advicestate=1 where receiverId=#{id} and advicestate=0
+	</update>
+	
+	<update id="del">
+		update oa_scb_advices set advicestate=2 where id=#{aid}
+	</update>
+	
+	<insert id="add" parameterType="cn.tyyhoa.util.MessageUtil">
+		insert into oa_scb_advices values(default,#{from},#{content},#{to},now(),0);
+	</insert>
+</mapper>

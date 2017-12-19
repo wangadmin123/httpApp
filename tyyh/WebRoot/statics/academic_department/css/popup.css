@@ -1,0 +1,27 @@
+.popupStyle{
+
+    position:fixed;
+    border: 1px solid #e5e5e5;
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 9999;
+    background-color: #fff;
+
+}
+.popupStyle h1{
+    text-indent:10pt;
+    color:#333333;
+    background-color: #f6f6f6;
+    border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    font-size: 14px;
+}
+.popupStyle h1 span{
+    margin-right: 15px;
+    float: right;
+    color: #ff0000;
+    cursor: pointer;
+}

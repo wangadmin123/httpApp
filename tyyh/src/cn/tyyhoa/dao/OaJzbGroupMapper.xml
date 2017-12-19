@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbGroupMapper">
+		
+<insert id="insertOaJzbGroup" parameterType="OaJzbGroup">
+		INSERT INTO oa_jzb_group(group_name,
+													  grade_id,
+													  deleteStatus)
+										VALUES(#{group_name},
+													  #{grade_id},
+													  0)
+</insert>		
+
+<select id="selectOaJzbGroup" resultType="OaJzbGroup">
+	SELECT oa_jzb_group.id as id ,
+							group_name,
+							grade_id,
+							oa_jzb_group.deleteStatus as deleteStatus,
+							student_name
+	FROM oa_jzb_group
+	INNER JOIN oa_jzb_project ON oa_jzb_project.group_id=oa_jzb_group.id
+		 <where>
+		 		<if test="grade_id!=0">
+		 				grade_id=#{grade_id}
+		 		</if>
+		 </where>
+		 group by group_name
+		 order by oa_jzb_group.id
+</select>
+
+<select id="selectOaJzbGroupByGroupName" resultType="OaJzbGroup">
+		select id,group_name,grade_id,deleteStatus
+		 from oa_jzb_group
+		 <where>
+				 <if test="grade_id!=0">
+				 		grade_id=#{grade_id}
+		 		</if>
+		 		<if test="group_name!=null and group_name!=''">
+		 				and group_name=#{group_name}	
+		 		</if>
+		 </where>
+</select>
+<update id="updateOaJzbGroup" parameterType="OaJzbGroup">
+		UPDATE oa_jzb_group
+		<set>
+				<if test="group_name!=null and group_name!=''">
+						group_name=#{group_name}
+				</if>
+				<if test="grade_id!=0">
+						grade_id=#{grade_id}
+				</if>
+				deleteStatus=#{deleteStatus}
+		</set>
+</update>
+
+<!-- 根据班级ID查询该班级全部学生 -->
+<select id="getStudentsByGriade_ID" resultType="OaJzbStudent">
+		SELECT stu_name,stu_Id FROM oa_jzb_student stu
+INNER JOIN  oa_jwb_grade ON oa_jwb_grade.id=stu.grade_id
+WHERE oa_jwb_grade.id=#{id} AND stu.stu_Id NOT IN(SELECT Student_id FROM oa_jzb_project ozp WHERE  ozp.stage_id=#{sid} AND ozp.deleteStatus  !=1 )
+</select>
+</mapper>

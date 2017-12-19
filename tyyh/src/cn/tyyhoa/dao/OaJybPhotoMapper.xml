@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybPhotoMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybPhoto" >
+    <id column="photo_id" property="photo_id" jdbcType="INTEGER" />
+    <result column="photo_name" property="photo_name" jdbcType="VARCHAR" />
+    <result column="photo_localpath" property="photo_localpath" jdbcType="VARCHAR" />
+    <result column="photo_serverpath" property="photo_serverpath" jdbcType="VARCHAR" />
+    <result column="photo_type" property="photo_type" jdbcType="VARCHAR" />
+    <result column="photo_parentid" property="photo_parentid" jdbcType="INTEGER" />
+    <result column="photo_uploadtime" property="photo_uploadtime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    photo_id, photo_name, photo_localpath, photo_serverpath, photo_type, photo_parentid, 
+    photo_uploadtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_photo
+    where photo_id = #{photo_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_photo
+    where photo_id = #{photo_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybPhoto" >
+    insert into oa_jyb_photo (photo_id, photo_name, photo_localpath, 
+      photo_serverpath, photo_type, photo_parentid, 
+      photo_uploadtime)
+    values (#{photo_id,jdbcType=INTEGER}, #{photo_name,jdbcType=VARCHAR}, #{photo_localpath,jdbcType=VARCHAR}, 
+      #{photo_serverpath,jdbcType=VARCHAR}, #{photo_type,jdbcType=VARCHAR}, #{photo_parentid,jdbcType=INTEGER}, 
+      #{photo_uploadtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybPhoto" >
+    insert into oa_jyb_photo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="photo_id != null" >
+        photo_id,
+      </if>
+      <if test="photo_name != null" >
+        photo_name,
+      </if>
+      <if test="photo_localpath != null" >
+        photo_localpath,
+      </if>
+      <if test="photo_serverpath != null" >
+        photo_serverpath,
+      </if>
+      <if test="photo_type != null" >
+        photo_type,
+      </if>
+      <if test="photo_parentid != null" >
+        photo_parentid,
+      </if>
+      <if test="photo_uploadtime != null" >
+        photo_uploadtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="photo_id != null" >
+        #{photo_id,jdbcType=INTEGER},
+      </if>
+      <if test="photo_name != null" >
+        #{photo_name,jdbcType=VARCHAR},
+      </if>
+      <if test="photo_localpath != null" >
+        #{photo_localpath,jdbcType=VARCHAR},
+      </if>
+      <if test="photo_serverpath != null" >
+        #{photo_serverpath,jdbcType=VARCHAR},
+      </if>
+      <if test="photo_type != null" >
+        #{photo_type,jdbcType=VARCHAR},
+      </if>
+      <if test="photo_parentid != null" >
+        #{photo_parentid,jdbcType=INTEGER},
+      </if>
+      <if test="photo_uploadtime != null" >
+        #{photo_uploadtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybPhoto" >
+    update oa_jyb_photo
+    <set >
+      <if test="photo_name != null" >
+        photo_name = #{photo_name,jdbcType=VARCHAR},
+      </if>
+      <if test="photo_localpath != null" >
+        photo_localpath = #{photo_localpath,jdbcType=VARCHAR},
+      </if>
+      <if test="photo_serverpath != null" >
+        photo_serverpath = #{photo_serverpath,jdbcType=VARCHAR},
+      </if>
+      <if test="photo_type != null" >
+        photo_type = #{photo_type,jdbcType=VARCHAR},
+      </if>
+      <if test="photo_parentid != null" >
+        photo_parentid = #{photo_parentid,jdbcType=INTEGER},
+      </if>
+      <if test="photo_uploadtime != null" >
+        photo_uploadtime = #{photo_uploadtime,jdbcType=DATE},
+      </if>
+    </set>
+    where photo_id = #{photo_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybPhoto" >
+    update oa_jyb_photo
+    set photo_name = #{photo_name,jdbcType=VARCHAR},
+      photo_localpath = #{photo_localpath,jdbcType=VARCHAR},
+      photo_serverpath = #{photo_serverpath,jdbcType=VARCHAR},
+      photo_type = #{photo_type,jdbcType=VARCHAR},
+      photo_parentid = #{photo_parentid,jdbcType=INTEGER},
+      photo_uploadtime = #{photo_uploadtime,jdbcType=DATE}
+    where photo_id = #{photo_id,jdbcType=INTEGER}
+  </update>
+</mapper>

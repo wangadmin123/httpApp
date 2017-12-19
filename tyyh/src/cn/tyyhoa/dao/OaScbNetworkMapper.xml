@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tyyhoa.dao.OaScbNetworkMapper">
+
+<!-- 新增 -->
+<insert id="networkAdd" parameterType="OaScbConsulter">
+INSERT INTO
+		oa_scb_consulter
+		(
+		name,
+		age,
+		sex,
+		telphone1,
+		ungenTelphone,
+		education,
+		place,
+		province,
+		city,
+		district,
+		street,
+		status,
+		infoSource,
+		consultWay,
+		mediaName,
+		consultLesson,
+		schoolName,
+		schoolClass,
+		computer,
+		specialty,
+		keywords,
+		comments,
+		infoStatus,
+		type,
+		firstConsultTime,
+		allotstatus		
+		)
+		VALUES
+		(
+		#{name},
+		#{age},
+		#{sex},
+		#{telphone1},
+		#{ungenTelphone},
+		#{education},
+		#{place},
+		#{province},
+		#{city},
+		#{district},
+		#{street},
+		#{status},
+		#{infoSource},
+		#{consultWay},
+		#{mediaName},
+		#{consultLesson},
+		#{schoolName},
+		#{schoolClass},
+		#{computer},
+		#{specialty},
+		#{keywords},
+		#{comments},
+		#{infoStatus},
+		#{type},
+		#{firstConsultTime},
+		#{allotstatus}
+		);
+
+
+</insert>
+<!-- 查询总记录数 -->
+<select id="getNetworkcount"  parameterType="OaScbConsulter" resultType="int">
+SELECT COUNT(1)	
+		FROM
+		oa_scb_consulter	
+		   where
+				type=1 and
+				identityStatus=1 and 
+				invalid!=2 and
+				infoStatus=2  
+			<if test="name!=null and name!=''">
+				and name like concat('%',#{name},'%') 
+				or age= #{name}  
+				or telphone1= #{name} 
+				or specialty= #{name} 
+				or schoolName= #{name}
+				or keywords=#{name}
+				
+				
+			</if>
+			 <if test="sex!=null and sex!=0">
+				and sex= #{sex}
+			</if> 
+			
+			<if test="consultTeacher!=0 and consultTeacher!=null">
+				and consultTeacher= #{consultTeacher}
+			
+			</if>
+				 <if test="consultWay !=null and consultWay !=0">
+				and consultWay= #{consultWay}
+			</if>
+			 <if test="consultLesson !=null and consultLesson !=0">
+				and consultLesson= #{consultLesson}
+			</if>
+			 <if test="rank !=null and rank !=0">
+				and rank= #{rank}
+			</if> 
+			
+			<if test="city!=null and city!=''">
+				and city= #{city}
+			</if>
+			
+			<if test="schoolDorm!=null and schoolDorm!=''">
+				and schoolDorm= #{schoolDorm}
+			</if>
+		 	<if test="status !=null and  status!=0">
+				and status= #{status}
+			</if> 
+			<if test="enrollTime !=null">
+			 and enrollTime =#{enrollTime}
+			</if>
+			<if test="mediaName !=null and mediaName !=0">
+			     and  mediaName= #{mediaName}
+			</if>
+			<if test="come !=null and come !=0">
+			and come= #{come}			
+			</if>
+			<if test="allotstatus !=null and allotstatus !=0"> 			
+			and allotstatus= #{allotstatus}
+			</if>
+			<if test="type !=null and type !=0">
+			and type= #{type}
+			</if>
+			<if test="education !=null and education !=0">			
+			and education= #{education}
+			</if>
+			<if test="firstConsultTime !=null"> 
+			and firstConsultTime= #{firstConsultTime}
+			</if>
+			<if test="allotTime !=null">
+			and allotTime= #{allotTime}
+			</if>
+			 order by firstConsultTime desc
+			
+        
+</select>
+
+<!-- 查询 -->
+
+<select id="NetworkQuery"  parameterType="Map" resultType="OaScbConsulter">
+SELECT 
+		consulter.id,
+		consulter.name,
+		consulter.sex,
+		consulter.age,
+		consulter.allotTime AS allotTimes,
+
+		oa_scb_consultway.consultWay AS consultwayName,
+		oa_scb_consultlesson.consultLesson AS consultLessonName,
+		oa_scb_ranktype.rank AS rankName,
+		
+		consulter.telphone1,
+		consulter.city,
+		consulter.specialty,
+		consulter.schoolName,
+		consulter.schoolDorm,
+		employee.emp_name AS consultTeacherName,	
+		oa_scb_consultstatus.status AS statusName,keywords
+		,oa_scb_medianame.mediaName AS mediaNames
+		
+		FROM oa_scb_consulter AS consulter
+		LEFT JOIN oa_rlzyb_employee AS employee ON employee.emp_id = consulter.consultTeacher
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_medianame ON oa_scb_medianame.id=consulter.mediaName
+		 WHERE 
+				 consulter.type=1 AND
+				consulter.identityStatus=1 AND 
+				consulter.invalid!=2 AND
+				consulter.infoStatus=2  
+			<if test="consulter.name!=null and consulter.name!=''">
+				and consulter.name like concat('%',#{consulter.name},'%') 
+				or consulter.age= #{consulter.name}  
+				or consulter.telphone1 like concat('%',#{consulter.name},'%') 
+				or consulter.city like concat('%',#{consulter.name},'%') 
+				or consulter.specialty like concat('%',#{consulter.name},'%') 
+				or consulter.schoolName like concat('%',#{consulter.name},'%') 
+				or consulter.keywords like concat('%',#{consulter.name},'%') 
+			</if>
+			 <if test="consulter.sex!=null and consulter.sex!=0">
+				and consulter.sex= #{consulter.sex}
+			</if> 
+			
+			<if test="consulter.consultTeacher!=0 and consulter.consultTeacher!=null">
+				and consulter.consultTeacher= #{consulter.consultTeacher}
+			
+			</if>
+				 <if test="consulter.consultWay !=null and consulter.consultWay !=0">
+				and consulter.consultWay= #{consulter.consultWay}
+			</if>
+			 <if test="consulter.consultLesson !=null and consulter.consultLesson !=0">
+				and consulter.consultLesson= #{consulter.consultLesson}
+			</if>
+			 <if test="consulter.rank !=null and consulter.rank !=0">
+				and consulter.rank= #{consulter.rank}
+			</if> 
+			
+			<if test="consulter.city!=null and consulter.city!=''">
+				and consulter.city= #{consulter.city}
+			</if>
+			
+			<if test="consulter.schoolDorm!=null and consulter.schoolDorm!=''">
+				and consulter.schoolDorm= #{consulter.schoolDorm}
+			</if>
+		 	<if test="consulter.status !=null and  consulter.status!=0">
+				and consulter.status= #{consulter.status}
+			</if> 
+			<if test="consulter.enrollTime !=null">
+			 and consulter.enrollTime =#{consulter.enrollTime}
+			</if>
+			<if test="consulter.mediaName !=null and consulter.mediaName !=0">
+			     and  consulter.mediaName= #{consulter.mediaName}
+			</if>
+			<if test="consulter.come !=null and consulter.come !=0">
+			and consulter.come= #{consulter.come}			
+			</if>
+			<if test="consulter.allotstatus !=null and consulter.allotstatus !=0"> 			
+			and consulter.allotstatus= #{consulter.allotstatus}
+			</if>
+			<if test="consulter.type !=null and consulter.type !=0">
+			and consulter.type= #{consulter.type}
+			</if>
+			<if test="consulter.education !=null and consulter.education !=0">			
+			and consulter.education= #{consulter.education}
+			</if>
+			<if test="consulter.firstConsultTime !=null"> 
+			and consulter.firstConsultTime= #{consulter.firstConsultTime}
+			</if>
+			<if test="consulter.allotTime !=null">
+			and consulter.allotTime= #{consulter.allotTime}
+			</if>    
+			order by firstConsultTime desc    
+        limit #{index},#{pageSize}
+        
+        
+</select>
+
+<!-- //跟踪（查询） -->
+<select id="NetworkQueryfollwing" parameterType="Map" resultType="OaScbConsulter">
+SELECT 
+		consulter.id,
+		consulter.name,
+		consulter.sex,
+		consulter.age,
+		consulter.allotTime as allotTimes,
+		consulter.consultTeacher as consultTeacherName,
+		
+		oa_scb_consultway.consultWay AS consultwayName,
+		oa_scb_consultlesson.consultLesson AS consultLessonName,
+		oa_scb_ranktype.rank as rankName,
+		b.returnvisitTime as returnTime, 
+		consulter.telphone1,
+		consulter.city,
+		consulter.specialty,
+		consulter.schoolName,
+		consulter.schoolDorm,
+			
+		oa_scb_consultstatus.status AS statusName
+		
+		
+		FROM oa_scb_consulter as consulter
+		
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_visit AS b ON consulter.id=b.consultId	
+		 <where>
+			<if test="consulter.name!=null and consulter.name!=''">
+				and consulter.name like concat('%',#{consulter.name},'%') 
+				or consulter.age= #{consulter.name}  
+				or consulter.telphone1= #{consulter.name} 
+				or consulter.specialty= #{consulter.name} 
+				or consulter.schoolName= #{consulter.name}
+				or consulter.keywords like concat('%',#{consulter.name},'%') 
+			</if>
+			 <if test="consulter.sex!=null and consulter.sex!=0">
+				and consulter.sex= #{consulter.sex}
+			</if> 
+			
+			<if test="consulter.consultTeacher!=0 and consulter.consultTeacher!=null">
+				and consulter.consultTeacher= #{consulter.consultTeacher}
+			
+			</if>
+				 <if test="consulter.consultWay !=null and consulter.consultWay !=0">
+				and consulter.consultWay= #{consulter.consultWay}
+			</if>
+			 <if test="consulter.consultLesson !=null and consulter.consultLesson !=0">
+				and consulter.consultLesson= #{consulter.consultLesson}
+			</if>
+			 <if test="consulter.rank !=null and consulter.rank !=0">
+				and consulter.rank= #{consulter.rank}
+			</if> 
+			
+			<if test="consulter.city!=null and consulter.city!=''">
+				and consulter.city= #{consulter.city}
+			</if>
+			
+			<if test="consulter.schoolDorm!=null and consulter.schoolDorm!=''">
+				and consulter.schoolDorm= #{consulter.schoolDorm}
+			</if>
+		 	<if test="consulter.status !=null and  consulter.status!=0">
+				and consulter.status= #{consulter.status}
+			</if> 
+			<if test="consulter.enrollTime !=null">
+			 and consulter.enrollTime =#{consulter.enrollTime}
+			</if>
+			<if test="consulter.mediaName !=null and consulter.mediaName !=0">
+			     and  consulter.mediaName= #{consulter.mediaName}
+			</if>
+			<if test="consulter.come !=null and consulter.come !=0">
+			and consulter.come= #{consulter.come}			
+			</if>
+			<if test="consulter.allotstatus !=null and consulter.allotstatus !=0"> 			
+			and consulter.allotstatus= #{consulter.allotstatus}
+			</if>
+			<if test="consulter.type !=null and consulter.type !=0">
+			and consulter.type= #{consulter.type}
+			</if>
+			<if test="consulter.education !=null and consulter.education !=0">			
+			and consulter.education= #{consulter.education}
+			</if>
+			<if test="consulter.firstConsultTime !=null"> 
+			and consulter.firstConsultTime= #{consulter.firstConsultTime}
+			</if>
+			<if test="consulter.allotTime !=null">
+			and consulter.allotTime= #{consulter.allotTime}
+			</if>
+			<if test="consulter.nextvisitTime !=null">
+			and consulter.nextvisitTime= #{consulter.nextvisitTime}
+			</if>
+        </where>
+        
+       
+</select>
+
+<!-- 查询学生详情 -->
+<select id="selectOne" parameterType="int" resultType="OaScbConsulter">
+SELECT    id,
+		NAME,
+		 sex, 
+		age,
+		allotTime,
+		consultTeacher,
+		consultWay,
+		 consultLesson,
+		 rank,
+		telphone1,
+		city,
+		specialty,
+		schoolName,
+		schoolDorm,
+		 STATUS 
+		FROM
+		oa_scb_consulter 
+		where id=#{id}
+</select>
+
+	<!-- 查询基本信息总记录数 -->
+<select id="selectInfoCount" parameterType="OaScbConsulter" resultType="int">
+	 select COUNT(1)
+	 FROM oa_scb_consulter where infoStatus = 1  and  type=1
+	  
+			<if test="name!=null and name!=''">
+				and name like concat('%',#{name},'%') 
+			</if>
+			 <if test="sex!=0 and sex !=null">
+				and sex= #{sex}
+			</if> 
+	</select>
+
+<!-- 查询基本信息 -->
+	<select id="selectstudentInfo" parameterType="Map" resultType="OaScbConsulter">
+	 select oaScbConsulter.id,oaScbConsulter.name,oaScbConsulter.sex,oaScbConsulter.age,
+	 oaScbConsulter.telphone1,oaScbConsulter.ungenTelphone,oaScbConsulter.district
+	 FROM oa_scb_consulter as oaScbConsulter 
+	 where oaScbConsulter.infoStatus = 1  and  oaScbConsulter.type=1
+	  
+			<if test="oaScbConsulter.name!=null and oaScbConsulter.name!=''">
+				and oaScbConsulter.name like concat('%',#{oaScbConsulter.name},'%') 
+			</if>
+			 <if test="oaScbConsulter.sex!=0">
+				and oaScbConsulter.sex= #{oaScbConsulter.sex}
+			</if> 
+		limit #{index},#{pageSize}
+	</select>
+	
+	<!-- 查询基本信息（提交） -->
+	<update id="editConInfoStatus">
+		UPDATE oa_scb_consulter SET infoStatus =2 WHERE id = #{id}
+	</update>
+	
+	<!-- 跟踪 -->
+	<select id="networkVisitFind" resultType="OaScbVisit" >
+			SELECT 	visit.id, 
+			visit.consultId, 
+			visit.returnvisitTime, 
+			visit.returnvisitRecord, 
+			visit.nextvisitTime,
+			returnvisitPeopleName,
+			consulter.name as consultName
+			
+			FROM 
+			tyyhoa.oa_scb_visit  as visit
+			left join oa_scb_consulter AS consulter on consulter.id=visit.consultId
+			WHERE consultId=#{consultId}
+			ORDER BY returnvisitTime DESC
+		</select>
+		
+		<!-- 查询基本信息（提交量） -->
+	<update id="handallInfo" parameterType="int">
+ 	
+ 		UPDATE  oa_scb_consulter SET infoStatus =2 where id  in
+ 			<foreach collection="id" item="id" index ="index" open ="(" close =")" separator =",">
+ 			     #{id}
+ 			</foreach>
+ 	
+ 	</update>
+
+
+<!-- 记事 -->
+ 	<insert id="insertRecord" parameterType="OaScbRecord">
+	 	insert into oa_scb_record (	
+	 			recordId, 
+				consulterId, 
+				eventTime, 
+				eventName, 
+				enterPeople, 
+				enterTime)		 		
+		 		values(
+		 		#{recordId},
+		 		#{consulterId},
+		 		#{eventTime},
+		 		#{eventName},
+		 		#{enterPeople},
+		 		#{enterTime}
+		 		)
+				
+				
+				
+ 	
+ 	</insert>
+ 	
+	<!-- 查询最近id -->
+	<select id="maxId" resultType="int">
+		SELECT MAX(id) FROM oa_scb_consulter
+	</select>
+
+</mapper>

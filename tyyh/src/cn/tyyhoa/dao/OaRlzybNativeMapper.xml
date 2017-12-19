@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybNativeMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybNative" >
+    <id column="naNo" property="naNo" jdbcType="INTEGER" />
+    <result column="naName" property="naName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    naNo, naName
+  </sql>
+  <select id="selectAllOaRlzybNative" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_native
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_native
+    where naNo = #{naNo,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_native
+    where naNo = #{naNo,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybNative" >
+    insert into oa_rlzyb_native (naNo, naName)
+    values (#{naNo,jdbcType=INTEGER}, #{naName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybNative" >
+    insert into oa_rlzyb_native
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="naNo != null" >
+        naNo,
+      </if>
+      <if test="naName != null" >
+        naName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="naNo != null" >
+        #{naNo,jdbcType=INTEGER},
+      </if>
+      <if test="naName != null" >
+        #{naName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybNative" >
+    update oa_rlzyb_native
+    <set >
+      <if test="naName != null" >
+        naName = #{naName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where naNo = #{naNo,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybNative" >
+    update oa_rlzyb_native
+    set naName = #{naName,jdbcType=VARCHAR}
+    where naNo = #{naNo,jdbcType=INTEGER}
+  </update>
+</mapper>

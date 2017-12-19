@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybVisitMapper">
+	<resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybVisit">
+		<id column="visit_id" property="visit_id" jdbcType="INTEGER" />
+		<result column="visit_studentId" property="visit_studentId"
+			jdbcType="INTEGER" />
+		<result column="visit_phone" property="visit_phone" jdbcType="VARCHAR" />
+		<result column="visit_way" property="visit_way" jdbcType="VARCHAR" />
+		<result column="visit_content" property="visit_content"
+			jdbcType="VARCHAR" />
+		<result column="visit_createtime" property="visit_createtime" />
+		<result column="studentname" property="studentname" jdbcType="VARCHAR" />
+		<result column="gradename" property="gradename" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		visit_id, visit_studentId, visit_phone, visit_way, visit_content,
+		visit_createtime
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from oa_jyb_visit
+		where visit_id = #{visit_id,jdbcType=INTEGER}
+	</select>
+
+
+	<select id="GetHuifang" resultMap="BaseResultMap">
+		SELECT * FROM ( SELECT
+		visit_id,oa_jzb_student.stu_Id AS visit_studentid,visit_phone,visit_way,visit_content,visit_createtime,stu_name
+		AS studentname,NAME AS gradename
+
+		FROM oa_jzb_student 
+		LEFT JOIN oa_jyb_visit ON oa_jyb_visit.visit_studentId=oa_jzb_student.stu_Id
+		INNER JOIN oa_jwb_grade ON oa_jzb_student.grade_id=oa_jwb_grade.id
+		INNER JOIN oa_jwb_struts ON oa_jwb_struts.strutsid=oa_jwb_grade.struts
+		INNER JOIN oa_rlzyb_user ON oa_jwb_grade.obtainID=oa_rlzyb_user.emp_id
+		where oa_jwb_struts.strutsid>2
+		<if test="position_id != 25 ">
+			and emp_id=#{emp_id}
+		</if>
+		ORDER BY visit_createtime DESC
+		) AS ddd
+
+
+		<where>
+			<if test="studentname != null and studentname != ''">
+				and studentname like concat('%',#{studentname},'%')
+			</if>
+			<if test="gradename != null and gradename != ''">
+				and gradename =#{gradename}
+			</if>
+
+		</where>
+		GROUP BY gradename,visit_studentid
+		limit #{index},#{pageSize}
+
+	</select>
+
+
+
+
+	<select id="GetHuifangById" resultMap="BaseResultMap">
+		SELECT
+		visit_id,visit_studentid,visit_phone,visit_way,visit_content,visit_createtime,stu_name
+		AS studentname
+
+		FROM oa_jyb_visit INNER JOIN oa_jzb_student ON
+		oa_jyb_visit.visit_studentId=oa_jzb_student.stu_Id
+
+		WHERE visit_studentid=#{visit_studentId}
+	</select>
+
+
+
+	<select id="Gethfcounts" resultType="int">
+		SELECT COUNT(1) FROM (SELECT * FROM ( SELECT
+		visit_id,oa_jzb_student.stu_Id,visit_phone,visit_way,visit_content,visit_createtime,stu_name
+		AS studentname,NAME AS gradename
+
+		FROM oa_jzb_student 
+		LEFT JOIN oa_jyb_visit ON oa_jyb_visit.visit_studentId=oa_jzb_student.stu_Id
+		INNER JOIN oa_jwb_grade ON oa_jzb_student.grade_id=oa_jwb_grade.id
+		INNER JOIN oa_jwb_struts ON oa_jwb_struts.strutsid=oa_jwb_grade.struts
+		INNER JOIN oa_rlzyb_user ON oa_jwb_grade.obtainID=oa_rlzyb_user.emp_id
+		WHERE oa_jwb_struts.strutsid>2
+		<if test="position_id != 25 ">
+			and emp_id=#{emp_id}
+		</if>
+		ORDER BY visit_createtime DESC
+		) AS ddd
+
+
+		<where>
+			<if test="studentname != null and studentname != ''">
+				and studentname like concat('%',#{studentname},'%')
+			</if>
+			<if test="gradename != null and gradename != ''">
+				and gradename =#{gradename}
+			</if>
+
+		</where>
+		GROUP BY stu_Id) AS fff
+
+	</select>
+
+
+
+	<select id="GetGrades" resultMap="BaseResultMap">
+		SELECT gd.id,gd.name AS gradename
+		FROM oa_jwb_grade AS gd 
+		INNER JOIN oa_jwb_struts ON oa_jwb_struts.strutsid=gd.struts
+		INNER JOIN oa_rlzyb_user ON gd.obtainID=oa_rlzyb_user.emp_id
+		where oa_jwb_struts.strutsid>2
+		<if test="position_id == 26 ">
+			and emp_id=#{emp_id}
+		</if>
+		GROUP BY gradename
+	</select>
+
+
+
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from oa_jyb_visit
+		where visit_id = #{visit_id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybVisit">
+		insert into oa_jyb_visit (visit_id, visit_studentId, visit_phone,
+		visit_way, visit_content, visit_createtime
+		)
+		values (#{visit_id,jdbcType=INTEGER}, #{visit_studentId,jdbcType=INTEGER},
+		#{visit_phone,jdbcType=VARCHAR},
+		#{visit_way,jdbcType=VARCHAR}, #{visit_content,jdbcType=VARCHAR}, #{visit_createtime}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybVisit">
+		insert into oa_jyb_visit
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="visit_id != null">
+				visit_id,
+			</if>
+			<if test="visit_studentId != null">
+				visit_studentId,
+			</if>
+			<if test="visit_phone != null">
+				visit_phone,
+			</if>
+			<if test="visit_way != null">
+				visit_way,
+			</if>
+			<if test="visit_content != null">
+				visit_content,
+			</if>
+			<if test="visit_createtime != null">
+				visit_createtime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="visit_id != null">
+				#{visit_id,jdbcType=INTEGER},
+			</if>
+			<if test="visit_studentId != null">
+				#{visit_studentId,jdbcType=INTEGER},
+			</if>
+			<if test="visit_phone != null">
+				#{visit_phone,jdbcType=VARCHAR},
+			</if>
+			<if test="visit_way != null">
+				#{visit_way,jdbcType=VARCHAR},
+			</if>
+			<if test="visit_content != null">
+				#{visit_content,jdbcType=VARCHAR},
+			</if>
+			<if test="visit_createtime != null">
+				#{visit_createtime},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybVisit">
+		update oa_jyb_visit
+		<set>
+			<if test="visit_studentId != null">
+				visit_studentId = #{visit_studentId,jdbcType=INTEGER},
+			</if>
+			<if test="visit_phone != null">
+				visit_phone = #{visit_phone,jdbcType=VARCHAR},
+			</if>
+			<if test="visit_way != null">
+				visit_way = #{visit_way,jdbcType=VARCHAR},
+			</if>
+			<if test="visit_content != null">
+				visit_content = #{visit_content,jdbcType=VARCHAR},
+			</if>
+			<if test="visit_createtime != null">
+				visit_createtime = #{visit_createtime},
+			</if>
+		</set>
+		where visit_id = #{visit_id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybVisit">
+		update oa_jyb_visit
+		set visit_studentId = #{visit_studentId,jdbcType=INTEGER},
+		visit_phone = #{visit_phone,jdbcType=VARCHAR},
+		visit_way = #{visit_way,jdbcType=VARCHAR},
+		visit_content = #{visit_content,jdbcType=VARCHAR},
+		visit_createtime = #{visit_createtime}
+		where visit_id = #{visit_id,jdbcType=INTEGER}
+	</update>
+
+	<insert id="insertId" parameterType="int">
+		insert into oa_jyb_visit (visit_studentId) values (#{visit_studentId})
+	</insert>
+
+
+</mapper>

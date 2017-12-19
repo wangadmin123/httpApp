@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbPraiseMapper" >
+  
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJzbPraise" >
+    insert into oa_jzb_praise (id, consultant_name, consultant_age, 
+      sex, status, contact_way, 
+      contacts, consultant_id, Record_id, 
+      Consultant_remarks, Sponsor_id, name, 
+      phone, grade, Teacher_id, 
+      Consultant_nexus, Register_time, Sponsor_remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{consultant_name,jdbcType=VARCHAR}, #{consultant_age,jdbcType=INTEGER}, 
+      #{sex,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{contact_way,jdbcType=VARCHAR}, 
+      #{contacts,jdbcType=VARCHAR}, #{consultant_id,jdbcType=INTEGER}, #{record_id,jdbcType=INTEGER}, 
+      #{consultant_remarks,jdbcType=VARCHAR}, #{sponsor_id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{teacher_id,jdbcType=INTEGER}, 
+      #{consultant_nexus,jdbcType=VARCHAR}, #{register_time,jdbcType=DATE}, #{sponsor_remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJzbPraise" >
+    insert into oa_jzb_praise
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="consultant_name != null" >
+        consultant_name,
+      </if>
+      <if test="consultant_age != null" >
+        consultant_age,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="contact_way != null" >
+        contact_way,
+      </if>
+      <if test="contacts != null" >
+        contacts,
+      </if>
+      <if test="consultant_id != null" >
+        consultant_id,
+      </if>
+      <if test="record_id != null" >
+        Record_id,
+      </if>
+      <if test="consultant_remarks != null" >
+        Consultant_remarks,
+      </if>
+      <if test="sponsor_id != null" >
+        Sponsor_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="teacher_id != null" >
+        Teacher_id,
+      </if>
+      <if test="consultant_nexus != null" >
+        Consultant_nexus,
+      </if>
+      <if test="register_time != null" >
+        Register_time,
+      </if>
+      <if test="sponsor_remark != null" >
+        Sponsor_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="consultant_name != null" >
+        #{consultant_name,jdbcType=VARCHAR},
+      </if>
+      <if test="consultant_age != null" >
+        #{consultant_age,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="contact_way != null" >
+        #{contact_way,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null" >
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="consultant_id != null" >
+        #{consultant_id,jdbcType=INTEGER},
+      </if>
+      <if test="record_id != null" >
+        #{record_id,jdbcType=INTEGER},
+      </if>
+      <if test="consultant_remarks != null" >
+        #{consultant_remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="sponsor_id != null" >
+        #{sponsor_id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="teacher_id != null" >
+        #{teacher_id,jdbcType=INTEGER},
+      </if>
+      <if test="consultant_nexus != null" >
+        #{consultant_nexus,jdbcType=VARCHAR},
+      </if>
+      <if test="register_time != null" >
+        #{register_time,jdbcType=DATE},
+      </if>
+      <if test="sponsor_remark != null" >
+        #{sponsor_remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+   <!-- 查询员工列表 -->
+  <select id="selectpraiselist" resultType="OaJzbPraise">
+SELECT oa_jzb_praise.id,consultant_name,consultant_age,oa_jzb_praise.sex,consulter_id,Record_id,
+oa_jzb_praise.name,contact_way,Teacher_id,oa_scb_paystatus.payStatus,oa_scb_education.education
+FROM oa_jzb_praise
+LEFT JOIN oa_rlzyb_employee AS emp ON oa_jzb_praise.Teacher_id=emp.emp_id
+LEFT JOIN oa_rlzyb_department ON emp.emp_department=oa_rlzyb_department.depart_id
+LEFT JOIN oa_scb_consulter AS con ON con.id=oa_jzb_praise.consulter_id
+LEFT JOIN oa_scb_paystatus ON con.payStatus=oa_scb_paystatus.id
+LEFT JOIN oa_scb_education ON oa_scb_education.id=oa_jzb_praise.Record_id
+WHERE depart_id=#{depart_id}
+	<if test="payStauts != 0">
+		and oa_scb_paystatus.payStatus=#{payStauts}
+	</if>
+	<if test="consultant_name !=null and consultant_name!='' ">
+		AND consultant_name LIKE CONCAT ('%',#{consultant_name},'%')
+	</if>
+	<if test="Teacher_id != 0">
+		AND Teacher_id=#{Teacher_id}
+	</if>
+	ORDER BY Register_time DESC 
+	LIMIT #{currentPage},#{pageSize}
+ </select>
+  <!-- 查询员工记录数 -->
+  <select id="selectpraiseCount" resultType="int">
+ SELECT COUNT(1)
+FROM oa_jzb_praise
+LEFT JOIN oa_rlzyb_employee AS emp ON oa_jzb_praise.Teacher_id=emp.emp_id
+LEFT JOIN oa_rlzyb_department ON emp.emp_department=oa_rlzyb_department.depart_id
+LEFT JOIN oa_scb_consulter AS con ON con.id=oa_jzb_praise.consulter_id
+LEFT JOIN oa_scb_paystatus ON con.payStatus=oa_scb_paystatus.id
+LEFT JOIN oa_scb_education ON oa_scb_education.id=oa_jzb_praise.Record_id
+WHERE depart_id=#{depart_id}
+	<if test="payStauts != 0">
+		and oa_scb_paystatus.payStatus=#{payStauts}
+	</if>
+	<if test="consultant_name !=null and consultant_name!='' ">
+		AND consultant_name LIKE CONCAT ('%',#{consultant_name},'%')
+	</if>
+	<if test="Teacher_id != 0">
+		AND Teacher_id=#{Teacher_id}
+	</if>
+	ORDER BY Register_time DESC 
+ </select>
+ 
+ 	<!-- 选择已缴费、未交费 -->
+  	<select id="selectpaytype" resultType="OaScbPaystatus">
+		SELECT id,payStatus FROM oa_scb_paystatus
+	</select>
+	<select id="selectpariseinfo" resultType="OaJzbPraise">
+	SELECT Register_time,b.emp_name,consultant_name,sex,consultant_age,oa_scb_education.education,
+	oa_jzb_workcondition.workcondition_name,sponsorcounselor,contact_way,contacts,
+	Consultant_nexus,Consultant_remarks 
+	FROM oa_jzb_praise
+	LEFT JOIN oa_rlzyb_employee AS a ON a.emp_id=oa_jzb_praise.Teacher_id
+	LEFT JOIN oa_rlzyb_department ON oa_rlzyb_department.depart_id=a.emp_department
+	LEFT JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id=a.emp_position
+    LEFT JOIN oa_rlzyb_employee AS b ON b.emp_id=oa_jzb_praise.consultant_id
+    LEFT JOIN oa_scb_education ON oa_scb_education.id=oa_jzb_praise.Record_id
+    LEFT JOIN oa_jzb_workcondition ON oa_jzb_workcondition.workcondition_id=oa_jzb_praise.status
+	WHERE oa_jzb_praise.id=#{id}
+	</select>
+	
+	<select id="selectpariseinfo2s" resultType="OaJzbPraise">
+	SELECT oa_jzb_praise.NAME,phone,b.emp_name,oa_jwb_grade.name as gradeName,oa_rlzyb_employee.emp_name AS teachername,Sponsor_remark FROM oa_jzb_praise
+	LEFT JOIN oa_rlzyb_user ON oa_jzb_praise.consultant_id=oa_rlzyb_user.user_id
+	LEFT JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_praise.Teacher_id
+	LEFT JOIN oa_rlzyb_employee AS a ON a.emp_id=oa_jzb_praise.Teacher_id
+	LEFT JOIN oa_rlzyb_department ON oa_rlzyb_department.depart_id=a.emp_department
+	LEFT JOIN oa_rlzyb_position ON oa_rlzyb_position.position_id=a.emp_position
+    LEFT JOIN oa_rlzyb_employee AS b ON b.emp_id=oa_jzb_praise.consultant_id
+    LEFT JOIN oa_scb_education ON oa_scb_education.id=oa_jzb_praise.Record_id
+    LEFT JOIN oa_jzb_workcondition ON oa_jzb_workcondition.workcondition_id=oa_jzb_praise.status
+    LEFT JOIN oa_jwb_grade ON oa_jwb_grade.id=oa_jzb_praise.gradeId
+	WHERE oa_jzb_praise.id=#{id}
+	</select>
+	<insert id="inOaJzbPraise" parameterType="OaJzbPraise" >
+    INSERT INTO oa_jzb_praise 
+	(
+	consultant_name, 
+	consultant_age, 
+	sex, 
+	status, 
+	contact_way, 
+	contacts, 
+	consultant_id, 
+	Record_id, 
+	Consultant_remarks, 
+	NAME, 
+	phone, 
+	gradeId, 
+	Teacher_id, 
+	Consultant_nexus, 
+	Register_time, 
+	Sponsor_remark, 
+	sponsorcounselor
+	)
+	VALUES
+	( 
+	#{consultant_name}, 
+	#{consultant_age}, 
+	#{sex}, 
+	#{status}, 
+	#{contact_way}, 
+	#{contacts}, 
+	#{consultant_id}, 
+	#{Record_id}, 
+	#{Consultant_remarks}, 
+	#{name}, 
+	#{phone}, 
+	#{gradeId}, 
+	#{Teacher_id}, 
+	#{Consultant_nexus}, 
+	#{Register_time}, 
+	#{Sponsor_remark}, 
+	#{sponsorcounselor}
+	);
+ 	</insert>
+  
+  <select id="selectdepartmentid" resultType="OaJzbPraise">
+  SELECT emp_department FROM oa_rlzyb_employee WHERE emp_id=#{Teacher_id}
+  </select>
+  <!-- 查询咨询者状态 -->
+   <select id="ZXStatus" resultType="OaScbConsultstatus">
+	SELECT id,STATUS FROM oa_scb_consultstatus
+  </select>
+  <!-- 根据班主任查询班级 -->
+  <select id="showTeachId" resultType="OaJwbGrade">
+		SELECT id,NAME FROM oa_jwb_grade
+		INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jwb_grade.classTeacherID
+		WHERE emp_id=#{emp_id}
+  </select>
+  <!-- 主管查看所有班级 -->
+  <select id="showGrade" resultType="OaJwbGrade">
+  	SELECT id,NAME FROM oa_jwb_grade
+  </select>
+  <!-- 查询班主任 -->
+  <select id="empNameShow" resultType="OaRlzybEmployee">
+  	SELECT emp_id,emp_name FROM oa_rlzyb_employee
+	INNER JOIN oa_rlzyb_department ON oa_rlzyb_department.depart_id = oa_rlzyb_employee.emp_department
+	WHERE depart_id=7
+  </select>
+  <!-- 口碑成为咨询量 -->
+  <insert id="addConsult">
+  	INSERT INTO oa_scb_consulter(name,age,sex,
+  								status,telphone1,ungenTelphone,
+  								education,allotTime,consultWay,
+  								TYPE,payStatus,follow,comments)
+	VALUES(
+		#{name},
+		#{age},
+		#{sex},
+		#{status},
+		#{telphone1},
+		#{ungenTelphone},
+		#{education},
+		#{allotTime},
+		2,1,1,
+		#{follow},
+		#{comments}
+	);
+  </insert>
+  <!-- 修改咨询量Id -->
+  <update id="editConsultId">
+  	UPDATE oa_jzb_praise SET consulter_id=(SELECT id FROM oa_scb_consulter
+	WHERE allotTime=#{Register_time} AND NAME=#{name}) 
+	WHERE contact_way=#{contact_way} AND consultant_age=#{consultant_age}
+  </update>
+
+</mapper>

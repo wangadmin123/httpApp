@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaXsbDailypaper2Mapper">
+
+	<!-- 添加日报成绩的总个数 -->
+	<insert id="add"  parameterType="cn.tyyhoa.pojo.OaXsbDailypaper2">
+	 INSERT INTO oa_xsb_dailypaper2 (lifeID, preparationCount, obuCount, homeworkCount,grade_id,writeTimeDate2)
+    VALUES (NULL,#{preparationCount},#{obuCount},#{homeworkCount},#{grade_id},#{writeTimeDate2})
+	</insert>
+
+	<!-- 查询日报成绩的总个数 -->
+	<select id="selectOaXsbDailypaper2"  resultType="cn.tyyhoa.pojo.OaXsbDailypaper2">
+		SELECT * FROM oa_xsb_dailypaper2 WHERE grade_id=#{grade_id} AND writeTimeDate2=#{writeTimeDate2}
+	</select>
+	
+</mapper>

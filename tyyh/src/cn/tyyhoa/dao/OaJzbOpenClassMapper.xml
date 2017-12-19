@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbOpenClassMapper" >
+  
+  <!-- 根据条件查询 -->
+  <select id="getNameSelect" resultType="OaJzbOpenClass" >
+      SELECT oa_jzb_openclass.id,oa_jzb_openclass.NAME,sex,age,education,computer_horizontal,remarks,city,oa_jzb_openclass.deleteStatus,enteringTime
+		FROM oa_jzb_openclass
+		LEFT JOIN oa_scb_education ON oa_jzb_openclass.study_experience=oa_scb_education.id
+		WHERE 1=1 and oa_jzb_openclass.deleteStatus=0
+		AND gradeId=#{gradeId}
+		<if test="name!=null and name!=''">
+			and name like concat('%',#{name},'%')
+		</if>
+		LIMIT #{currentPage},#{pageSize}
+  </select>
+  <!-- 根据条件查询的总条数 -->
+  <select id="getNameSelectCount" resultType="int">
+  	SELECT COUNT(1)
+		FROM oa_jzb_openclass
+		LEFT JOIN oa_scb_education ON oa_jzb_openclass.study_experience=oa_scb_education.id
+		WHERE 1=1 AND oa_jzb_openclass.deleteStatus=0
+		AND gradeId=#{gradeId}
+		<if test="name!=null and name!=''">
+			AND NAME LIKE CONCAT('%',#{name},'%')
+		</if>
+  </select>
+  <insert id="addOpenClass" parameterType="OaJzbOpenClass" >
+    INSERT INTO oa_jzb_openclass(name,sex,age,study_experience,computer_horizontal, 
+      remarks,city,deleteStatus,gradeId,enteringTime)
+    VALUES (#{name},#{sex},#{age},#{study_experience},#{computer_horizontal},#{remarks},#{city},#{deleteStatus},#{gradeId},#{enteringTime});
+  </insert>
+  <select id="selOpenClass" resultType="OaJzbOpenClass">
+  	SELECT id,name,sex,age,study_experience,computer_horizontal,remarks,city
+	FROM oa_jzb_openclass
+	WHERE deleteStatus=0 and id=#{id}
+  </select>
+  
+  <update id="editOpenClass" parameterType="OaJzbOpenClass">
+		UPDATE oa_jzb_openclass
+		<trim prefix="set" suffixOverrides=",">
+			<if test="name!=null and name!=''">name=#{name},</if>
+			<if test="sex!=null and sex!=''">sex=#{sex},</if>
+			<if test="age!=0">age=#{age},</if>
+			<if test="study_experience!=0">study_experience=#{study_experience},</if>
+			<if test="computer_horizontal!=null and computer_horizontal!=''">computer_horizontal=#{computer_horizontal},</if>
+			<if test="remarks!=null and remarks!=''">remarks=#{remarks},</if>
+			<if test="city!=null and city!=''">city=#{city}</if>
+		</trim>
+		where id=#{id}
+ </update>
+  <update id="delOpenClass" parameterType="int">
+  	UPDATE oa_jzb_openclass SET deleteStatus=1 WHERE id=#{id}
+  </update>
+  <!-- 显示学历 -->
+  <select id="showEducation" resultType="OaScbEducation">
+		SELECT id,education FROM oa_scb_education
+  </select>
+</mapper>

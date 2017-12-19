@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJwbMotorMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJwbMotor" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="floor" property="floor" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <!-- 修改机房状态 -->
+  <update id="updatemotor" parameterType="Integer">
+  	UPDATE  oa_jwb_motor SET STATUS=#{status} 
+  	WHERE id=#{id}
+  </update>
+</mapper>

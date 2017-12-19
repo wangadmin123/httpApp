@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbSchoolinfoMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaScbSchoolinfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="schoolName" property="schoolName" jdbcType="VARCHAR" />
+    <result column="schoolAddress" property="schoolAddress" jdbcType="VARCHAR" />
+    <result column="schoolTimePlan" property="schoolTimePlan" jdbcType="TIMESTAMP" />
+    <result column="opptSituation" property="opptSituation" jdbcType="VARCHAR" />
+    <result column="schoolsSchedule" property="schoolsSchedule" jdbcType="VARCHAR" />
+    <result column="pushingSchedule" property="pushingSchedule" jdbcType="VARCHAR" />
+    <result column="studentsSituation" property="studentsSituation" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, schoolName, schoolAddress, schoolTimePlan, opptSituation, schoolsSchedule, pushingSchedule, 
+    studentsSituation
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_scb_schoolinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_scb_schoolinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaScbSchoolinfo" >
+    insert into oa_scb_schoolinfo (id, schoolName, schoolAddress, 
+      schoolTimePlan, opptSituation, schoolsSchedule, 
+      pushingSchedule, studentsSituation)
+    values (#{id,jdbcType=INTEGER}, #{schoolName,jdbcType=VARCHAR}, #{schoolAddress,jdbcType=VARCHAR}, 
+      #{schoolTimePlan,jdbcType=TIMESTAMP}, #{opptSituation,jdbcType=VARCHAR}, #{schoolsSchedule,jdbcType=VARCHAR}, 
+      #{pushingSchedule,jdbcType=VARCHAR}, #{studentsSituation,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaScbSchoolinfo" >
+    insert into oa_scb_schoolinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="schoolName != null" >
+        schoolName,
+      </if>
+      <if test="schoolAddress != null" >
+        schoolAddress,
+      </if>
+      <if test="schoolTimePlan != null" >
+        schoolTimePlan,
+      </if>
+      <if test="opptSituation != null" >
+        opptSituation,
+      </if>
+      <if test="schoolsSchedule != null" >
+        schoolsSchedule,
+      </if>
+      <if test="pushingSchedule != null" >
+        pushingSchedule,
+      </if>
+      <if test="studentsSituation != null" >
+        studentsSituation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="schoolName != null" >
+        #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolAddress != null" >
+        #{schoolAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolTimePlan != null" >
+        #{schoolTimePlan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opptSituation != null" >
+        #{opptSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolsSchedule != null" >
+        #{schoolsSchedule,jdbcType=VARCHAR},
+      </if>
+      <if test="pushingSchedule != null" >
+        #{pushingSchedule,jdbcType=VARCHAR},
+      </if>
+      <if test="studentsSituation != null" >
+        #{studentsSituation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaScbSchoolinfo" >
+    update oa_scb_schoolinfo
+    <set >
+      <if test="schoolName != null" >
+        schoolName = #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolAddress != null" >
+        schoolAddress = #{schoolAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolTimePlan != null" >
+        schoolTimePlan = #{schoolTimePlan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opptSituation != null" >
+        opptSituation = #{opptSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolsSchedule != null" >
+        schoolsSchedule = #{schoolsSchedule,jdbcType=VARCHAR},
+      </if>
+      <if test="pushingSchedule != null" >
+        pushingSchedule = #{pushingSchedule,jdbcType=VARCHAR},
+      </if>
+      <if test="studentsSituation != null" >
+        studentsSituation = #{studentsSituation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaScbSchoolinfo" >
+    update oa_scb_schoolinfo
+    set schoolName = #{schoolName,jdbcType=VARCHAR},
+      schoolAddress = #{schoolAddress,jdbcType=VARCHAR},
+      schoolTimePlan = #{schoolTimePlan,jdbcType=TIMESTAMP},
+      opptSituation = #{opptSituation,jdbcType=VARCHAR},
+      schoolsSchedule = #{schoolsSchedule,jdbcType=VARCHAR},
+      pushingSchedule = #{pushingSchedule,jdbcType=VARCHAR},
+      studentsSituation = #{studentsSituation,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

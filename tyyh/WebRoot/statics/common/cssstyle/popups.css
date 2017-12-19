@@ -1,0 +1,40 @@
+.popupStyle-study{
+
+    position:absolute;
+    border: 1px solid #e5e5e5;
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 9999;
+    background-color: #fff;
+
+}
+.popupStyle-study h1{
+    text-indent:10pt;
+    color:#333333;
+    background-color: #f6f6f6;
+    border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    font-size: 14px;
+}
+.popupStyle-study h1 span{
+    margin-right: 15px;
+    float: right;
+    color: #ff0000;
+    cursor: pointer;
+}
+.mbStyle-studyInfo{
+	background-color:#000;
+	width:100%;
+	height:100%;
+	filter:alpha(opacity=60); /*IE滤镜，透明度50%*/
+	-moz-opacity:0.6; /*Firefox私有，透明度50%*/
+	opacity:0.6;/*其他，透明度50%*/
+	position:absolute;
+	left:0px;
+	top:0px;
+	display:none;
+	z-index: 30;
+}

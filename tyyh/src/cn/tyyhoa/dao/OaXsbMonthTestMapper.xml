@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaXsbMonthTestMapper">
+	<!-- 添加月考表 -->
+	<insert id="insertMonthly" parameterType="java.util.List">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into oa_xsb_monthly
+
+		(id,studentId,
+		written,scjd,classId,createtime)
+		values
+		<foreach collection="list" item="reddemCode" index="index"
+			separator=",">
+
+			(
+			#{reddemCode.id},
+			#{reddemCode.studentId},
+			#{reddemCode.written},
+			#{reddemCode.scjd},
+			#{reddemCode.classId},
+			#{reddemCode.createtime}
+			)
+
+		</foreach>
+	</insert>
+
+
+	<!-- 根据班级Id查询最近一天的数据 -->
+	<select id="getMonthtest" resultType="OaXsbMonthly">
+		SELECT
+		oa_xsb_monthly.id,stu_number,stu_name,written,scjd,classId,studentId,oa_xsb_monthly.createTime
+		FROM oa_xsb_monthly
+		INNER JOIN oa_jzb_student ON
+		oa_jzb_student.stu_id=oa_xsb_monthly.studentId
+		INNER JOIN oa_jwb_grade
+		ON
+		oa_jwb_grade.id=oa_xsb_monthly.classId
+		WHERE
+		oa_xsb_monthly.createTime
+		=
+		(SELECT createTime FROM oa_xsb_monthly WHERE
+		classId=#{classId} ORDER BY
+		createTime DESC LIMIT 1)
+		AND
+		classId=#{classId}
+
+
+	</select>
+	<!-- 根据班级Id和时间查询 -->
+	<select id="selectMonthByClassIdAndCreateTime" resultType="OaXsbMonthly">
+		SELECT
+		oa_xsb_monthly.id,stu_number,stu_name,written,scjd,oa_xsb_monthly.createTime,studentId
+		FROM oa_xsb_monthly
+		INNER JOIN
+		oa_jzb_student ON
+		oa_jzb_student.stu_id=oa_xsb_monthly.studentId
+		INNER JOIN
+		oa_jwb_grade
+		ON oa_jwb_grade.id=oa_xsb_monthly.classId
+		<where>
+			<if test="classId!=null and classId!=''">
+				and classId=#{classId}
+			</if>
+			<if test="createTime!=null and createTime!=''">
+				and oa_xsb_monthly.createTime LIKE CONCAT ('%',#{createTime},'%')
+			</if>
+		</where >
+		ORDER BY stu_number
+	</select>
+	<select id="selectMonthByStuId" resultType="OaXsbMonthly">
+		SELECT * FROM oa_xsb_monthly WHERE studentId = #{studentId}  ORDER BY createTime DESC LIMIT 0,1
+	</select>
+
+
+	<update id="xgyk">
+		UPDATE `oa_xsb_monthly` SET 
+		<if test="i == 1">
+			written = #{score} 
+		</if>
+		<if test="i == 2">
+			scjd = #{score} 
+		</if>
+		WHERE studentId = #{id} AND createTime = #{time} AND classId=#{gradeId}
+	</update>
+</mapper>

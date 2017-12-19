@@ -1,0 +1,70 @@
+*{
+	margin:0px;
+	_margin:0px;
+	padding:0px;
+	_padding:0px;
+}
+.addpatroldiv{
+	width: 700px;
+	height:550px;
+	margin: auto;
+}
+ul { list-style-type: none;}
+li { display: inline-block;}
+li { padding-left: 45px;}
+input.labelauty + label { font: 12px "Microsoft Yahei";}
+h2{
+	color: red;
+	text-align: right;
+	margin-top: 26px;
+}
+h3{
+	color: #b3b3b3;
+	font-size: 18px;
+}
+.inputtime{
+	margin-top: 16px;
+}
+.dowetable{
+	width: 700px;
+	height: 200px;
+}
+.dowetable1{
+	width: 700px;
+	height: 100px;
+}
+.dowetable3{
+	width: 700px;
+	height: 50px;
+}
+.dateStyle1{height:24px; border:1px solid #CCCCCC; padding:2px 4px; line-height:24px; color:#606060; border-radius: 2px; background-image:url(../images/date.png); background-position:95% center; background-repeat:no-repeat;}
+.dateStyle2{height:24px; border:1px solid #CCCCCC; padding:2px 4px; line-height:24px; color:#606060; border-radius: 2px; background-image:url(../images/date.png); background-position:95% center; background-repeat:no-repeat;}
+/***************保存读秒按钮*********************/
+.saveStyle{
+	 width:260px; 
+	 height:80px;
+	 line-height:80px;
+	 font-size:14px;
+	 color:#fff;
+	position:fixed;
+     /*left:450px;
+	 top:200px;*/
+	 text-align:center;
+	 display:none;
+	 background-color:#44bb00;
+	 filter:alpha(opacity=60);
+	 z-index:1000;
+ }
+ .saveBotton{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+float:right;margin-top: 30px;margin-right: 140px;
+}
+ .saveOut{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+float:right;margin-top: 30px;margin-right: -140px;
+}
+.deleteBotton{
+	cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+float:right;margin-top: 30px;margin-right: -140px;
+}

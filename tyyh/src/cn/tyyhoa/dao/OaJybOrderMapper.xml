@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybOrderMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybOrder" >
+    <id column="order_id" property="order_id" jdbcType="INTEGER" />
+    <result column="order_studentId" property="order_studentId" jdbcType="INTEGER" />
+    <result column="order_city" property="order_city" jdbcType="VARCHAR" />
+    <result column="order_job" property="order_job" jdbcType="VARCHAR" />
+    <result column="order_sal" property="order_sal" jdbcType="DOUBLE" />
+    <result column="order_recommend_city" property="order_recommend_city" jdbcType="VARCHAR" />
+    <result column="order_fixSal" property="order_fixSal" jdbcType="DOUBLE" />
+    <result column="order_createdate" property="order_createdate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, order_studentId, order_city, order_job, order_sal, order_recommend_city, 
+    order_fixSal, order_createdate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_order
+    where order_id = #{order_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_order
+    where order_id = #{order_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybOrder" >
+    insert into oa_jyb_order (order_id, order_studentId, order_city, 
+      order_job, order_sal, order_recommend_city, 
+      order_fixSal, order_createdate)
+    values (#{order_id,jdbcType=INTEGER}, #{order_studentId,jdbcType=INTEGER}, #{order_city,jdbcType=VARCHAR}, 
+      #{order_job,jdbcType=VARCHAR}, #{order_sal,jdbcType=DOUBLE}, #{order_recommend_city,jdbcType=VARCHAR}, 
+      #{order_fixSal,jdbcType=DOUBLE}, #{order_createdate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybOrder" >
+    insert into oa_jyb_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="order_id != null" >
+        order_id,
+      </if>
+      <if test="order_studentId != null" >
+        order_studentId,
+      </if>
+      <if test="order_city != null" >
+        order_city,
+      </if>
+      <if test="order_job != null" >
+        order_job,
+      </if>
+      <if test="order_sal != null" >
+        order_sal,
+      </if>
+      <if test="order_recommend_city != null" >
+        order_recommend_city,
+      </if>
+      <if test="order_fixSal != null" >
+        order_fixSal,
+      </if>
+      <if test="order_createdate != null" >
+        order_createdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="order_id != null" >
+        #{order_id,jdbcType=INTEGER},
+      </if>
+      <if test="order_studentId != null" >
+        #{order_studentId,jdbcType=INTEGER},
+      </if>
+      <if test="order_city != null" >
+        #{order_city,jdbcType=VARCHAR},
+      </if>
+      <if test="order_job != null" >
+        #{order_job,jdbcType=VARCHAR},
+      </if>
+      <if test="order_sal != null" >
+        #{order_sal,jdbcType=DOUBLE},
+      </if>
+      <if test="order_recommend_city != null" >
+        #{order_recommend_city,jdbcType=VARCHAR},
+      </if>
+      <if test="order_fixSal != null" >
+        #{order_fixSal,jdbcType=DOUBLE},
+      </if>
+      <if test="order_createdate != null" >
+        #{order_createdate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybOrder" >
+    update oa_jyb_order
+    <set >
+      <if test="order_studentId != null" >
+        order_studentId = #{order_studentId,jdbcType=INTEGER},
+      </if>
+      <if test="order_city != null" >
+        order_city = #{order_city,jdbcType=VARCHAR},
+      </if>
+      <if test="order_job != null" >
+        order_job = #{order_job,jdbcType=VARCHAR},
+      </if>
+      <if test="order_sal != null" >
+        order_sal = #{order_sal,jdbcType=DOUBLE},
+      </if>
+      <if test="order_recommend_city != null" >
+        order_recommend_city = #{order_recommend_city,jdbcType=VARCHAR},
+      </if>
+      <if test="order_fixSal != null" >
+        order_fixSal = #{order_fixSal,jdbcType=DOUBLE},
+      </if>
+      <if test="order_createdate != null" >
+        order_createdate = #{order_createdate,jdbcType=DATE},
+      </if>
+    </set>
+    where order_id = #{order_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybOrder" >
+    update oa_jyb_order
+    set order_studentId = #{order_studentId,jdbcType=INTEGER},
+      order_city = #{order_city,jdbcType=VARCHAR},
+      order_job = #{order_job,jdbcType=VARCHAR},
+      order_sal = #{order_sal,jdbcType=DOUBLE},
+      order_recommend_city = #{order_recommend_city,jdbcType=VARCHAR},
+      order_fixSal = #{order_fixSal,jdbcType=DOUBLE},
+      order_createdate = #{order_createdate,jdbcType=DATE}
+    where order_id = #{order_id,jdbcType=INTEGER}
+  </update>
+</mapper>

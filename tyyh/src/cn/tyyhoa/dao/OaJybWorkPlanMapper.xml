@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybWorkPlanMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybWorkPlan" >
+    <id column="work_plan_id" property="work_plan_id" jdbcType="INTEGER" />
+    <result column="work_plan_reportid" property="work_plan_reportid" jdbcType="INTEGER" />
+    <result column="work_plan_job_content" property="work_plan_job_content" jdbcType="VARCHAR" />
+    <result column="work_plan_needhelp" property="work_plan_needhelp" jdbcType="VARCHAR" />
+    <result column="work_plan_plantime" property="work_plan_plantime" jdbcType="DATE" />
+    <result column="work_plan_remarks" property="work_plan_remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    work_plan_id, work_plan_reportid, work_plan_job_content, work_plan_needhelp, work_plan_plantime, 
+    work_plan_remarks
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_work_plan
+    where work_plan_id = #{work_plan_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_work_plan
+    where work_plan_id = #{work_plan_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybWorkPlan" >
+    insert into oa_jyb_work_plan (work_plan_id, work_plan_reportid, 
+      work_plan_job_content, work_plan_needhelp, 
+      work_plan_plantime, work_plan_remarks)
+    values (#{work_plan_id,jdbcType=INTEGER}, #{work_plan_reportid,jdbcType=INTEGER}, 
+      #{work_plan_job_content,jdbcType=VARCHAR}, #{work_plan_needhelp,jdbcType=VARCHAR}, 
+      #{work_plan_plantime,jdbcType=DATE}, #{work_plan_remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybWorkPlan" >
+    insert into oa_jyb_work_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="work_plan_id != null" >
+        work_plan_id,
+      </if>
+      <if test="work_plan_reportid != null" >
+        work_plan_reportid,
+      </if>
+      <if test="work_plan_job_content != null" >
+        work_plan_job_content,
+      </if>
+      <if test="work_plan_needhelp != null" >
+        work_plan_needhelp,
+      </if>
+      <if test="work_plan_plantime != null" >
+        work_plan_plantime,
+      </if>
+      <if test="work_plan_remarks != null" >
+        work_plan_remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="work_plan_id != null" >
+        #{work_plan_id,jdbcType=INTEGER},
+      </if>
+      <if test="work_plan_reportid != null" >
+        #{work_plan_reportid,jdbcType=INTEGER},
+      </if>
+      <if test="work_plan_job_content != null" >
+        #{work_plan_job_content,jdbcType=VARCHAR},
+      </if>
+      <if test="work_plan_needhelp != null" >
+        #{work_plan_needhelp,jdbcType=VARCHAR},
+      </if>
+      <if test="work_plan_plantime != null" >
+        #{work_plan_plantime,jdbcType=DATE},
+      </if>
+      <if test="work_plan_remarks != null" >
+        #{work_plan_remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybWorkPlan" >
+    update oa_jyb_work_plan
+    <set >
+      <if test="work_plan_reportid != null" >
+        work_plan_reportid = #{work_plan_reportid,jdbcType=INTEGER},
+      </if>
+      <if test="work_plan_job_content != null" >
+        work_plan_job_content = #{work_plan_job_content,jdbcType=VARCHAR},
+      </if>
+      <if test="work_plan_needhelp != null" >
+        work_plan_needhelp = #{work_plan_needhelp,jdbcType=VARCHAR},
+      </if>
+      <if test="work_plan_plantime != null" >
+        work_plan_plantime = #{work_plan_plantime,jdbcType=DATE},
+      </if>
+      <if test="work_plan_remarks != null" >
+        work_plan_remarks = #{work_plan_remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where work_plan_id = #{work_plan_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybWorkPlan" >
+    update oa_jyb_work_plan
+    set work_plan_reportid = #{work_plan_reportid,jdbcType=INTEGER},
+      work_plan_job_content = #{work_plan_job_content,jdbcType=VARCHAR},
+      work_plan_needhelp = #{work_plan_needhelp,jdbcType=VARCHAR},
+      work_plan_plantime = #{work_plan_plantime,jdbcType=DATE},
+      work_plan_remarks = #{work_plan_remarks,jdbcType=VARCHAR}
+    where work_plan_id = #{work_plan_id,jdbcType=INTEGER}
+  </update>
+</mapper>

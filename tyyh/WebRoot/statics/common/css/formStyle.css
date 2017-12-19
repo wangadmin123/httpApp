@@ -1,0 +1,40 @@
+/* CSS Document */
+/*文本框*/
+.textStyle{width:100%;  height:24px; border:1px solid #CCCCCC; padding:2px 4px; line-height:24px; color:#606060; border-radius: 2px;  }
+
+/*下拉框*/
+.selectStyle{width:100%;  height:30px; border:1px solid #CCCCCC; padding:2px 4px; line-height:30px; color:#606060; border-radius: 2px;}
+/*日期*/
+.dateStyle{width:100%;  height:24px; border:1px solid #CCCCCC; padding:2px 4px; line-height:24px; color:#606060; border-radius: 2px; background-image:url(../images/date.png); background-position:95% center; background-repeat:no-repeat;}
+/*上传*/
+.fileStyle{ display:block;  width:82px; height:30px; line-height:30px; background:url(../images/upload1.png); background-repeat:no-repeat;}
+.file{
+cursor:pointer;
+font-size:20px;
+left:0px;
+opacity:0;
+filter:alpha(opacity=0);
+}
+
+/*搜索框*/
+.searchStyle{width:100%;  height:30px; border:1px solid #CCCCCC; padding:2px 4px; line-height:30px; color:#606060; border-radius: 2px;}
+/*单选*/
+.radioStyle{border:1px solid #CCCCCC; width:17px; height:17px; margin-right:5px; vertical-align:middle;}
+.checkedStyle{border:1px solid #CCCCCC; width:17px; height:17px; margin-right:5px; vertical-align:middle;}
+
+/*复选框*/
+.areaStyle{width:100%;  height:80px; border:1px solid #CCCCCC; padding:2px 4px;line-height:24px; color:#606060;border-radius: 2px;}
+
+/*弹出框按钮*/
+.pooupBotton{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+    text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+.bottomStyle{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+
+.saveBotton{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+.searchBotton{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}
+.deleteBotton{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;}

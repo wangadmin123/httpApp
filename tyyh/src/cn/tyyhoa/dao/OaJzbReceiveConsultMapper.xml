@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbReceiveConsultMapper" >
+	<select id="selectConsultNameAndSex" resultType="OaScbConsulter" parameterType="OaScbConsulter">
+		SELECT oa_scb_consulter.id,NAME,sex,age,telphone1,ungenTelphone,oa_scb_education.education as educat,
+		specialty,oa_scb_consultstatus.status as sta,consultTeacher,oa_scb_education.id as educationId
+		FROM oa_scb_consulter
+		LEFT JOIN oa_scb_education ON oa_scb_consulter.education=oa_scb_education.id
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id=oa_scb_consulter.status
+		WHERE enrollStatus=1 AND allotCLass=2 AND allotClassteacher=#{allotClassteacher}
+		<if test="name!=null and name!=''"> and Name like concat('%',#{name},'%')</if>
+		<if test="sex!=0"> and sex=#{sex}</if>
+		ORDER BY oa_scb_consulter.id DESC 
+		LIMIT #{currentPage},#{pageSize}
+	</select>
+	<select id="selectConsultNameAndSexCount" resultType="int" parameterType="OaScbConsulter">
+		SELECT COUNT(1)
+		FROM oa_scb_consulter
+		LEFT JOIN oa_scb_education ON oa_scb_consulter.education=oa_scb_education.id
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id=oa_scb_consulter.status
+		WHERE enrollStatus=1 AND allotCLass=2 AND allotClassteacher=#{allotClassteacher}
+		<if test="name!=null and name!=''"> and Name like concat('%',#{name},'%')</if>
+		<if test="sex!=0"> and sex=#{sex}</if>
+		ORDER BY oa_scb_consulter.id DESC 
+	</select>
+	<select id="selectGrade" resultType="OaJwbGrade">
+		SELECT id,NAME FROM oa_jwb_grade
+		INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jwb_grade.classTeacherID
+		WHERE emp_id=#{emp_id}
+	</select>
+	<select id="showGrade" resultType="OaJwbGrade">
+		SELECT id,NAME FROM oa_jwb_grade
+	</select>
+	<update id="edit" parameterType="int">
+        UPDATE oa_scb_consulter SET allotClass=1,gradeId=#{gradeId} WHERE id=#{id}
+	</update>
+	<!-- 根据班级Id获取名称 -->
+	<select id="selectGradeId" resultType="OaJwbGrade">
+		SELECT NAME FROM oa_jwb_grade where id=#{gradeId}
+	</select>
+	<!-- 查询班级学生个数 -->
+	<select id="studentCount" resultType="OaJzbStudent" parameterType="int">
+		SELECT stu_name FROM oa_jzb_student WHERE grade_id=#{grade_Id}
+	</select>
+	<!-- 批量插入学生信息 -->
+	<insert id="addStudentPL" parameterType="OaJzbStudent">
+		INSERT INTO oa_jzb_student(consulter_id,stu_number,stu_name,stu_age,contact_way,memberContact_way,grade_id,entry_date)
+		VALUES(#{consulter_id},#{stu_number},#{name},#{age},#{telphone1},#{ungenTelphone},#{gradeId},#{entry_date})
+	</insert>
+	<insert id="addOpenClass" parameterType="OaJzbOpenClass">
+		INSERT INTO oa_jzb_openclass(NAME,sex,age,study_experience,gradeId)
+		VALUES(#{name},#{sex},#{age},#{study_experience},#{gradeId})
+	</insert>
+	<!-- 查询一条学生信息 -->
+	<select id="selectOne" resultType="OaScbConsulter">
+		SELECT NAME,age,sex,telphone1,ungenTelphone FROM oa_scb_consulter WHERE id=#{id}
+	</select>
+</mapper>

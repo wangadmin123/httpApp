@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbStuInterviewMapper" >
+	<!-- 查询学生列表 -->
+	<select id="getSelect" resultType="OaJzbStuInterview"> 
+		SELECT oa_jzb_stu_interview.id,emp_name,stage,interviewType,InterviewTime,enteringTime,interviewContent,InterviewName_id,studentName_id,writerTest,engineTest,teacherScene
+		FROM oa_jzb_stu_interview 
+		INNER JOIN oa_jzb_student ON oa_jzb_stu_interview.studentName_id=oa_jzb_student.stu_id
+		INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_stu_interview.InterviewName_id
+		INNER JOIN oa_jwb_semester ON oa_jwb_semester.id=oa_jzb_stu_interview.Term_id
+		INNER JOIN oa_jzb_interviewtype ON oa_jzb_interviewtype.id=oa_jzb_stu_interview.interviewMode_id
+		WHERE studentName_id=#{stu_id} and oa_jzb_stu_interview.deleteStatus=0
+		ORDER BY InterviewTime DESC 
+	</select>
+	<!-- 查询一条访谈记录 -->
+	<select id="getInterview" resultType="OaJzbStuInterview">
+		SELECT oa_jzb_stu_interview.id,emp_name,stage,interviewType,InterviewTime,enteringTime,interviewContent,InterviewName_id,studentName_id,oa_jzb_stu_interview.deleteStatus,writerTest,engineTest,teacherScene
+		FROM oa_jzb_stu_interview 
+		INNER JOIN oa_jzb_student ON oa_jzb_stu_interview.studentName_id=oa_jzb_student.stu_id
+		INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_stu_interview.InterviewName_id
+		INNER JOIN oa_jwb_semester ON oa_jwb_semester.id=oa_jzb_stu_interview.Term_id
+		INNER JOIN oa_jzb_interviewtype ON oa_jzb_interviewtype.id=oa_jzb_stu_interview.interviewMode_id
+		WHERE oa_jzb_stu_interview.id=#{id} AND oa_jzb_stu_interview.deleteStatus=0
+	</select>
+	<!-- 查询学生ID -->
+	<select id="getStuId" resultType="OaJzbStudent">
+		SELECT stu_id,stu_name,grade_id FROM oa_jzb_student WHERE stu_id=#{stu_id}
+	</select>
+	<!-- 查询学期ID -->
+	<select id="getSesmId" resultType="OaJwbSemester">
+		<!-- SELECT id,stage FROM oa_jwb_semester  -->
+		SELECT oa_jwb_semester.id,oa_jwb_semester.stage,grade_id,stu_name FROM oa_jwb_semester   
+ INNER JOIN oa_jwb_grade ON oa_jwb_grade.stage=oa_jwb_semester.id  
+ INNER JOIN oa_jzb_student ON oa_jzb_student.grade_id=oa_jwb_grade.id  
+		WHERE stu_id=#{stu_id}
+	</select>
+	<!-- 查询访谈类型 -->
+	<select id="getInterviewId" resultType="OaJzbInterviewtype">
+		SELECT id,interviewType FROM oa_jzb_interviewtype
+	</select>
+	<!-- 查询访谈人 -->
+	<select id="Interview_empname" resultType="OaJzbStuInterview">
+		SELECT id,enteringTime FROM oa_jzb_stu_interview
+	</select>
+	<!-- 添加学生访谈 -->
+	<insert id="addStuInterview" parameterType="OaJzbStuInterview">
+		INSERT INTO oa_jzb_stu_interview(
+        studentName_id,
+        interviewName_id,
+        writerTest,
+        engineTest,
+        teacherScene,
+        Term_id,
+        interviewTime,
+        enteringTime,
+        interviewMode_id,
+        interviewContent,
+        remark)
+        
+        values(
+       #{studentName_id},
+        #{interviewName_id},
+        #{writerTest},
+        #{engineTest},
+        #{teacherScene},
+        #{Term_id},
+        #{interviewTime},
+       #{enteringTime},
+        #{interviewMode_id},
+        #{interviewContent},
+        #{remark})
+	</insert>
+	
+	<!-- 修改数据 -->
+	<update id="editStuInterview" parameterType="OaJzbStuInterview" >
+    UPDATE oa_jzb_stu_interview
+    <set>
+      <if test="interviewName_id != 0" >interviewName_id= #{interviewName_id},</if>
+      <if test="Term_id != 0" >Term_id= #{Term_id},</if>
+      <if test="writerTest != 0" >writerTest=#{writerTest},</if>
+      <if test="engineTest != 0" >engineTest=#{engineTest},</if>
+      <if test="teacherScene != null and teacherScene!=''" >teacherScene=#{teacherScene},</if>
+      <if test="interviewMode_id != 0" >interviewMode_id= #{interviewMode_id},</if>
+      <if test="interviewContent != null and interviewContent != ''" >interviewContent= #{interviewContent}</if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="deleteInterview" parameterType="int">
+  	UPDATE oa_jzb_stu_interview SET deleteStatus=1 WHERE id=#{id}
+  </update>
+</mapper>

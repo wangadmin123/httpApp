@@ -1,0 +1,122 @@
+﻿*{
+	font-size: 12px;
+	padding: 0;
+}
+tr,.selectTables>td,.select>td,.select>th,.selectTables>th,.table>th,.P_talk>td{
+	border:1px solid gray;
+}
+ .table>th>input{
+ 	height: 32px;
+ }
+
+.popupStyle>p{
+	height:30px;
+	width:100%;
+	background-color:menu;
+	font-size: 18px;	
+}
+
+.p_close,.Stu_close,.close,.close_p{
+	font-size:15px;
+	font-weight: bold;
+	cursor: pointer;
+	margin-right:5px;
+	float: right;
+	color: red;
+	margin-top:3px;
+}
+.saveBotton{
+	margin: auto;
+	
+}
+
+.selectTables th:nth-child(6),.select th:nth-child(7){
+	 width:280px;
+}
+.selectTables th:nth-child(7),.selectTables input:nth-child(7),.select th:nth-child(8),.selectTables input:nth-child(7),.select input:nth-child(7),.select input:nth-child(8){
+	 width:100;
+}
+.table>th>input{
+	text-align: center;
+	border:0;
+	width:100%;
+	height: 100%;
+}
+
+
+.select{
+	text-align: center;
+}
+
+.update{ 
+	cursor:pointer;
+	background-color:#44bb00;
+	width:65px;
+	height:30px;
+	line-height:30px;
+	text-align:center; 
+	color:#fff;
+	font-size:12px;
+	font-weight:bold; 
+	border:0px; 
+	border-radius: 3px; 
+	margin-right:20px;
+}
+.stutalk{
+	height: 20px;
+}
+/* 以下是修改的访谈信息 */
+
+.showPatrolDiv{
+	width:900px;
+	margin: auto;
+	margin-top: 10px;
+	border-top: 2px solid #C9C4C4;
+	border-bottom:2px dashed #C9C4C4;
+	padding-bottom: 20px;
+}
+.showPatrolDiv1{
+	width:900px;
+	margin: auto;
+	margin-top: 10px;
+	border-top: 0px solid #C9C4C4;
+	border-bottom:0px dashed #C9C4C4;
+	padding-bottom: 20px;
+}
+.showPatrolDiv ul li{
+	list-style:none;
+	float: left;
+	margin-right:30px;
+	margin-top: 20px;
+	margin-left: 5px;
+}
+.showPatrolDiv2{
+	border:1px solid white;
+	margin-top: 70px;
+}
+.showPatrolDiv3{
+	border:1px solid white;
+	margin-top: 25px;
+}
+.showPatrolDiv3 a{
+	border:1px solid white;
+	text-decoration: none;
+}
+.deleteBuutton, .deletePatrol,.deletePatrol_P{ cursor:pointer;background-color:#2A00E1;width:65px;height:30px;line-height:30px;text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;padding:7px 12px;margin-left:650px;}
+ .updatePatrol,.updatePatrol_P{  cursor:pointer;background-color:#2A00E1;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+padding:7px 12px;
+}
+.addPatrol,.addPatrol_P{  cursor:pointer;background-color:#2A00E1;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+padding:7px 12px;
+}
+.span{
+	color: red;
+	font-weight: 700;
+}
+.talk_max{
+	width: 99%;
+	border: 1px solid menu;
+}
+

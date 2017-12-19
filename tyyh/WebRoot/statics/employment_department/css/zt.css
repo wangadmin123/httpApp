@@ -1,0 +1,111 @@
+@charset "utf-8";
+/* CSS Document */
+.mbStyle{
+	background-color:#000;
+	width:100%; 
+	height:100%;	
+	filter:alpha(opacity=60); /*IE滤镜，透明度50%*/
+	-moz-opacity:0.6; /*Firefox私有，透明度50%*/
+	opacity:0.6;/*其他，透明度50%*/ 
+	position:absolute; 
+	left:0px; 
+	top:0px; 
+	display:none;
+	z-index: 1000;
+}
+.deleteStyle{
+      display:none;
+	  background-color:#F9F9F9;
+	  width:300px;
+	  height:185px;
+	  position:absolute;
+	  left:500px;
+	  top:100px;
+}
+  
+.deleteStyle h3{
+	color:#333; 
+	font-size:14px; 
+	font-family:"微软雅黑"; 
+	background-color:#F4F5F9; 
+	height:40px; 
+	line-height:40px; 
+	text-indent:10pt;
+}
+.deleteStyle h2{
+	color:#333; 
+	font-size:14px;
+	font-family:"微软雅黑";
+	background-color:#fff;
+	height:80px; 
+	line-height:80px; 
+	text-indent:20pt;
+}
+
+/***************保存读秒按钮*********************/
+.saveStyle{
+	 width:260px; 
+	 height:80px;
+	 line-height:80px;
+	 font-size:14px;
+	 color:#fff;
+	position:fixed;
+     /*left:450px;
+	 top:200px;*/
+	 text-align:center;
+	 display:none;
+	 background-color:#44bb00;
+	 filter:alpha(opacity=60);
+	 z-index:1000;
+ }
+/************************************************/
+
+.btn{
+	float:left;  
+	width:220px; 
+	padding-left:80px; 
+	height:40px; 
+	line-height:40px;
+	padding-top:7px;
+	
+ }
+
+.bottomStyle1{
+    float:left;
+    cursor:pointer;
+	background-color:#44bb00;
+	width:70px;
+	height:32px;
+	line-height:32px;
+	text-align:center; 
+	color:#fff;
+	font-size:12px;
+	font-weight:bold;
+	margin-right:20px;
+  }
+.bottomStyle2{
+    float:left;
+    cursor:pointer;
+	background-color:#fff;
+	width:68px;
+	height:30px;
+	line-height:32px;
+	text-align:center; 
+	color:#222;
+	border:1px solid #E7E7EB;
+	font-size:12px;
+	font-weight:bold;
+}
+.bottomStyle3{
+    float:left;
+    cursor:pointer;
+	background-color:#44bb00;
+	width:70px;
+	height:32px;
+	line-height:32px;
+	text-align:center; 
+	color:#fff;
+	font-size:12px;
+	font-weight:bold;
+	margin-right:20px;
+}

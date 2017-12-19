@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbConsulterMapper" >
+	<!-- 咨询主管添加咨询量 -->
+	<insert id="addConsulter" parameterType="OaScbConsulter">
+	INSERT INTO tyyhoa.oa_scb_consulter 
+	(id, NAME, age, sex, province, city, district, wechat, 
+	telphone1,specialty, STATUS, schoolName, education,
+	 keywords, mediaName,  consultTeacher, comments,telphone2,kbjsr, 
+	consultLesson, ungenTelphone,allotstatus,allotTime,place,street,computer,infoStatus,firstConsultTime,consultWay
+	)
+	VALUES
+	(#{id}, #{name},#{age},#{sex},#{province},#{city},#{district},
+	#{wechat},#{telphone1},#{specialty},#{status},#{schoolName},
+	#{education},#{keywords},#{mediaName},#{consultTeacher},#{comments},#{telphone2},#{kbjsr},
+	#{consultLesson},#{ungenTelphone},#{allotstatus},#{allotTime},#{place},#{street},#{computer},#{infoStatus},#{firstConsultTime},#{consultWay}
+	
+	);
+	</insert>
+ 	<!-- 咨询主管查询咨询量 -->
+ 	<select id="ConsultDirectorQuery" resultType="OaScbConsulter" parameterType="Map">
+	SELECT consulter.id,consulter.firstConsultTime,consulter.consultTeacher,employee.emp_name AS consultTeacherName,
+	consulter.name,consulter.sex,consulter.age,consulter.telphone1,TYPE,ranktype.rank AS rankName,
+	consultlesson.consultLesson AS consultLessonName,consultway.consultWay AS consultwayName,
+	consulter.city,consultstatus.STATUS AS statusName,consulter.age,education.education AS educationName,
+	consulter.allotstatus,consulter.infoSource,consulter.`keywords`
+	FROM oa_scb_consulter AS consulter
+	LEFT JOIN oa_rlzyb_employee AS employee ON employee.emp_id = consulter.consultTeacher
+	LEFT JOIN oa_scb_ranktype AS ranktype ON ranktype.id=consulter.rank
+	LEFT JOIN oa_scb_consultlesson AS consultlesson ON consultlesson.id = consulter.consultLesson
+	LEFT JOIN oa_scb_consultway AS consultway ON consultway.id=consulter.consultWay
+	LEFT JOIN oa_scb_consultstatus AS consultstatus ON consultstatus.id=consulter.status
+	LEFT JOIN oa_scb_education AS education ON education.id =consulter.education
+	WHERE  infoStatus =2 AND invalid =1 AND  identityStatus =1
+		 <if test="consulter.consultTeacher !=0 ">	
+		  AND consulter.consultTeacher=#{consulter.consultTeacher}			 
+		</if>
+		 <if test="consulter.allotstatus!=0 and consulter.allotstatus !=null "><!-- #分量状态 -->
+		 AND consulter.allotstatus=#{consulter.allotstatus}		 
+		</if> 
+		 <if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.phoneticize LIKE concat('%',#{consulter.name},'%')  <!-- #咨询量姓名(模糊查询-咨询者姓名/拼音简码) -->
+		 OR age=#{consulter.name} 	<!-- 年龄 -->
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%') <!-- 专业 -->
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') 
+		 OR consulter.telphone2 LIKE concat('%',#{consulter.name},'%') 
+		 OR consulter.ungenTelphone LIKE concat('%',#{consulter.name},'%') <!-- #联系方式(本人联系方式或者紧急联系人方式) -->
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%') <!-- 毕业院校 -->
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	<!-- 城市 -->
+		 </if>
+		 <if test="consulter.sex!=0 and consulter.sex!=null"><!-- #性别  -->
+			 AND sex=#{consulter.sex} 
+		 </if>
+		 <if test="consulter.education !=0 and consulter.education != null">	<!-- #学历 -->
+		 AND consulter.education =#{consulter.education} 
+		 </if>
+		 <if test="consulter.status !=0 and consulter.status !=null"><!-- #状态 -->
+		 AND consulter.status=#{consulter.status}
+		 </if>
+		 <if test="consulter.firstConsultTime !=null"><!-- #首次咨询日期 -->
+		 AND consulter.firstConsultTime = #{consulter.firstConsultTime} 
+		 </if>
+		 <if test="consulter.consultWay !=0 and consulter.consultWay!=null"><!-- #咨询方式 -->
+		 AND consulter.consultWay=#{consulter.consultWay} 
+		 </if>
+		 <if test="consulter.infoSource !=0 and consulter.infoSource!=null">
+		 AND consulter.infoSource=#{consulter.infoSource} 
+		 </if>
+		 <if test="consulter.type !=0"><!-- #咨询量分类(常规、市场) -->
+		 AND consulter.type=#{consulter.type} 
+		 </if>
+		<if test="consulter.enrollTime !=null"><!-- #报名日期 -->
+		 AND consulter.enrollTime=#{consulter.enrollTime}
+		 </if>
+		 <if test="consulter.consultLesson !=0 and consulter.consultLesson !=null"><!-- #咨询课程 -->
+		 AND consulter.consultLesson=#{consulter.consultLesson} 
+		 </if>
+		
+		 <if test="consulter.come !=0  and consulter.come!=null"><!-- #是否上门oa_scb_ranktype -->
+		 AND consulter.come=#{consulter.come} 
+		 </if>
+		 <if test="consulter.rank !=0 and consulter.rank !=null"> <!-- #咨询量等级 -->
+		 AND consulter.rank=#{consulter.rank}
+		 </if>
+		 group by consulter.id
+		 <if test="orderId==1">
+		  order by consulter.firstConsultTime desc
+		 </if>
+		 <if test="orderId==-1">
+		  order by consulter.firstConsultTime
+		 </if>
+		<if test="orderId==2">
+		  order by consulter.age desc
+		 </if>
+		 <if test="orderId==-2">
+		  order by consulter.age
+		 </if>
+		 <if test="orderId==3">
+		  order by consulter.rank desc
+		 </if>
+		 <if test="orderId==-3">
+		  order by consulter.rank
+		 </if>
+		 limit  #{index},#{pageSize}
+		
+	</select>
+ 	
+ 	<!-- 查询咨询量记录数 -->
+ 	<select id="selectconsultercount" resultType="int"  parameterType="Map">
+ 		select count(1) from oa_scb_consulter as consulter
+ 			where  infoStatus =2  and invalid =1 and  identityStatus =1
+		 <if test="consulter.consultTeacher !=0 and consulter.consultTeacher !=null">	
+		  AND consulter.consultTeacher=#{consulter.consultTeacher}			 
+		</if>
+		 <if test="consulter.allotstatus!=0 and consulter.allotstatus !=null ">
+		 AND consulter.allotstatus=#{consulter.allotstatus}		 
+		</if> 
+		 <if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.phoneticize LIKE concat('%',#{consulter.name},'%')  
+		 OR age=#{consulter.name} 	<!-- 年龄 -->
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%')
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') OR consulter.ungenTelphone LIKE concat('%',#{consulter.name},'%') <!-- #联系方式(本人联系方式或者紧急联系人方式) -->
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%')
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	
+		 </if>
+		 <if test="consulter.sex!=0 and consulter.sex!=null">
+		 AND sex=#{consulter.sex} 
+		 </if>
+		 <if test="consulter.education !=0 and consulter.education != null">
+		 AND consulter.education =#{consulter.education} 
+		 </if>
+		 <if test="consulter.status !=0 and consulter.status !=null">
+		 AND consulter.status=#{consulter.status}
+		 </if>
+		 <if test="consulter.firstConsultTime !=null">
+		 AND consulter.firstConsultTime = #{consulter.firstConsultTime} 
+		 </if>
+		 <if test="consulter.consultWay !=0 and consulter.consultWay!=null">
+		 AND consulter.consultWay=#{consulter.consultWay} 
+		 </if>
+		
+		 <if test="consulter.type !=0">
+		 AND consulter.type=#{consulter.type} 
+		 </if>
+		<if test="consulter.enrollTime !=null">
+		 AND consulter.enrollTime=#{consulter.enrollTime}
+		 </if>
+		 <if test="consulter.consultLesson !=0 and consulter.consultLesson !=null">
+		 AND consulter.consultLesson=#{consulter.consultLesson} 
+		 </if>
+		
+		 <if test="consulter.come !=0  and consulter.come!=null">
+		 AND consulter.come=#{consulter.come} 
+		 </if>
+		 <if test="consulter.rank !=0 and consulter.rank !=null">
+		 AND consulter.rank=#{consulter.rank}
+		 </if>
+		 
+ 	</select>
+ 	<!-- 查询无效量 -->
+ 	<select id="selectCheck" resultType="OaScbConsulter" parameterType="Map">
+ 		SELECT oa_scb_consulter.id,NAME,age,sex,oa_scb_consulter.consultTeacher,
+ 		employee.emp_name as consultTeacherName,
+ 		infoSource,city,uselessCause,telphone1,
+ 		ungenTelphone,consultlesson.consultLesson as consultLessonName
+ 		 FROM oa_scb_consulter 
+ 		LEFT JOIN oa_scb_consultlesson as consultlesson ON 
+ 		consultlesson.id = oa_scb_consulter.consultLesson
+ 		LEFT JOIN oa_rlzyb_employee AS employee ON employee.emp_id = oa_scb_consulter.consultTeacher
+ 		 WHERE invalid =3  and infoStatus =2 and identityStatus=1
+ 			<if test="consultTeacher !=0">
+ 				and consultTeacher =#{consultTeacher}
+ 			</if>
+ 			
+ 		group by oa_scb_consulter.id
+ 		limit  #{index},#{pageSize}
+ 	</select>
+ 	
+ 	
+ 	<!-- 查询无效量记录数 -->
+ 	<select id="selectCheckCount" resultType="int" parameterType="int">
+ 		select count(1) from oa_scb_consulter  WHERE invalid =3  and infoStatus =2 and identityStatus=1
+ 		
+ 		<if test="consultTeacher !=0">
+ 				and consultTeacher =#{consultTeacher}
+ 		</if>
+ 	</select>
+ 	
+ 	<!-- 审核无效量 -->
+ 	<update id="checkconsulter">
+ 		UPDATE  oa_scb_consulter SET invalid=#{invalid} where id=#{id}
+ 	</update>
+ 	<!-- 回收咨询量 -->
+ 	<update id="retrieveconsulter">
+ 		UPDATE oa_scb_consulter SET allotstatus =2,
+ 		consultTeacher = NULL WHERE id = #{id}
+ 	</update>
+ 	
+ 	<!-- 查询分发咨询量 -->
+ 	<select id="selectHandoutConsulter" resultType="OaScbConsulter" parameterType="Map">
+ 		SELECT oa_scb_consulter.id,allotTime,oa_scb_consultway.consultWay AS consultwayName,firstConsultTime,
+		oa_scb_consultlesson.consultLesson AS consultLessonName,NAME,sex,age,telphone1,
+		city,oa_scb_education.education AS educationName,oa_scb_consultstatus.status AS statusName 
+		FROM oa_scb_consulter 
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = oa_scb_consulter.consultWay
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = oa_scb_consulter.consultLesson
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = oa_scb_consulter.education
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = oa_scb_consulter.status
+		where allotstatus =2  and infoStatus=2 and invalid =1 and identityStatus =1
+			<if test="name !=null and name !=''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="consultLesson !=0 and consultLesson !=null">
+				and oa_scb_consulter.consultLesson = #{consultLesson}
+			</if>
+			
+			<if test="status !=0">
+				and oa_scb_consulter.status = #{status}
+			</if>
+			group by oa_scb_consulter.id
+			ORDER BY firstConsultTime DESC
+ 			limit #{index},#{pageSize}
+ 			
+ 	
+ 	</select>
+ 	<!-- 查询分发咨询量记录数 -->
+ 	<select id="selectHandoutConsulterCount" resultType="int" parameterType="Map">
+ 		select count(1) from oa_scb_consulter where allotstatus =2  and infoStatus=2 and invalid =1 and identityStatus =1
+ 			
+ 			<if test="name !=null and name !=''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="consultLesson !=0 and consultLesson !=null">
+				and consultLesson = #{consultLesson}
+			</if>
+			
+			<if test="status !=0">
+				and status = #{status}
+			</if>
+ 	</select>
+ 	<!-- 分发咨询量 -->
+ 	<update id="handoutCon">
+ 		update oa_scb_consulter set allotstatus =3,consultTeacher = #{consultTeacher}
+ 		where id = #{id}
+ 	</update>
+ 	<!-- 批量分发 -->
+ 	<update id="handoutall" parameterType="Map">
+ 		update oa_scb_consulter set allotstatus =3,consultTeacher = #{consultTeacher},allotTime = #{allotTime}
+ 		where id in
+ 			<foreach collection="array" item="id" index ="index" open ="(" close =")" separator =",">
+ 			     #{id}
+ 			</foreach>
+ 	</update>
+ 		
+ 	
+ 	
+ 	<!-- 查看无效原因 -->
+ 	<select id="selectResult" resultType="OaScbConsulter">
+ 		select name,uselessCause from  oa_scb_consulter where id = #{id}
+ 	</select>
+ 	<!-- 批量审核继续跟进 -->
+ 	<update id="checkSome" parameterType="int">
+ 	
+ 		UPDATE  oa_scb_consulter SET invalid=1,uselessCause=null  where id  in
+ 			<foreach collection="array" item="id" index ="index" open ="(" close =")" separator =",">
+ 			     #{id}
+ 			</foreach>
+ 	
+ 	</update>
+ 	<!-- 批量审核无效 -->
+ 	<update id="checkinvalid" parameterType="int">
+ 	
+ 		UPDATE  oa_scb_consulter SET invalid=2 where id  in
+ 			<foreach collection="array" item="id" index ="index" open ="(" close =")" separator =",">
+ 			     #{id}
+ 			</foreach>
+ 	
+ 	</update>
+ 	<!-- 编辑页面 -->
+ 	<!-- <select id="DirectorReviseFind" resultType="OaScbConsulter"  >
+		SELECT consulter.id,consulter.infoSource,consulter.consultWay,consulter.firstConsultTime,consulter.firstComeTime,
+		consulter.rank,consulter.type,consulter.name,consulter.sex,consulter.age,consulter.telphone1,consulter.urgentTelpeople,
+		consulter.ungenTelphone,consulter.wechat,consulter.education,consulter.schoolName,consulter.place,consulter.province,consulter.city,consulter.district,
+		consulter.specialty,consulter.status,consulter.consultLesson,consulter.keywords,consulter.mediaName,employee.emp_name as consultTeacherName,
+		consulter.comments
+		FROM oa_scb_consulter AS consulter
+		LEFT JOIN oa_rlzyb_employee AS employee ON employee.emp_id = consulter.consultTeacher
+		WHERE consulter.id=#{id}
+	</select> -->
+ 	<!-- 查看信息 -->
+ 	<select id="lookConInfo" parameterType="Integer" resultType="OaScbConsulter">
+ 		SELECT consulter.id, consulter.name,consulter.firstConsultTime,employee.emp_name as consultTeacherName,
+		 consulter.sex,consulter.age,
+		consulter.telphone1,consulter.urgentTelpeople,consulter.ungenTelphone,
+		consulter.wechat,consulter.province,consulter.specialty,
+		specialty.Specialty_name as consultLessonName,consulter.come,
+		consultway.consultWay as consultwayName,consulter.city,
+		consulter.schoolName,consulter.enrollStatus,consulter.invalid,
+		consultstatus.STATUS as statusName,consulter.comments,ranktype.rank as rankName, 
+		education.education as educationName
+		FROM oa_scb_consulter AS consulter
+		LEFT JOIN oa_rlzyb_employee AS employee ON employee.emp_id = consulter.consultTeacher
+		LEFT JOIN oa_jzb_specialty AS specialty ON specialty.specialty_Id=consulter.consultLesson
+		LEFT JOIN oa_scb_consultway AS consultway ON consultway.id=consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus AS consultstatus ON consultstatus.id=consulter.status
+		LEFT JOIN oa_scb_education AS education ON education.id =consulter.education
+		LEFT JOIN oa_scb_infosource AS infosource ON infosource.id=consulter.infoSource
+		LEFT JOIN oa_scb_visit AS visit ON visit.consultId=consulter.id
+		LEFT JOIN oa_scb_ranktype AS ranktype ON ranktype.id=consulter.rank
+		where consulter.id=#{id}
+		GROUP BY consulter.id
+
+ 	</select>
+	 <!-- 删除 -->
+	<!--<update id="displayNone">
+		UPDATE oa_scb_consulter SET display=2 WHERE id=#{id}
+	</update> -->
+		
+	<!-- 回访表查询-跟踪 -->
+		<select id="DirectorOaScbVisitFind" resultType="OaScbVisit" >
+			SELECT 	visit.id, 
+			visit.consultId, 
+			visit.returnvisitTime, 
+			visit.returnvisitRecord, 
+			visit.nextvisitTime,
+			visit.returnvisitPeopleName,
+			consulter.name as consultName
+			FROM 
+			tyyhoa.oa_scb_visit  as visit
+			left join oa_scb_consulter AS consulter on consulter.id=visit.consultId
+			WHERE consultId=#{consultId}
+			ORDER BY returnvisitTime DESC
+		</select>
+	<!-- 查询无效量 -->
+	<select id="selectUseless" resultType="OaScbConsulter" parameterType="Map">
+ 		SELECT oa_scb_consulter.id,NAME,age,sex,
+ 		employee.emp_name as consultTeacherName,
+ 		city,uselessCause,telphone1,
+ 		consultlesson.consultLesson as consultLessonName
+ 		 FROM oa_scb_consulter 
+ 		LEFT JOIN oa_scb_consultlesson as consultlesson ON 
+ 		consultlesson.id = oa_scb_consulter.consultLesson
+ 		LEFT JOIN oa_rlzyb_employee AS employee ON employee.emp_id = oa_scb_consulter.consultTeacher
+ 		WHERE invalid =2 
+ 		 
+ 		 	<if test="name!=null">
+ 		 		and name like concat('%',#{name},'%')
+ 		 	</if>
+ 		 
+ 			<if test="consultTeacher !=0">
+ 				and consultTeacher =#{consultTeacher}
+ 			</if>
+ 		group by oa_scb_consulter.id
+ 		limit  #{index},#{pageSize}
+ 	</select>
+ 	
+ 	<!-- 查询无效量记录数 -->
+	<select id="selectUselessCount" resultType="int">
+		select count(1) from oa_scb_consulter 
+		 WHERE invalid =2 
+ 		 
+ 		 	<if test="name!=null">
+ 		 		and name like concat('%',#{name},'%')
+ 		 	</if>
+ 		 
+ 			<if test="consultTeacher !=0">
+ 				and consultTeacher =#{consultTeacher}
+ 			</if>
+	
+	</select>
+
+
+	<!-- 导入Excel -->
+	<insert id="daoruCon" parameterType="OaScbConsulter">	
+	INSERT into oa_scb_consulter
+      	(id,  name, age, sex, city,district, wechat,   
+			telphone1,telphone2, STATUS, education,infoSource, keywords,   
+			consultWay,rank,consultTeacher, consultLesson,firstConsultTime,
+			specialty,allotstatus,enrollStatus,declareStatus,infoStatus,identityStatus
+		)values(
+			#{id},#{name},#{age},#{sex},#{city},
+        	#{district},#{wechat},#{telphone1},#{telphone2},#{status},#{education},
+        	#{infoSource},#{keywords},#{consultWay},
+        	#{rank},#{consultTeacher},#{consultLesson},#{firstConsultTime},#{specialty},#{allotstatus},
+        	#{enrollStatus},#{declareStatus},#{infoStatus},#{identityStatus}
+        )  
+	
+	
+	
+	</insert>
+
+ 	<select id="selectTeacherIdByName" resultType="Integer" parameterType="String">
+		SELECT emp_id
+		FROM oa_rlzyb_employee	where emp_name = #{name}
+	</select>
+ 	
+ 	
+ 	<select id="selectWayIdByName" resultType="Integer" parameterType="String">
+		SELECT id
+		FROM oa_scb_consultway	where consultWay = #{name}
+	</select>
+ 	
+ 	<select id="selectLessonIdByName" resultType="Integer" parameterType="String">
+		SELECT id
+		FROM oa_scb_consultlesson	where consultLesson = #{name}   
+	</select>
+	
+	<select id="selectRankIdByName" resultType="Integer" parameterType="String">
+		SELECT id
+		FROM oa_scb_ranktype	where rank = #{name}   
+	</select>
+	
+	
+	<select id="selectEducationIdByName" resultType="Integer" parameterType="String">
+		SELECT id
+		FROM oa_scb_education	where education = #{name}   
+	</select>
+	
+	<select id="selectStatusIdByName" resultType="Integer" parameterType="String">
+		SELECT id
+		FROM oa_scb_consultstatus	where status = #{name}   
+	</select>
+ 	<!-- 记事 -->
+ 	<insert id="insertRecord" parameterType="OaScbRecord">
+	 	insert into oa_scb_record (	
+	 			recordId, 
+				consulterId, 
+				eventTime, 
+				eventName, 
+				enterPeople, 
+				enterTime)		 		
+		 		values(
+		 		#{recordId},
+		 		#{consulterId},
+		 		#{eventTime},
+		 		#{eventName},
+		 		#{enterPeople},
+		 		#{enterTime}
+		 		)
+ 	</insert>
+ 	
+	<!-- 查询最近id -->
+	<select id="maxId" resultType="int">
+		SELECT MAX(id) FROM oa_scb_consulter
+	</select>
+ 	
+ 	<!-- 查看历史量 -->
+ 	<select id="selectHistoryCon" resultType="OaScbConsulter" parameterType="Map">
+ 		
+ 		SELECT consulter.id,
+	employee.emp_name AS consultTeacherName,
+	consultway.consultWay AS consultwayName,
+	consultlesson.consultLesson AS consultLessonName,
+	ranktype.rank AS rankName,
+	consulter.name,consulter.sex,consulter.age,consulter.telphone1,
+	
+	consulter.city,consultstatus.STATUS AS statusName,consulter.age,consulter.wechat,
+	consulter.city,consulter.district,
+	education.education AS educationName,consulter.specialty,consulter.infoSource,
+	consulter.keywords
+		FROM oa_scb_consulter AS consulter
+		LEFT JOIN oa_rlzyb_employee AS employee ON employee.emp_id = consulter.consultTeacher
+		LEFT JOIN oa_scb_consultlesson AS consultlesson ON consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_consultway AS consultway ON consultway.id=consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus AS consultstatus ON consultstatus.id=consulter.status
+		LEFT JOIN oa_scb_education AS education ON education.id =consulter.education
+		LEFT JOIN oa_scb_infosource AS infosource ON infosource.id=consulter.infoSource
+		LEFT JOIN oa_scb_visit AS visit ON visit.consultId=consulter.id
+		LEFT JOIN oa_scb_ranktype AS ranktype ON ranktype.id=consulter.rank
+		WHERE  identityStatus =2
+		group by consulter.id
+		limit #{index},#{pageSize}
+ 	
+ 	</select>
+ 	
+ 	<select id="selectHistoryCount" resultType="int">
+ 	
+ 		select count(1) from oa_scb_consulter WHERE  identityStatus =2
+ 	
+ 	</select>
+ <select id="ConsultDirectorCome" resultType="OaScbConsulter">
+ SELECT consulter.id,consulter.firstConsultTime,employee.emp_name AS consultTeacherName,
+	consulter.name,consulter.sex,consulter.age,consulter.telphone1,TYPE,ranktype.rank AS rankName,
+	consultlesson.consultLesson AS consultLessonName,consultway.consultWay AS consultwayName,
+	consulter.city,consultstatus.STATUS AS statusName,consulter.age,education.education AS educationName,
+	consulter.allotstatus
+	FROM oa_scb_consulter AS consulter
+	LEFT JOIN oa_rlzyb_employee AS employee ON employee.emp_id = consulter.consultTeacher
+	LEFT JOIN oa_scb_ranktype AS ranktype ON ranktype.id=consulter.rank
+	LEFT JOIN oa_scb_consultlesson AS consultlesson ON consultlesson.id = consulter.consultLesson
+	LEFT JOIN oa_scb_consultway AS consultway ON consultway.id=consulter.consultWay
+	LEFT JOIN oa_scb_consultstatus AS consultstatus ON consultstatus.id=consulter.status
+	LEFT JOIN oa_scb_education AS education ON education.id =consulter.education
+	WHERE `name`=#{Name}
+ </select>
+ <select id="chongfu" resultType="OaScbConsulter">
+   SELECT `name`,COUNT(`name`) as number FROM `oa_scb_consulter` WHERE repetitionStatus ='0'  GROUP BY `name` HAVING  COUNT(`name`) > 1  limit #{pagecount} ,#{pagesize}
+ </select>
+ <select id="chongfuTotacount" resultType="OaScbConsulter" >
+      SELECT `name`,COUNT(`name`) as number FROM `oa_scb_consulter` WHERE repetitionStatus ='0'  GROUP BY `name` HAVING  COUNT(`name`) > 1 
+ </select>
+ <select id="selectCF" resultType="OaScbConsulter">
+   select * from oa_scb_consulter where name=#{name} and repetitionStatus ='0' limit #{pagecount} ,#{pagesize}
+ </select>
+ <select id="CFtotacount" resultType="int">
+   select count(1) from oa_scb_consulter where name=#{name}  and repetitionStatus ='0'
+ </select>
+ <update id="updexsist" parameterType="OaScbConsulter" >
+ update oa_scb_consulter set repetitionStatus=#{reg} where id=#{id}
+ </update>
+ <delete id="delete" parameterType="OaScbConsulter">
+ delete from oa_scb_consulter where id=#{id}
+ </delete>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybSliceMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybSlice" >
+    <id column="slice_id" property="slice_id" jdbcType="INTEGER" />
+    <result column="slice_studentId" property="slice_studentId" jdbcType="INTEGER" />
+    <result column="slice_type" property="slice_type" jdbcType="VARCHAR" />
+    <result column="slice_quality" property="slice_quality" jdbcType="VARCHAR" />
+    <result column="slice_skill" property="slice_skill" jdbcType="VARCHAR" />
+    <result column="slice_remarks" property="slice_remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    slice_id, slice_studentId, slice_type, slice_quality, slice_skill, slice_remarks
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_slice
+    where slice_id = #{slice_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_slice
+    where slice_id = #{slice_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybSlice" >
+    insert into oa_jyb_slice (slice_id, slice_studentId, slice_type, 
+      slice_quality, slice_skill, slice_remarks
+      )
+    values (#{slice_id,jdbcType=INTEGER}, #{slice_studentId,jdbcType=INTEGER}, #{slice_type,jdbcType=VARCHAR}, 
+      #{slice_quality,jdbcType=VARCHAR}, #{slice_skill,jdbcType=VARCHAR}, #{slice_remarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybSlice" >
+    insert into oa_jyb_slice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="slice_id != null" >
+        slice_id,
+      </if>
+      <if test="slice_studentId != null" >
+        slice_studentId,
+      </if>
+      <if test="slice_type != null" >
+        slice_type,
+      </if>
+      <if test="slice_quality != null" >
+        slice_quality,
+      </if>
+      <if test="slice_skill != null" >
+        slice_skill,
+      </if>
+      <if test="slice_remarks != null" >
+        slice_remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="slice_id != null" >
+        #{slice_id,jdbcType=INTEGER},
+      </if>
+      <if test="slice_studentId != null" >
+        #{slice_studentId,jdbcType=INTEGER},
+      </if>
+      <if test="slice_type != null" >
+        #{slice_type,jdbcType=VARCHAR},
+      </if>
+      <if test="slice_quality != null" >
+        #{slice_quality,jdbcType=VARCHAR},
+      </if>
+      <if test="slice_skill != null" >
+        #{slice_skill,jdbcType=VARCHAR},
+      </if>
+      <if test="slice_remarks != null" >
+        #{slice_remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybSlice" >
+    update oa_jyb_slice
+    <set >
+      <if test="slice_studentId != null" >
+        slice_studentId = #{slice_studentId,jdbcType=INTEGER},
+      </if>
+      <if test="slice_type != null" >
+        slice_type = #{slice_type,jdbcType=VARCHAR},
+      </if>
+      <if test="slice_quality != null" >
+        slice_quality = #{slice_quality,jdbcType=VARCHAR},
+      </if>
+      <if test="slice_skill != null" >
+        slice_skill = #{slice_skill,jdbcType=VARCHAR},
+      </if>
+      <if test="slice_remarks != null" >
+        slice_remarks = #{slice_remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where slice_id = #{slice_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybSlice" >
+    update oa_jyb_slice
+    set slice_studentId = #{slice_studentId,jdbcType=INTEGER},
+      slice_type = #{slice_type,jdbcType=VARCHAR},
+      slice_quality = #{slice_quality,jdbcType=VARCHAR},
+      slice_skill = #{slice_skill,jdbcType=VARCHAR},
+      slice_remarks = #{slice_remarks,jdbcType=VARCHAR}
+    where slice_id = #{slice_id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,122 @@
+
+*{
+	margin:0px;
+	_margin:0px;
+	padding:0px;
+	_padding:0px;
+	border: 1px solid #fff;
+}
+.body{
+	margin:auto;
+	height: 1075px;
+	width: 1200px;
+	
+}
+/* 中心日报工作 */
+.dailyP{
+	height:43px;
+	font-size: 24px;
+	font-weight:20px;
+	color: red;
+	float: right;
+	margin-right: 200px;
+	margin-top: 50px;
+	font-weight: 700;	
+}
+
+.dailyhead{
+	
+	list-style:none;	
+	height:43px;
+	line-height:43px;
+	font-size:18px;
+	margin:0px 16px;
+	float: left;
+	font-weight: 700;	
+}
+.dailyheadli1{
+	margin-top: 100px;
+	margin-left:100px;	
+}
+.dailyhead span{
+	margin-left:30px;
+	font-weight: 400;
+	font-family: "楷体";
+}
+.dailyheadli2{
+	margin-top: -45px;
+	margin-left:350px;
+}
+
+.dailyheadli3{
+	margin-top:-45px;
+	margin-left:600px;
+}
+
+/*--------------------table-----------------------*/
+.tableOne{
+	margin-top:200px;
+	margin-left:80px;
+	line-height:43px;  
+}
+.tableOne tr{
+		text-align:center;
+}
+.dailydivtri{
+	height: 200px;
+	width: 1200px;
+}
+.dailydivtri p{
+	float: left;
+	margin-left: 102px;
+	margin-top: 80px;
+	font-size: 20px;
+	font-weight: 700;
+	font-family: "楷体";
+}
+.dailydivtri input{
+	height: 200px;
+	width: 700px;
+	font-size: 16px;
+	margin-left: 20px;
+	text-align:center;
+}
+table{
+	width: 1000px;	
+}
+input[type="text"]{
+	height:40px;
+	width: 880px;
+	font-size: 16px;
+}
+.inputtext{
+	height:500px;
+}
+textarea{
+	margin-left: 30px;
+	font-size: 16px;
+	
+}
+.saveStyle{
+	 width:260px; 
+	 height:80px;
+	 line-height:80px;
+	 font-size:14px;
+	 color:#fff;
+	position:fixed;
+     /*left:450px;
+	 top:200px;*/
+	 text-align:center;
+	 display:none;
+	 background-color:#44bb00;
+	 filter:alpha(opacity=60);
+	 z-index:1000;
+ }
+ .saveBotton{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+float:right;margin-top: 30px;margin-right: 140px;
+}
+ .saveOut{  cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+float:right;margin-top: 30px;margin-right: -140px;
+}

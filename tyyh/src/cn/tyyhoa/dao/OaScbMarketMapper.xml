@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbMarketMapper" >
+	
+	<!-- 市场部新增 -->
+ 	<insert id="addmarket" parameterType="OaScbConsulter">
+		INSERT INTO oa_scb_consulter (
+		infoSource,
+		consultWay,	
+		type,	
+		name,
+		sex,
+		age,
+		computer,
+		street,
+		place,
+		telphone1,
+		ungenTelphone,
+		education,
+		schoolClass,
+		schoolDorm,
+		familyCondition,		
+		consultLesson,		
+		province,
+		city,
+		district,
+		specialty,
+		schoolName,
+		status,
+		infoStatus,
+		allotstatus,
+		allotTime,		
+		comments,firstConsultTime,consultTeacher,rank) 
+		VALUES (#{infoSource},#{consultWay},#{type},
+		#{name},#{sex},#{age},#{computer},#{street},#{place},#{telphone1},#{ungenTelphone},#{education},
+		#{schoolClass},#{schoolDorm},#{familyCondition},
+		#{consultLesson},#{province},
+		#{city},#{district},#{specialty},#{schoolName},#{status},#{infoStatus},#{allotstatus},#{allotTime},#{comments},#{firstConsultTime},#{consultTeacher},#{rank});
+	</insert>
+	
+	
+	
+	<!-- 市场部查询 -->
+	<select id="getmarketInfo" resultType="OaScbConsulter" parameterType="Map">
+		SELECT 
+		consulter.id,
+		consulter.name,
+		consulter.sex,
+		consulter.age,
+		oa_rlzyb_employee.emp_name AS consultTeacherName,
+		oa_scb_consultway.consultWay AS consultwayName,
+		oa_scb_consultlesson.consultLesson AS consultLessonName,
+		consulter.telphone1,
+		consulter.allotTime AS allotTime,
+		consulter.city,
+		consulter.specialty,
+		consulter.schoolName,
+		consulter.type,		
+		oa_scb_consultstatus.status AS statusName,
+		oa_scb_ranktype.rank AS rankName,
+		oa_scb_education.education AS educationName,
+		oa_scb_medianame.mediaName AS mediaNames
+		
+		FROM oa_scb_consulter AS consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=consulter.consultTeacher
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_medianame ON oa_scb_medianame.id=consulter.mediaName
+		
+		   WHERE  consulter.type=2   AND 
+				consulter.identityStatus=1 AND 
+				consulter.invalid!=2 AND
+				consulter.infoStatus=2  
+		
+		 <if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.age=#{consulter.name} 	
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%') 
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') 
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%') 
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	
+		 </if>
+			<if test="consulter.sex!=0">
+				and consulter.sex=#{consulter.sex}
+			</if>  
+			<if test="consulter.consultTeacher!=0">
+				and consulter.consultTeacher=#{consulter.consultTeacher}
+			</if>
+			<if test="consulter.consultWay!=0">
+				and consulter.consultWay=#{consulter.consultWay}
+			</if>
+			<if test="consulter.consultLesson!=0">
+				and consulter.consultLesson=#{consulter.consultLesson}
+			</if>
+			<if test="consulter.rank!=0">
+				and consulter.rank=#{consulter.rank}
+			</if>
+			<if test="consulter.telphone1!=null and consulter.telphone1!=''">
+				and consulter.telphone1=#{consulter.telphone1}
+			</if>			
+			<if test="consulter.schoolName!=null and consulter.schoolName!=''">
+				and consulter.schoolName LIKE concat('%',#{consulter.schoolName},'%') 
+			</if>
+			<if test="consulter.education!=0">
+				and consulter.education=#{consulter.education}
+			</if>
+			<if test="consulter.status!=0">
+				and consulter.status=#{consulter.status}
+			</if>  
+			<if test="consulter.mediaName!=0">
+				and consulter.mediaName=#{consulter.mediaName}
+			</if>
+			<if test="consulter.type!=0">
+				and consulter.type=#{consulter.type}
+			</if> 
+			ORDER BY consulter.id DESC
+				limit #{index},#{pageSize}
+	</select>
+	
+	<select id="getBySchoolName" resultType="OaScbConsulter">
+		SELECT 
+		consulter.id,
+		consulter.name,
+		consulter.sex,
+		consulter.age,
+		consultTeacher,
+		oa_scb_consultway.consultWay AS consultwayName,
+		oa_scb_consultlesson.consultLesson AS consultLessonName,
+		consulter.telphone1,
+		consulter.allotTime AS allotTime,
+		consulter.city,
+		consulter.specialty,
+		consulter.schoolName,
+		consulter.type,		
+		oa_scb_consultstatus.status AS statusName,
+		oa_scb_ranktype.rank as rankName,
+		oa_scb_education.education as educationName,
+		oa_scb_medianame.mediaName as mediaNames
+		
+		FROM oa_scb_consulter as consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_medianame ON oa_scb_medianame.id=consulter.mediaName
+		
+		   where  consulter.type=2   and 
+				consulter.identityStatus=1 and 
+				consulter.invalid!=2 and
+				consulter.infoStatus=2  AND
+				consulter.schoolName=#{name}
+				limit #{pno},#{size}
+	</select>
+	
+	<select id="getschoolcount" resultType="int">
+		select count(1) from oa_scb_consulter as consulter
+		 where  consulter.type=2   and 
+				consulter.identityStatus=1 and 
+				consulter.invalid!=2 and
+				consulter.infoStatus=2  AND
+				consulter.schoolName=#{name}
+	</select>
+	<!-- 次数查询 -->
+	<select id="getCount" resultType="int" parameterType="OaScbConsulter">
+		SELECT COUNT(1) as count FROM oa_scb_consulter
+		
+		  where type=2  and
+				identityStatus=1 and 
+				invalid!=2 and
+				infoStatus=2  
+		
+		 <if test="name !=null and  name!=''">
+		 AND name LIKE  concat('%',#{name},'%')   
+		 OR age=#{name} 	
+		 OR specialty LIKE concat('%',#{name},'%') 
+		 OR telphone1 LIKE concat('%',#{name},'%') 
+		 OR schoolName LIKE concat('%',#{name},'%') 
+		 OR city LIKE concat('%',#{name},'%')	
+		 </if>
+			
+			<if test="sex!=0">
+				and sex=#{sex}
+			</if>  
+			<if test="consultTeacher!=0">
+				and consultTeacher=#{consultTeacher}
+			</if>
+			<if test="consultWay!=0">
+				and oa_scb_consulter.consultWay=#{consultWay}
+			</if>
+			<if test="consultLesson!=0">
+				and oa_scb_consulter.consultLesson=#{consultLesson}
+			</if>
+			<if test="rank!=0">
+				and oa_scb_consulter.rank=#{rank}
+			</if>
+			<if test="telphone1!=null and telphone1!=''">
+				and telphone1=#{telphone1}
+			</if>
+			
+			<if test="education!=0">
+				and oa_scb_consulter.education=#{education}
+			</if>
+			<if test="status!=0">
+				and oa_scb_consulter.status=#{status}
+			</if>  
+			<if test="mediaName!=0">
+				and oa_scb_consulter.mediaName=#{mediaName}
+			</if>
+			<if test="type!=0">
+				and type=#{type}
+			</if> 
+
+	</select>
+	
+	<!-- 院校信息新增 -->
+ 	<insert id="addschoolInfo" parameterType="OaScbSchoolinfo">
+		INSERT INTO
+		oa_scb_schoolinfo
+		(
+		schoolName,
+		schoolAddress
+		
+		)
+		VALUES
+		(
+		#{schoolName},
+		#{schoolAddress}
+		
+		);
+	</insert>
+	
+	
+	<!-- 查询最新添加的院校id -->
+	<select id="selectschoolmaxid" resultType="int">
+		SELECT MAX(id) FROM oa_scb_schoolinfo
+	</select>
+	<!-- 查询全部的院校 -->
+    <select id="getAll" resultType="cn.tyyhoa.pojo.OaScbSchoolinfo">
+  	  select * from oa_scb_schoolinfo
+    </select>
+	
+	
+	<!-- 专业信息新增 -->
+ 	<insert id="addmajorInfo" parameterType="OaScbMajorinfo">
+		INSERT INTO
+		oa_scb_majorinfo
+		(
+		specialtyName,
+		specialtyPeoplenNumber,
+		classNumber,
+		developDirection,
+		specialtyComments,
+		specialtySituation,
+		studySituation,
+		schoolId
+		)
+		VALUES
+		(
+		#{specialtyName},
+		#{specialtyPeoplenNumber},
+		#{classNumber},
+		#{developDirection},
+		#{specialtyComments},
+		#{specialtySituation},
+		#{studySituation},
+		#{schoolId}
+		);
+	</insert>
+	<!-- 院系负责人信息新增 -->
+ 	<insert id="addmajorpersonInfo" parameterType="OaScbMajorpersoninfo">
+		INSERT INTO
+		oa_scb_majorpersoninfo
+		(
+		Name,
+		specialtId,
+		directorClass,
+		Sex,
+		Hobbies,
+		specialSkill,
+		comments,
+		schoolId
+		)
+		VALUES
+		(
+		#{Name},
+		#{specialtId},
+		#{directorClass},
+		#{Sex},
+		#{Hobbies},
+		#{specialSkill},
+		#{comments},
+		#{schoolId}
+		);
+		
+	</insert>
+	<!-- 班主任信息新增 -->
+ 	<insert id="addmajorteacherInfo" parameterType="OaScbMajorteacherinfo">
+		INSERT INTO
+		oa_scb_majorteacherinfo
+		(
+		Name,
+		specialtId,
+		teacherClass,
+		Sex,
+		Hobbies,
+		specialSkill,
+		comments,
+		schoolId
+		)
+		VALUES
+		(
+		#{Name},
+		#{specialtId},
+		#{teacherClass},
+		#{Sex},
+		#{Hobbies},
+		#{specialSkill},
+		#{comments},
+		#{schoolId}
+		);
+	</insert>
+	
+	
+	<!-- 修改院校信息 -->
+	<update id="updateschoolInfo">
+		UPDATE 
+		oa_scb_schoolinfo 
+		SET  
+		schoolTimePlan = #{schoolTimePlan},
+		opptSituation=#{opptSituation},
+		schoolsSchedule=#{schoolsSchedule},
+		pushingSchedule=#{pushingSchedule},
+		studentsSituation=#{studentsSituation}
+		WHERE id=#{id}
+	</update>
+	
+	<select id="selectSchoolMajor" resultType="OaScbMajorinfo" parameterType="int">
+			
+		SELECT id,specialtyName FROM oa_scb_majorinfo WHERE schoolId = #{schoolId}
+	</select>
+	<!-- 删除学校信息 -->
+	<delete id="deleteSchool">
+		DELETE FROM oa_scb_schoolinfo WHERE id = #{id}
+	</delete>
+	<!-- 删除专业信息 -->
+	<delete id="deleteMajor">
+		DELETE FROM oa_scb_majorinfo WHERE schoolId = #{schoolId}
+	</delete>
+	
+	<!-- 删除系主任信息 -->
+	<delete id="deleteMajorPerson">
+		DELETE FROM oa_scb_majorpersoninfo WHERE schoolId = #{schoolId}
+	</delete>
+	
+	<!-- 删除班主任信息 -->
+	<delete id="deleteMajorTeacher">
+		DELETE FROM oa_scb_majorteacherinfo WHERE schoolId = #{schoolId}
+	</delete>
+	
+	
+	<!-- <select id="getschoolName" resultType="OaScbSchoolinfo">
+		SELECT 
+		id,
+		schoolName,
+		FROM oa_scb_schoolinfo
+		where id=#{id}
+	</select> -->
+	
+	
+	<!-- 院校信息查询 1-->
+	<select id="getschoolInfo1" resultType="OaScbSchoolinfo" parameterType="Map">
+		SELECT 
+		schoolinfo.id,		
+		schoolinfo.schoolName,
+		schoolinfo.schoolAddress
+		FROM oa_scb_schoolinfo as schoolinfo
+		<where>
+			<if test="schoolinfo.schoolName !=null and schoolinfo.schoolName !=''">
+				and schoolinfo.schoolName like concat('%',#{schoolinfo.schoolName},'%')
+			</if>
+		</where>
+		limit #{index},#{pageSize}
+	</select>
+	<!-- 院校信息查询次数1-->
+	<select id="getschoolInfo1Count" resultType="int" parameterType="OaScbSchoolinfo">
+		SELECT 
+		count(1)
+		FROM oa_scb_schoolinfo 
+		<where>
+		
+			<if test="schoolName !=null and schoolName !=''">
+				and schoolName like concat('%',#{schoolName},'%')
+			</if>
+		
+		</where>
+	</select>
+	
+	<!-- 院校信息查询 2-->
+	<select id="getschoolInfo2" resultType="OaScbSchoolinfo">
+		SELECT 
+		id,
+		schoolName,
+		schoolAddress,
+		schoolTimePlan,
+		opptSituation,
+		schoolsSchedule,
+		pushingSchedule,
+		studentsSituation 
+		FROM oa_scb_schoolinfo 
+		
+		where id = #{id}
+	
+	</select>
+	<!-- 专业信息查询 -->
+	<select id="getmajorInfo" resultType="OaScbMajorinfo">
+		SELECT 
+			id,
+			specialtyName,
+			specialtySituation,
+			specialtyPeoplenNumber,
+			classNumber,
+			developDirection,
+			specialtyComments,
+			studySituation 
+		FROM oa_scb_majorinfo
+		where schoolId=#{schoolId}
+	</select>
+	<!-- 修改专业 -->
+	<update id="marketMajorXG" parameterType="OaScbMajorinfo">
+	UPDATE oa_scb_majorinfo SET specialtyName=#{specialtyName} WHERE id=#{id}
+	</update>
+	<!-- 院系负责人信息查询  -->
+
+	<!-- 学校名称查询 -->
+	
+	<!-- 市场部未提交量查询3 -->
+	<select id="query" resultType="OaScbConsulter" parameterType="Map">
+		SELECT  
+		consulter.id,
+		consulter.name,
+		consulter.sex,
+		consulter.age,
+		consulter.telphone1,
+		consulter.district,
+		consulter.schoolName
+		FROM  oa_scb_consulter AS consulter
+		WHERE consulter.infoStatus=1 AND 
+			  consulter.type=2
+		<if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%') 
+		</if>
+		<if test="consulter.sex!=0">
+			and consulter.sex=#{consulter.sex}
+		</if>
+		<if test="consulter.schoolName!='请选择'">
+			and consulter.schoolName=#{consulter.schoolName}
+		</if>
+		limit #{index},#{pageSize}
+	</select>
+	<!-- 次数查询3 -->
+	<select id="getHandallCount" resultType="int" parameterType="OaScbConsulter">
+		SELECT  
+		count(1)
+		FROM  oa_scb_consulter
+		where infoStatus=1 and 
+			  type=2
+		<if test="name !=null and  name!=''">
+		 AND name LIKE  concat('%',#{name},'%') 
+		</if>
+		<if test="sex!=0">
+		 AND sex=#{sex}
+		</if>
+	</select>
+	<!-- 修改状态 -->
+	<update id="update" parameterType="OaScbConsulter">
+		UPDATE 
+		oa_scb_consulter 
+		SET  
+		infoStatus = 2
+		WHERE id=#{id}
+		
+	</update>
+	
+	<!-- 查询追踪 -->
+	<select id="AssistantOaScbVisitFind" resultType="OaScbVisit" >
+			SELECT 	visit.id, 
+			visit.consultId, 
+			visit.returnvisitTime, 
+			visit.returnvisitRecord, 
+			visit.nextvisitTime,
+			returnvisitPeopleName,
+			consulter.name as consultName
+			
+			FROM 
+			tyyhoa.oa_scb_visit  as visit
+			left join oa_scb_consulter AS consulter on consulter.id=visit.consultId
+			WHERE consultId=#{consultId}
+			ORDER BY returnvisitTime DESC
+		</select>
+		
+	<!-- 市场部查询(跟踪) -->
+	<select id="Queryfollwing" resultType="OaScbConsulter" parameterType="Map">
+		SELECT 
+		consulter.id,
+		consulter.name,
+		consulter.sex,
+		consulter.age,
+		consulter.consultTeacher as consultTeacherName,
+		oa_scb_consultway.consultWay AS consultwayName,
+		oa_scb_consultlesson.consultLesson AS consultLessonName,
+		consulter.telphone1,
+		consulter.allotTime AS allotTimes,
+		consulter.city,
+		consulter.specialty,
+		consulter.schoolName,
+		consulter.type,		
+		oa_scb_consultstatus.status AS statusName,
+		oa_scb_ranktype.rank as rankName,
+		oa_scb_education.education as educationName,
+		oa_scb_medianame.mediaName as MediaName,
+		oa_scb_visit.returnvisitTime as returnvisitTimes
+		FROM oa_scb_consulter as consulter
+		LEFT JOIN oa_scb_education ON oa_scb_education.id = consulter.education
+		LEFT JOIN oa_scb_consultlesson ON oa_scb_consultlesson.id = consulter.consultLesson
+		LEFT JOIN oa_scb_ranktype ON oa_scb_ranktype.id = consulter.rank
+		LEFT JOIN oa_scb_consultway ON oa_scb_consultway.id = consulter.consultWay
+		LEFT JOIN oa_scb_consultstatus ON oa_scb_consultstatus.id = consulter.status
+		LEFT JOIN oa_scb_medianame ON oa_scb_medianame.id=consulter.mediaName
+		LEFT JOIN oa_scb_visit ON oa_scb_visit.consultId=consulter.id
+		 <where>
+		
+		 <if test="consulter.name !=null and  consulter.name!=''">
+		 AND consulter.name LIKE  concat('%',#{consulter.name},'%')   
+		 OR consulter.age=#{consulter.name} 	
+		 OR consulter.specialty LIKE concat('%',#{consulter.name},'%') 
+		 OR consulter.telphone1 LIKE concat('%',#{consulter.name},'%') 
+		 OR consulter.schoolName LIKE concat('%',#{consulter.name},'%') 
+		 OR consulter.city LIKE concat('%',#{consulter.name},'%')	
+		 </if>
+			
+			<if test="consulter.sex!=0">
+				and consulter.sex=#{consulter.sex}
+			</if>  
+			<if test="consulter.consultTeacher!=0">
+				and consulter.consultTeacher=#{consulter.consultTeacher}
+			</if>
+			<if test="consulter.consultWay!=0">
+				and consulter.consultWay=#{consulter.consultWay}
+			</if>
+			<if test="consulter.consultLesson!=0">
+				and consulter.consultLesson=#{consulter.consultLesson}
+			</if>
+			<if test="consulter.rank!=0">
+				and consulter.rank=#{consulter.rank}
+			</if>
+			<if test="consulter.telphone1!=null and consulter.telphone1!=''">
+				and consulter.telphone1=#{consulter.telphone1}
+			</if>			
+			
+			<if test="consulter.education!=0">
+				and consulter.education=#{consulter.education}
+			</if>
+			<if test="consulter.status!=0">
+				and consulter.status=#{consulter.status}
+			</if>  
+			<if test="consulter.mediaName!=0">
+				and consulter.mediaName=#{consulter.mediaName}
+			</if>
+			<if test="consulter.type!=0">
+				and consulter.type=#{consulter.type}
+			</if> 
+		</where>		
+	</select>
+		
+		
+	<!-- 查询基本信息（提交量） -->
+	<update id="handallInfo" parameterType="int">
+ 	
+ 		UPDATE  oa_scb_consulter SET infoStatus =2 where id  in
+ 			<foreach collection="id" item="id" index ="index" open ="(" close =")" separator =",">
+ 			     #{id}
+ 			</foreach>
+ 	
+ 	</update>
+ 	
+ 	<!-- 记事 -->
+ 	<insert id="insertRecord" parameterType="OaScbRecord">
+	 	insert into oa_scb_record (	
+	 			recordId, 
+				consulterId, 
+				eventTime, 
+				eventName, 
+				enterPeople, 
+				enterTime)		 		
+		 		values(
+		 		#{recordId},
+		 		#{consulterId},
+		 		#{eventTime},
+		 		#{eventName},
+		 		#{enterPeople},
+		 		#{enterTime}
+		 		)
+ 	</insert>
+ 	
+	<!-- 查询最近id -->
+	<select id="maxId" resultType="int">
+		SELECT MAX(id) FROM oa_scb_consulter
+	</select>
+	
+	
+	
+	<select id="selectSchoolById" resultType="OaScbSchoolinfo" parameterType="int">
+	
+		select id,schoolName,schoolAddress,schoolTimePlan,opptSituation,
+		schoolsSchedule,pushingSchedule,studentsSituation from oa_scb_schoolinfo where id =#{id}
+	
+	</select>
+	
+	
+	<select id="selectMajorBySchoolId" resultType="OaScbMajorinfo" parameterType="int">
+		
+	SELECT 	id, 
+	schoolId, 
+	specialtyName, 
+	specialtySituation, 
+	specialtyPeoplenNumber, 
+	classNumber, 
+	developDirection, 
+	specialtyComments, 
+	studySituation
+	FROM 
+	oa_scb_majorinfo 
+	where schoolId = #{schoolId}
+	
+	
+	
+	</select>
+	
+	
+	
+	<select id="getmajorpersonInfo" resultType="OaScbMajorpersoninfo">
+		SELECT 
+			id,
+			NAME,
+			Sex,
+			Hobbies,
+			specialSkill,
+			directorClass,
+			comments 
+		FROM oa_scb_majorpersoninfo
+		where specialtId=#{specialtId}
+	
+	</select>
+	<!-- 班主任信息查询 -->
+	<select id="getmajorteacherInfo" resultType="OaScbMajorteacherinfo">
+		SELECT 
+			id,
+			NAME,
+			Sex,
+			Hobbies,
+			specialSkill,
+			teacherClass,
+			comments 
+		FROM oa_scb_majorteacherinfo
+		where specialtId=#{specialtId}
+	
+	</select>
+	
+	<select id="getspeciaInfo" resultType="OaScbMajorinfo">
+		SELECT 	id, 
+	schoolId, 
+	specialtyName, 
+	specialtySituation, 
+	specialtyPeoplenNumber, 
+	classNumber, 
+	developDirection, 
+	specialtyComments, 
+	studySituation
+	FROM 
+		 oa_scb_majorinfo
+		where id = #{id}
+
+	</select>
+	<select id="getEmployee" resultType="OaRlzybEmployee">
+	SELECT * FROM oa_rlzyb_employee WHERE emp_department=3
+	</select>
+	<delete id="ConsulterDelete">
+	DELETE FROM `oa_scb_consulter` WHERE id=#{id}
+	</delete>
+
+	<update id="updateSchoolinfo" parameterType="OaScbSchoolinfo">
+		UPDATE `oa_scb_schoolinfo` 
+		<set>
+			<if test="schoolName!='' and schoolName!=null">
+				schoolName=#{schoolName},
+			</if>
+			<if test="schoolAddress!='' and schoolAddress!=null">
+			schoolAddress=#{schoolAddress},
+			</if>
+			<if test="schoolTimePlan!=null and schoolTimePlan!=''">
+			schoolTimePlan=#{schoolTimePlan},
+			</if>
+			<if test="opptSituation!=null and opptSituation!=''">
+			opptSituation=#{opptSituation},
+			</if>
+			<if test="schoolsSchedule!='' and schoolsSchedule!=null">
+			schoolsSchedule=#{schoolsSchedule},
+			</if>
+			<if test="pushingSchedule!=null and pushingSchedule!=''">
+			pushingSchedule=#{pushingSchedule},
+			</if>
+			<if test="studentsSituation!=null and studentsSituation!=''">
+			studentsSituation=#{studentsSituation},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<update id="majorinfoUpdate">
+	UPDATE oa_scb_majorinfo SET `specialtySituation`=#{specialtySituation},`specialtyPeoplenNumber`=#{specialtyPeoplenNumber},
+			     `classNumber`=#{classNumber},`developDirection`=#{developDirection},`specialtyComments`=#{specialtyComments},`studySituation`=#{studySituation}
+			     WHERE id=#{id}
+	
+
+	</update>
+	<update id="majorpersoninfoUpdate">
+	UPDATE oa_scb_majorpersoninfo SET `Name`=#{Name},Sex=#{Sex},`directorClass`=#{directorClass},`comments`=#{comments} where id=#{id}
+	</update>
+	<update id="MajorteacherinfoUpdate">
+	UPDATE `oa_scb_majorteacherinfo` SET `Name`=#{Name},Sex=#{Sex},`teacherClass`=#{teacherClass},`comments`=#{comments} where id=#{id}
+	</update>
+	
+</mapper>

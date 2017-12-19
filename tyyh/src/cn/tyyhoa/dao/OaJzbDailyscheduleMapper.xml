@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbDailyscheduleMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJzbDailyschedule" >
+    <id column="Dailyschedule_id" property="dailyschedule_id" jdbcType="INTEGER" />
+    <result column="Starttime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="Outtime" property="outtime" jdbcType="TIMESTAMP" />
+    <result column="Entrytime" property="entrytime" jdbcType="DATE" />
+    <result column="Contentsoftheclass" property="contentsoftheclass" jdbcType="VARCHAR" />
+    <result column="classteacher_id" property="classteacher_id" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Dailyschedule_id, Starttime, Outtime, Entrytime, Contentsoftheclass, classteacher_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jzb_dailyschedule
+    where Dailyschedule_id = #{dailyschedule_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jzb_dailyschedule
+    where Dailyschedule_id = #{dailyschedule_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJzbDailyschedule" >
+    insert into oa_jzb_dailyschedule (Dailyschedule_id, Starttime, Outtime, 
+      Entrytime, Contentsoftheclass, classteacher_id
+      )
+    values (#{dailyschedule_id,jdbcType=INTEGER}, #{starttime,jdbcType=TIMESTAMP}, #{outtime,jdbcType=TIMESTAMP}, 
+      #{entrytime,jdbcType=DATE}, #{contentsoftheclass,jdbcType=VARCHAR}, #{classteacher_id,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJzbDailyschedule" >
+    insert into oa_jzb_dailyschedule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dailyschedule_id != null" >
+        Dailyschedule_id,
+      </if>
+      <if test="starttime != null" >
+        Starttime,
+      </if>
+      <if test="outtime != null" >
+        Outtime,
+      </if>
+      <if test="entrytime != null" >
+        Entrytime,
+      </if>
+      <if test="contentsoftheclass != null" >
+        Contentsoftheclass,
+      </if>
+      <if test="classteacher_id != null" >
+        classteacher_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dailyschedule_id != null" >
+        #{dailyschedule_id,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outtime != null" >
+        #{outtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entrytime != null" >
+        #{entrytime,jdbcType=DATE},
+      </if>
+      <if test="contentsoftheclass != null" >
+        #{contentsoftheclass,jdbcType=VARCHAR},
+      </if>
+      <if test="classteacher_id != null" >
+        #{classteacher_id,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJzbDailyschedule" >
+    update oa_jzb_dailyschedule
+    <set >
+      <if test="starttime != null" >
+        Starttime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outtime != null" >
+        Outtime = #{outtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entrytime != null" >
+        Entrytime = #{entrytime,jdbcType=DATE},
+      </if>
+      <if test="contentsoftheclass != null" >
+        Contentsoftheclass = #{contentsoftheclass,jdbcType=VARCHAR},
+      </if>
+      <if test="classteacher_id != null" >
+        classteacher_id = #{classteacher_id,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Dailyschedule_id = #{dailyschedule_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJzbDailyschedule" >
+    update oa_jzb_dailyschedule
+    set Starttime = #{starttime,jdbcType=TIMESTAMP},
+      Outtime = #{outtime,jdbcType=TIMESTAMP},
+      Entrytime = #{entrytime,jdbcType=DATE},
+      Contentsoftheclass = #{contentsoftheclass,jdbcType=VARCHAR},
+      classteacher_id = #{classteacher_id,jdbcType=INTEGER}
+    where Dailyschedule_id = #{dailyschedule_id,jdbcType=INTEGER}
+  </update>
+</mapper>

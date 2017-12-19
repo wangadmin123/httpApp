@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaXsbWeekTestMapper">
+
+	<!-- 添加周考表 -->
+	<insert id="insertWeek" parameterType="java.util.List">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into oa_xsb_week
+
+		(id,studentId, written,scjd,classId,createtime,whatweek,writetime)
+		values
+		<foreach collection="list" item="reddemCode" index="index"
+			separator=",">
+
+			(
+			#{reddemCode.id},
+			#{reddemCode.studentId},
+			#{reddemCode.written},
+			#{reddemCode.scjd},
+			#{reddemCode.classId},
+			#{reddemCode.createtime},
+			#{reddemCode.whatweek},
+			#{reddemCode.writetime}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 根据班级Id查询最近一天的数据 -->
+	<select id="getWeektest" resultType="OaXsbWeekTest">
+		SELECT
+		oa_xsb_week.id,stu_number,stu_name,written,scjd,classId,studentId,whatweek,oa_xsb_week.createTime
+		FROM oa_xsb_week
+		INNER JOIN oa_jzb_student ON
+		oa_jzb_student.stu_id=oa_xsb_week.studentId
+		INNER JOIN oa_jwb_grade
+		ON
+		oa_jwb_grade.id=oa_xsb_week.classId
+		WHERE oa_xsb_week.createTime =
+		(SELECT createTime FROM oa_xsb_week WHERE classId= #{classId}
+		ORDER BY
+		createTime DESC LIMIT 1)
+		AND classId=#{classId}
+	</select>
+
+	<!-- 根据时间和班级ID查询 -->
+	<select id="selectWeekByClassIdAndCreateTime" resultType="OaXsbWeekTest">
+		SELECT
+		oa_xsb_week.id,stu_number,stu_name,written,scjd,classId,studentId,whatweek,oa_xsb_week.createTime,oa_xsb_week.writetime
+		FROM oa_xsb_week
+		INNER JOIN oa_jzb_student ON
+		oa_jzb_student.stu_id=oa_xsb_week.studentId
+		INNER JOIN oa_jwb_grade
+		ON
+		oa_jwb_grade.id=oa_xsb_week.classId
+		<where>
+			<if test="classId!=null and classId!=''">
+				AND classId=#{classId}
+			</if>
+<!-- 			<if test="createTime!=null and createTime!=''">
+				AND oa_xsb_week.createTime =#{createTime}
+			</if> -->
+			<if test="whatweek !=0">
+				and whatweek=#{whatweek}
+			</if>
+		</where>
+
+		ORDER BY stu_number
+	</select>
+<select id="getwhatWeek" resultType="int">
+
+	SELECT 	MAX(whatweek)
+	FROM 
+	oa_xsb_week 
+	
+</select>
+<!-- 根据班级ID查询第几次周考 -->
+<select id="selectWhatweekByClassId" resultType="Integer">
+SELECT MAX(whatweek) FROM oa_xsb_week
+WHERE classId = #{classId}
+</select>
+
+<!-- 根据班级Id查询周考次数 -->
+<select id="selectAllWeekByClassId" resultType="OaXsbWeekTest">
+	SELECT whatweek,classId  FROM oa_xsb_week WHERE classId=#{classId}
+	GROUP BY whatweek
+</select>
+
+<update id="xgzk">
+	UPDATE `oa_xsb_week` SET  
+	<if test="i == 1">
+		written  = #{score}
+	</if>
+	<if test="i == 2">
+		scjd  = #{score}
+	</if>
+	WHERE studentId = #{id} AND whatweek = #{jc} AND classId=#{gradeId}
+</update>
+</mapper>

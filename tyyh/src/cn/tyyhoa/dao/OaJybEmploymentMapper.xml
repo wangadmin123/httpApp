@@ -1,0 +1,735 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybEmploymentMapper" >
+  
+  <!--已就业信息 -->
+  <sql id="Base_Column_List" >
+   employment_id, employment_studentId, employment_time, employment_city, employment_unit, 
+   employment_Salary_probation, employment_Salary_worker, employment_engaged_type, employment_welfare, 
+   employment_remarks,employment_engaged,employment_status
+  </sql>
+  <!--待就业信息  -->
+  <sql id="Base_Stu_List">
+   oa_jzb_student.stu_Id, oa_jzb_student.stu_number, oa_jzb_student.stu_name,oa_jzb_student.spellName, oa_jzb_student.contact_way, 
+   oa_jzb_student.education_id,oa_jzb_student.grade_id,oa_jzb_student.stu_sex,
+   oa_jzb_student.intentional_City,oa_jzb_student.address,oa_jzb_student.ID_number,oa_jzb_student.stu_age,oa_jzb_student.status_id
+  </sql>    
+  <!-- 查询待就业学员信息-->
+  <resultMap type="cn.tyyhoa.pojo.OaJzbStudent" id="StuDai">
+    <id column="stu_Id" property="stu_Id"/>
+    <result column="stu_number" property="stu_number"/>
+  	<result column="stu_name" property="stu_name"/>
+    <result column="spellName" property="spellName"/> 
+    <result column="stu_sex" property="stu_sex"/>
+    <result column="stu_age" property="stu_age"/>
+    <result column="contact_way" property="contact_way"/>
+    <result column="education_id" property="education_id"/>
+    <result column="grade_id" property="grade_id"/>
+    <result column="intentional_City" property="intentional_City"/>
+    <result column="address" property="address"/>
+    <result column="ID_number" property="ID_number"/>
+    <result column="xueli" property="xueli"/>
+    <result column="status_id" property="status_id"/> 
+    <result column="banji" property="banji"/>   
+  </resultMap>
+    <select id="selectAllBiyeStu" resultType="OaJzbStudent">
+    select stu_Id,stu_number from oa_jzb_student  GROUP BY stu_number 
+    </select> 
+  <select id="daiCity" resultType="OaJzbStudent">
+    SELECT intentional_City,oa_scb_education.education as xueli, oa_jwb_grade.name as banji FROM oa_jzb_student
+    INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 	  
+    GROUP BY intentional_City 
+  </select>
+  
+  <select id="daibanji" resultType="OaJzbStudent">
+    SELECT intentional_City,oa_scb_education.education as xueli, oa_jwb_grade.name as banji FROM oa_jzb_student
+    INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+    WHERE oa_jwb_grade.struts = 3	  
+    GROUP BY banji 
+  </select>
+  
+  
+  <select id="daixueli" resultType="OaJzbStudent">
+    SELECT intentional_City,oa_scb_education.education as xueli, oa_jwb_grade.name as banji FROM oa_jzb_student
+    INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 	  
+    GROUP BY xueli 
+  </select>
+  
+  <select id="selectDaiStu2" resultMap="StuDai" parameterType="int">
+  	select  oa_jwb_grade.name as banji, <include refid="Base_Stu_List" /> from  oa_jzb_student 	
+  	INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+  	where oa_jwb_grade.struts =3 and oa_jwb_grade.id=#{id}
+  </select>
+  
+  
+  <select id="empClass" resultType="OaJwbGrade">
+  SELECT NAME  FROM oa_jwb_grade
+  INNER JOIN oa_rlzyb_user ON oa_rlzyb_user.emp_id = oa_jwb_grade.obtainID
+  <where>
+   
+  <if test="positionid != 25 and positionid != 1">
+   AND oa_rlzyb_user.emp_id=#{empTecid} 
+  </if>
+   and oa_jwb_grade.struts > 2 
+  </where>
+  </select>
+
+  
+   <resultMap type="cn.tyyhoa.pojo.OaJybEmployment" id="selEmp">
+   <id column="employment_id" property="employment_id" jdbcType="INTEGER" />
+    <result column="employment_time" property="employment_time" jdbcType="DATE" />
+    <result column="employment_city" property="employment_city" jdbcType="VARCHAR" />
+    <result column="employment_unit" property="employment_unit" jdbcType="VARCHAR" />
+    <result column="employment_Salary_probation" property="employment_Salary_probation" jdbcType="DOUBLE" />
+    <result column="employment_Salary_worker" property="employment_Salary_worker" jdbcType="DOUBLE" />
+    <result column="employment_engaged_type" property="employment_engaged_type" jdbcType="VARCHAR" />
+    <result column="employment_welfare" property="employment_welfare" jdbcType="VARCHAR" />
+    <result column="employment_remarks" property="employment_remarks" jdbcType="VARCHAR" />
+    <result column="employment_engaged" property="employment_engaged" jdbcType="VARCHAR" />
+    <result column="className" property="className"/>
+    <result column="record" property="record"/> 
+    <result column="employment_status" property="employment_status"/>
+
+  <association property="employment_studentId" javaType="OaJzbStudent">
+  <id column="stu_Id" property="stu_Id"/>
+  	<result column="stu_number" property="stu_number"/>
+  	<result column="stu_name" property="stu_name"/>
+    <result column="spellName" property="spellName"/> 
+    <result column="stu_sex" property="stu_sex"/>
+    <result column="stu_age" property="stu_age"/>
+    <result column="contact_way" property="contact_way"/>
+    <result column="education_id" property="education_id"/>
+    <result column="grade_id" property="grade_id"/>
+    <result column="intentional_City" property="intentional_City"/>
+    <result column="address" property="address"/>
+    <result column="ID_number" property="ID_number"/>
+  </association>
+
+  </resultMap>
+ 
+  
+ <!--  查询就业信息-->
+  <select id="selectOaJybEmployments2" resultMap="selEmp"  parameterType="map">
+   SELECT * from ( SELECT * FROM ( select oa_rlzyb_user.emp_id, oa_jwb_grade.struts, oa_jwb_grade.name as className,oa_scb_education.education as record,
+   oa_jzb_student.stu_Id, oa_jzb_student.stu_number, oa_jzb_student.stu_name,oa_jzb_student.spellName, oa_jzb_student.contact_way, 
+   oa_jzb_student.education_id,oa_jzb_student.grade_id,oa_jzb_student.stu_sex,
+   oa_jzb_student.intentional_City,oa_jzb_student.address,oa_jzb_student.ID_number,oa_jzb_student.stu_age,    
+   <include refid="Base_Column_List" /> 
+    from oa_jyb_employment 
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+    LEFT JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id
+    INNER JOIN oa_rlzyb_user ON oa_rlzyb_user.emp_id = oa_jwb_grade.obtainID	  
+    ORDER BY  oa_jyb_employment.employment_time DESC
+	) emp1 		
+	 GROUP BY className, stu_number) emp2 
+	 	where struts > 2 and employment_status ='待业'  
+        <if test="employments.className != null and employments.className != ''">
+         and className = #{employments.className}
+        </if>
+        <if test="employments.agePd == 1">
+         and stu_age &lt; 18
+        </if>  
+        <if test="employments.agePd == 2">
+         and stu_age >= 18 and stu_age &lt;= 20
+        </if>  
+        <if test="employments.agePd == 3">
+         and stu_age > 20 and stu_age &lt;= 24
+        </if>  
+        <if test="employments.agePd == 4">
+         and stu_age > 24
+        </if>  
+        <if test="sname1 != null and sname1 != ''">
+         and spellName like concat('%',#{sname1},'%')
+        </if>
+	    <if test="positionid != 25 and positionid != 1">
+         AND  emp_id=#{empTecid} 
+        </if>       
+	 limit #{nowPage},#{pageSize}
+ </select>
+
+ <select id="count2"  resultType="int" parameterType="map">
+ SELECT COUNT(counts) FROM
+ (SELECT oa_jzb_student.stu_Id ,COUNT(*) counts FROM  oa_jyb_employment
+ INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId 
+ INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+ left JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id	
+   INNER JOIN oa_rlzyb_user ON oa_rlzyb_user.emp_id = oa_jwb_grade.obtainID	  
+where oa_jwb_grade.struts > 2 and employment_status ='待业'
+        
+        <if test="employments.className != null and employments.className != ''">
+         and oa_jwb_grade.name = #{employments.className}
+        </if>  
+        
+        <if test="employments.agePd == 1">
+         and oa_jzb_student.stu_age &lt; 18
+        </if>  
+        <if test="employments.agePd == 2">
+         and oa_jzb_student.stu_age >= 18 and oa_jzb_student.stu_age &lt;= 20
+        </if>  
+        <if test="employments.agePd == 3">
+         and oa_jzb_student.stu_age > 20 and oa_jzb_student.stu_age &lt;= 24
+        </if>  
+        <if test="employments.agePd == 4">
+         and oa_jzb_student.stu_age > 24
+        </if>  
+		<if test="positionid != 25 and positionid != 1">
+         AND oa_rlzyb_user.emp_id =#{empTecid} 
+        </if>
+ GROUP BY oa_jzb_student.stu_number 
+  ) t
+ 
+ </select> 
+
+ 
+ <select id="selectOaJybEmployments" resultMap="selEmp"  parameterType="map">
+   SELECT * from ( SELECT * FROM ( select oa_rlzyb_user.emp_id, oa_jwb_grade.struts, oa_jwb_grade.name as className,oa_scb_education.education as record,
+   oa_jzb_student.stu_Id, oa_jzb_student.stu_number, oa_jzb_student.stu_name,oa_jzb_student.spellName, oa_jzb_student.contact_way , 
+   oa_jzb_student.education_id,oa_jzb_student.grade_id,oa_jzb_student.stu_sex,
+   oa_jzb_student.intentional_City,oa_jzb_student.address,oa_jzb_student.ID_number,oa_jzb_student.stu_age,    
+   <include refid="Base_Column_List" /> 
+    from oa_jyb_employment 
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+    left JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id
+      INNER JOIN oa_rlzyb_user ON oa_rlzyb_user.emp_id = oa_jwb_grade.obtainID	  	  
+    ORDER BY  oa_jyb_employment.employment_time DESC
+	) emp1 		
+	 GROUP BY className, stu_number) emp2 
+	 	<where>
+	    <if test="employments.employment_city != null and employments.employment_city != ''">
+         and employment_city = #{employments.employment_city}
+        </if> 
+        
+        <if test="intentional_City != null and intentional_City != ''">
+         and intentional_City = #{intentional_City}
+        </if>
+           
+        <if test="employments.record != null and employments.record != ''">
+         and record = #{employments.record}
+        </if>  
+        
+        <if test="employments.className != null and employments.className != ''">
+         and className = #{employments.className}
+        </if>  
+        
+        <if test="employments.employment_engaged_type != null and employments.employment_engaged_type != ''">
+         and employment_engaged_type = #{employments.employment_engaged_type}
+        </if> 
+        
+        <if test="employments.agePd == 1">
+         and stu_age &lt; 18
+        </if>  
+        <if test="employments.agePd == 2">
+         and stu_age >= 18 and stu_age &lt;= 20
+        </if>  
+        <if test="employments.agePd == 3">
+         and stu_age > 20 and stu_age &lt;= 24
+        </if>  
+        <if test="employments.agePd == 4">
+         and stu_age > 24
+        </if>  
+        
+        <if test="empsal == 1">
+          and employment_Salary_worker >= 2000 and employment_Salary_worker &lt;= 4000
+        </if>  
+        <if test="empsal == 2">
+         and employment_Salary_worker > 4000 and employment_Salary_worker &lt;= 6000
+        </if>  
+        <if test="empsal == 3">
+         and employment_Salary_worker > 6000 and employment_Salary_worker &lt;= 8000
+        </if>  
+        <if test="empsal == 4">
+         and employment_Salary_worker > 8000
+        </if>
+        <if test="sname1 != null and sname1 != ''">
+         and spellName like concat('%',#{sname1},'%')
+        </if>
+        
+        <if test="sname2 != null and sname2 != ''">
+         and spellName like concat('%',#{sname2},'%')
+        </if>       
+      
+		<if test="employments.employment_status != null and employments.employment_status != ''">
+		and employment_status =#{employments.employment_status}		
+		</if>
+	   <if test="positionid != 25 and positionid != 1">
+         AND emp_id =#{empTecid} 
+        </if>
+         and struts > 2
+	 </where>
+	 
+	 limit #{nowPage},#{pageSize}
+ </select>
+ <!--  查询就业总数-->
+ <select id="count"  resultType="int" parameterType="map">
+ SELECT COUNT(counts) FROM
+ (SELECT oa_jzb_student.stu_Id ,COUNT(*) counts FROM oa_jyb_employment
+ INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId 
+ INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+ left JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id	
+   INNER JOIN oa_rlzyb_user ON oa_rlzyb_user.emp_id = oa_jwb_grade.obtainID	    
+ <where>
+	    <if test="employments.employment_city != null and employments.employment_city != ''">
+         and employment_city = #{employments.employment_city}
+        </if>  
+             
+        <if test="intentional_City != null and intentional_City != ''">
+         and oa_jzb_student.intentional_City = #{intentional_City}
+        </if>
+                
+        <if test="employments.record != null and employments.record != ''">
+         and oa_scb_education.education = #{employments.record}
+        </if>  
+        
+        <if test="employments.className != null and employments.className != ''">
+         and oa_jwb_grade.name = #{employments.className}
+        </if>  
+        
+        <if test="employments.employment_engaged_type != null and employments.employment_engaged_type != ''">
+         and employment_engaged_type = #{employments.employment_engaged_type}
+        </if> 
+        
+        <if test="employments.agePd == 1">
+         and oa_jzb_student.stu_age &lt; 18
+        </if>  
+        <if test="employments.agePd == 2">
+         and oa_jzb_student.stu_age >= 18 and oa_jzb_student.stu_age &lt;= 20
+        </if>  
+        <if test="employments.agePd == 3">
+         and oa_jzb_student.stu_age > 20 and oa_jzb_student.stu_age &lt;= 24
+        </if>  
+        <if test="employments.agePd == 4">
+         and oa_jzb_student.stu_age > 24
+        </if>  
+        
+        <if test="empsal == 1">
+          and employment_Salary_worker >= 2000 and employment_Salary_worker &lt;= 4000
+        </if>  
+        <if test="empsal == 2">
+         and employment_Salary_worker > 4000 and employment_Salary_worker &lt;= 6000
+        </if>  
+        <if test="empsal == 3">
+         and employment_Salary_worker > 6000 and employment_Salary_worker &lt;= 8000
+        </if>  
+        <if test="empsal == 4">
+         and employment_Salary_worker > 8000
+        </if>
+        
+        <if test="sname2 != null and sname2 != ''">
+         and oa_jzb_student.spellName like concat('%',#{sname2},'%')
+        </if>
+        
+        <if test="employments.employment_status != null and employments.employment_status != ''">
+		and employment_status =#{employments.employment_status}		
+		</if>
+	    <if test="positionid != 25 and positionid != 1">
+         AND oa_rlzyb_user.emp_id =#{empTecid} 
+        </if>
+         and oa_jwb_grade.struts > 2 
+
+	 </where>
+   
+ GROUP BY oa_jzb_student.stu_number 
+  ) t
+ 
+ </select>
+ <!--  查询已就业条件-->
+ <select id="selectCity" resultType="OaJybEmployment">
+    SELECT * FROM (SELECT * FROM (  SELECT employment_city,employment_status, oa_jwb_grade.name AS className,  oa_scb_education.education AS record ,oa_jzb_student.stu_number FROM oa_jyb_employment
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+    INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id	 
+    ORDER BY employment_time DESC)c 
+    GROUP BY  stu_number)d  where employment_status= '已就业' OR employment_status='自主' OR employment_status='未就业' 
+    GROUP BY employment_city
+ </select>
+ 
+ <!-- 查询就业统计城市 -->
+ <select id="selectCity1" resultType="OaJybEmployment">
+    SELECT * FROM (SELECT * FROM (  SELECT employment_city,employment_status, oa_jwb_grade.name AS className,  oa_scb_education.education AS record ,oa_jzb_student.stu_number FROM oa_jyb_employment
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+    INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id	 
+    ORDER BY employment_time DESC)c 
+    GROUP BY  stu_number)d  
+    WHERE className=#{className} and employment_status = '已就业' OR employment_status='自主' 
+    GROUP BY employment_city
+ </select>
+ 
+  <select id="selectRecord2" resultType="OaJybEmployment">
+ 	SELECT * FROM (SELECT * FROM (  SELECT employment_city,employment_status, oa_jwb_grade.name AS className,  oa_scb_education.education AS record ,oa_jzb_student.stu_number FROM oa_jyb_employment
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+    INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id	 
+     ORDER BY employment_time DESC)c 
+     GROUP BY  stu_number)d 
+  <!--   WHERE className=#{className} and employment_status = '已就业' OR employment_status='自主' --> 
+     GROUP BY record
+ </select>
+ 
+ <select id="selectRecord" resultType="OaJybEmployment">
+ 	SELECT * FROM (SELECT * FROM (  SELECT employment_city,employment_status, oa_jwb_grade.name AS className,  oa_scb_education.education AS record ,oa_jzb_student.stu_number FROM oa_jyb_employment
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+    INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id	 
+     ORDER BY employment_time DESC)c 
+     GROUP BY  stu_number)d 
+     WHERE className=#{className} and employment_status = '已就业' OR employment_status='自主' 
+     GROUP BY record
+ </select>
+ 
+ <select id="selectClassName" resultType="OaJybEmployment">
+ SELECT * FROM (SELECT * FROM (  SELECT employment_city, oa_jwb_grade.name AS className,  oa_scb_education.education AS record ,oa_jzb_student.stu_number FROM oa_jyb_employment
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+    INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id	 
+     ORDER BY employment_time DESC)c 
+     GROUP BY  stu_number)d   
+     GROUP BY className
+ 
+ </select>
+
+  <!--查询个人就业信息 -->
+  <select id="selectempbyterm" resultType="OaJybEmployment" parameterType="OaJybEmployment">
+   select   oa_jzb_student.stu_Id, oa_jzb_student.stu_number, oa_jzb_student.stu_name,oa_jzb_student.spellName, oa_jzb_student.contact_way , 
+   oa_jzb_student.education_id,oa_jzb_student.grade_id,oa_jzb_student.stu_sex,
+   oa_jzb_student.intentional_City,oa_jzb_student.address,oa_jzb_student.ID_number,oa_jzb_student.stu_age,
+    <include refid="Base_Column_List" />
+    from oa_jyb_employment 
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id
+    <where>
+    <if test="employment_id != null and employment_id != ''">
+    and employment_id= #{employment_id}
+    </if>   
+    </where>
+   group by oa_jzb_student.stu_number
+  </select>
+  
+ <!--  <select id="selectempbyterm2" resultType="OaJybEmployment" >
+   select oa_jzb_student.stu_Id, oa_jzb_student.stu_number, oa_jzb_student.stu_name,oa_jzb_student.spellName, oa_jzb_student.contact_way, 
+   oa_jzb_student.education_id,oa_jzb_student.grade_id,oa_jzb_student.stu_sex,
+   oa_jzb_student.intentional_City,oa_jzb_student.address,oa_jzb_student.ID_number,oa_jzb_student.stu_age,
+    <include refid="Base_Column_List" />
+    from oa_jyb_employment 
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id
+   group by oa_jzb_student.stu_number
+  </select>
+  
+   -->
+ 
+  
+ <!--查询就业统计-->
+   <select id="selectEmpStatic2" resultType="int" parameterType="map">
+	SELECT COUNT(1) FROM ( SELECT * FROM ( select  oa_jwb_grade.name as className , oa_jzb_student.stu_Id, oa_jzb_student.stu_number, oa_jzb_student.stu_name,oa_jzb_student.spellName, oa_jzb_student.stu_age,oa_jzb_student.contact_way ,  oa_scb_education.education as record ,
+	employment_id, employment_studentId, employment_time, employment_city, employment_unit, 
+    employment_Salary_probation, employment_Salary_worker, employment_engaged_type, employment_welfare, 
+    employment_remarks,employment_engaged ,employment_status
+    from oa_jyb_employment 
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+     INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id	
+
+    ORDER BY  oa_jyb_employment.employment_time DESC  
+	) emp	 
+	GROUP BY stu_number
+	) empstat
+	
+	<where>
+	
+	<if test="className != null and className != ''">
+	and className = #{className}
+	</if>
+	
+	<if test="employment_status != null and employment_status != ''">
+	and employment_status= #{employment_status}
+	</if>
+		
+	<if test="employment_city != null and employment_city != ''">
+	  and employment_city = #{employment_city}
+	</if>
+	
+	<if test="record != null and record != ''">
+	    and record=#{record}	
+	</if>
+
+	    <if test="empsal == 1">
+          and employment_Salary_worker >= 2000 and employment_Salary_worker &lt;= 4000 
+        </if>  
+        <if test="empsal == 2">
+         and employment_Salary_worker > 4000 and employment_Salary_worker &lt;= 6000
+        </if>  
+        <if test="empsal == 3">
+         and employment_Salary_worker > 6000 and employment_Salary_worker &lt;= 8000 
+        </if>  
+        <if test="empsal == 4">
+         and employment_Salary_worker > 8000 
+        </if>
+
+        <if test="agePd == 1">
+         and stu_age &lt; 18 
+        </if>  
+        <if test="agePd == 2">
+         and stu_age >= 18 and stu_age &lt;= 20 
+        </if>  
+        <if test="agePd == 3">
+         and stu_age > 20 and stu_age &lt;= 24
+        </if>  
+        <if test="agePd == 4">
+         and stu_age > 24
+        </if>  
+	
+	</where>
+	</select>
+	
+ 
+ 
+	<select id="selectEmpStatic" resultType="int" parameterType="map">
+	 SELECT COUNT(1) FROM ( SELECT * FROM ( select  oa_jwb_grade.name as className , oa_jzb_student.stu_Id, oa_jzb_student.stu_number, oa_jzb_student.stu_name,oa_jzb_student.spellName, oa_jzb_student.stu_age,oa_jzb_student.contact_way ,  oa_scb_education.education as record ,
+	   employment_id, employment_studentId, employment_time, employment_city, employment_unit, 
+    employment_Salary_probation, employment_Salary_worker, employment_engaged_type, employment_welfare, 
+    employment_remarks,employment_engaged ,employment_status
+    from oa_jyb_employment 
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id 
+     INNER JOIN oa_scb_education ON oa_scb_education.id = oa_jzb_student.education_id	
+    where  employment_status= '已就业' OR employment_status='自主' 
+    ORDER BY  oa_jyb_employment.employment_time DESC  
+	) emp	 
+	GROUP BY stu_number
+	) empstat
+	
+	<where>
+	
+	<if test="className != null and className != ''">
+	and className = #{className}
+	</if>
+	
+	<if test="employment_status != null and employment_status != ''">
+	and employment_status= #{employment_status}
+	</if>
+		
+	<if test="employment_city != null and employment_city != ''">
+	  and employment_city = #{employment_city}
+	</if>
+	
+	<if test="record != null and record != ''">
+	    and record=#{record}	
+	</if>
+
+	    <if test="empsal == 1">
+          and employment_Salary_worker >= 2000 and employment_Salary_worker &lt;= 4000 
+        </if>  
+        <if test="empsal == 2">
+         and employment_Salary_worker > 4000 and employment_Salary_worker &lt;= 6000
+        </if>  
+        <if test="empsal == 3">
+         and employment_Salary_worker > 6000 and employment_Salary_worker &lt;= 8000 
+        </if>  
+        <if test="empsal == 4">
+         and employment_Salary_worker > 8000 
+        </if>
+
+        <if test="agePd == 1">
+         and stu_age &lt; 18 
+        </if>  
+        <if test="agePd == 2">
+         and stu_age >= 18 and stu_age &lt;= 20 
+        </if>  
+        <if test="agePd == 3">
+         and stu_age > 20 and stu_age &lt;= 24
+        </if>  
+        <if test="agePd == 4">
+         and stu_age > 24
+        </if>  
+	
+	</where>
+	
+	</select>
+<!-- 添加修改就业信息 -->
+ <insert id="empinsertSelective" parameterType="cn.tyyhoa.pojo.OaJybEmployment" >
+    insert into oa_jyb_employment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="employment_engaged != null and employment_engaged != ''" >
+        employment_engaged,
+      </if>
+      <if test="employment_studentId != null and employment_studentId != ''" >
+        employment_studentId,
+      </if>
+      <if test="employment_time != null and employment_time != ''">
+        employment_time,
+      </if>
+      <if test="employment_city != null and employment_city != ''" >
+        employment_city,
+      </if>
+      <if test="employment_unit != null and employment_unit != ''" >
+        employment_unit,
+      </if>
+      <if test="employment_Salary_probation != null and employment_Salary_probation != ''" >
+        employment_Salary_probation,
+      </if>
+      <if test="employment_Salary_worker != null and employment_Salary_worker != ''" >
+        employment_Salary_worker,
+      </if>
+      <if test="employment_engaged_type != null and employment_engaged_type != ''" >
+        employment_engaged_type,
+      </if>
+      <if test="employment_welfare != null and employment_welfare != ''" >
+        employment_welfare,
+      </if>
+      <if test="employment_remarks != null and employment_remarks != ''" >
+        employment_remarks,
+      </if>
+      <if test="employment_status != null and employment_status != ''" >
+        employment_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="employment_engaged != null and employment_engaged != ''" >
+        #{employment_engaged,jdbcType=VARCHAR},
+      </if>
+      <if test="employment_studentId != null and employment_studentId != ''" >
+        #{employment_studentId.stu_Id,jdbcType=INTEGER},
+      </if>
+      <if test="employment_time != null and employment_time != ''"  >
+        #{employment_time,jdbcType=DATE},
+      </if>
+      <if test="employment_city != null and employment_city !=''" >
+        #{employment_city,jdbcType=VARCHAR},
+      </if>
+      <if test="employment_unit != null and employment_unit !=''" >
+        #{employment_unit,jdbcType=VARCHAR},
+      </if>
+      <if test="employment_Salary_probation != null and employment_Salary_probation != ''" >
+        #{employment_Salary_probation,jdbcType=DOUBLE},
+      </if>
+      <if test="employment_Salary_worker != null and employment_Salary_worker != ''" >
+        #{employment_Salary_worker,jdbcType=DOUBLE},
+      </if>
+      <if test="employment_engaged_type != null and employment_engaged_type != ''" >
+        #{employment_engaged_type,jdbcType=VARCHAR},
+      </if>
+      <if test="employment_welfare != null and employment_welfare != ''" >
+        #{employment_welfare,jdbcType=VARCHAR},
+      </if>
+      <if test="employment_remarks != null and employment_remarks != ''" >
+        #{employment_remarks,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="employment_status != null and employment_status != ''" >
+        #{employment_status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+ 
+ 
+ 
+<!-- <update id="StuStatus" parameterType="int">
+     update oa_jzb_student set
+        status_id = 5
+        where oa_jzb_student.stu_Id=#{stuId};
+</update> -->
+ 
+<update id="StuStatus2" parameterType="int">
+      UPDATE  oa_jwb_grade SET
+              struts = 4
+      WHERE   oa_jwb_grade.id=#{gradeId};
+</update>
+ 
+
+ 
+ 
+ 
+ 
+  <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_employment
+    where employment_id = #{employment_id,jdbcType=INTEGER}
+  </select> -->
+  
+ <!--  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybEmployment" >
+    insert into oa_jyb_employment (employment_id, employment_studentId, 
+      employment_time, employment_city, employment_unit, 
+      employment_Salary_probation, employment_Salary_worker, 
+      employment_type, employment_welfare, employment_remarks
+      )
+    values (#{employment_id,jdbcType=INTEGER}, #{employment_studentId,jdbcType=INTEGER}, 
+      #{employment_time,jdbcType=DATE}, #{employment_city,jdbcType=VARCHAR}, #{employment_unit,jdbcType=VARCHAR}, 
+      #{employment_Salary_probation,jdbcType=DOUBLE}, #{employment_Salary_worker,jdbcType=DOUBLE}, 
+      #{employment_type,jdbcType=VARCHAR}, #{employment_welfare,jdbcType=VARCHAR}, #{employment_remarks,jdbcType=VARCHAR}
+      )
+  </insert>-->
+  
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybEmployment" >
+    update oa_jyb_employment
+    <set >
+      <if test="employment_studentId != null" >
+        employment_studentId = #{employment_studentId,jdbcType=INTEGER},
+      </if>
+      <if test="employment_time != null" >
+        employment_time = #{employment_time,jdbcType=DATE},
+      </if>
+      <if test="employment_city != null" >
+        employment_city = #{employment_city,jdbcType=VARCHAR},
+      </if>
+      <if test="employment_unit != null" >
+        employment_unit = #{employment_unit,jdbcType=VARCHAR},
+      </if>
+        <if test="employment_engaged != null" >
+        employment_engaged = #{employment_engaged,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="employment_Salary_probation != null" >
+        employment_Salary_probation = #{employment_Salary_probation,jdbcType=DOUBLE},
+      </if>
+      <if test="employment_Salary_worker != null" >
+        employment_Salary_worker = #{employment_Salary_worker,jdbcType=DOUBLE},
+      </if>
+      <if test="employment_engaged_type != null" >
+        employment_engaged_type = #{employment_engaged_type,jdbcType=VARCHAR},
+      </if>     
+      <if test="employment_status != null" >
+        employment_status = #{employment_status,jdbcType=VARCHAR},
+      </if>
+      <if test="employment_welfare != null" >
+        employment_welfare = #{employment_welfare,jdbcType=VARCHAR},
+      </if>
+      <if test="employment_remarks != null" >
+        employment_remarks = #{employment_remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where employment_id = #{employment_id,jdbcType=INTEGER}
+  </update>
+ <!--  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybEmployment" >
+    update oa_jyb_employment
+    set employment_studentId = #{employment_studentId,jdbcType=INTEGER},
+      employment_time = #{employment_time,jdbcType=DATE},
+      employment_city = #{employment_city,jdbcType=VARCHAR},
+      employment_unit = #{employment_unit,jdbcType=VARCHAR},
+      employment_Salary_probation = #{employment_Salary_probation,jdbcType=DOUBLE},
+      employment_Salary_worker = #{employment_Salary_worker,jdbcType=DOUBLE},
+      employment_type = #{employment_type,jdbcType=VARCHAR},
+      employment_welfare = #{employment_welfare,jdbcType=VARCHAR},
+      employment_remarks = #{employment_remarks,jdbcType=VARCHAR}
+      where employment_id = #{employment_id,jdbcType=INTEGER}
+  </update> -->
+  
+  <insert id="insertId" parameterType="int">
+   insert into oa_jyb_employment (employment_studentId) values (#{id})
+   </insert>
+  <!-- 查询单个就业信息 -->
+  <select id="selectoneEmp" resultMap="selEmp" parameterType="int">
+  	 SELECT   oa_jyb_employment.* FROM oa_jyb_employment 
+    INNER JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jyb_employment.employment_studentId
+    INNER JOIN oa_jwb_grade ON oa_jwb_grade.id= oa_jzb_student.grade_id
+    where  oa_jyb_employment.employment_studentId = #{stuid}
+  </select>
+  
+</mapper>

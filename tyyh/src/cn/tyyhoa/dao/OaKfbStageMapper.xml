@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tyyhoa.dao.OaKfbStageMapper">
+	<resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaKfbStage">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="stagename" jdbcType="VARCHAR" property="stagename" />
+		<result column="did" jdbcType="INTEGER" property="did" />
+	</resultMap>
+	<!-- 查询阶段列表 -->
+	<select id="selectByExample" resultMap="BaseResultMap">
+		select id,stagename from oa_kfb_stage
+	</select>
+
+
+	<!-- 查询阶段列表 -->
+	<select id="selectBygroup" resultMap="BaseResultMap">
+		SELECT a.id as id,stagename,d.id as did FROM oa_kfb_stage AS a
+		INNER JOIN oa_kfb_project AS b ON b.stageid=a.id
+		INNER JOIN oa_kfb_user AS c ON c.id=b.user_id
+		INNER JOIN oa_kfb_group AS d ON c.groupid=d.id  
+		<where>
+			d.id=#{did}
+		</where>
+		ORDER BY id DESC 
+	</select>
+
+
+
+	<sql id="Base_Column_List">
+		id, stagename
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from oa_kfb_stage
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from oa_kfb_stage
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.tyyhoa.pojo.OaKfbStage">
+		insert into oa_kfb_stage (id, stagename)
+		values (#{id,jdbcType=INTEGER}, #{stagename,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaKfbStage">
+		insert into oa_kfb_stage
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="stagename != null">
+				stagename,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="stagename != null">
+				#{stagename,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaKfbStage">
+		update oa_kfb_stage
+		<set>
+			<if test="stagename != null">
+				stagename = #{stagename,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaKfbStage">
+		update oa_kfb_stage
+		set stagename = #{stagename,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

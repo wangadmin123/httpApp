@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybSystemOperateMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybSystemOperate" >
+    <id column="system_operate_id" property="system_operate_id" jdbcType="INTEGER" />
+    <result column="system_operate_operator" property="system_operate_operator" jdbcType="VARCHAR" />
+    <result column="system_operate_type" property="system_operate_type" jdbcType="VARCHAR" />
+    <result column="system_operate_operateTable" property="system_operate_operateTable" jdbcType="VARCHAR" />
+    <result column="system_operate_operateTableId" property="system_operate_operateTableId" jdbcType="VARCHAR" />
+    <result column="system_operate_date" property="system_operate_date" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    system_operate_id, system_operate_operator, system_operate_type, system_operate_operateTable, 
+    system_operate_operateTableId, system_operate_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_system_operate
+    where system_operate_id = #{system_operate_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_system_operate
+    where system_operate_id = #{system_operate_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybSystemOperate" >
+    insert into oa_rlzyb_system_operate (system_operate_id, system_operate_operator, 
+      system_operate_type, system_operate_operateTable, 
+      system_operate_operateTableId, system_operate_date
+      )
+    values (#{system_operate_id,jdbcType=INTEGER}, #{system_operate_operator,jdbcType=VARCHAR}, 
+      #{system_operate_type,jdbcType=VARCHAR}, #{system_operate_operateTable,jdbcType=VARCHAR}, 
+      #{system_operate_operateTableId,jdbcType=VARCHAR}, #{system_operate_date,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybSystemOperate" >
+    insert into oa_rlzyb_system_operate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="system_operate_id != null" >
+        system_operate_id,
+      </if>
+      <if test="system_operate_operator != null" >
+        system_operate_operator,
+      </if>
+      <if test="system_operate_type != null" >
+        system_operate_type,
+      </if>
+      <if test="system_operate_operateTable != null" >
+        system_operate_operateTable,
+      </if>
+      <if test="system_operate_operateTableId != null" >
+        system_operate_operateTableId,
+      </if>
+      <if test="system_operate_date != null" >
+        system_operate_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="system_operate_id != null" >
+        #{system_operate_id,jdbcType=INTEGER},
+      </if>
+      <if test="system_operate_operator != null" >
+        #{system_operate_operator,jdbcType=VARCHAR},
+      </if>
+      <if test="system_operate_type != null" >
+        #{system_operate_type,jdbcType=VARCHAR},
+      </if>
+      <if test="system_operate_operateTable != null" >
+        #{system_operate_operateTable,jdbcType=VARCHAR},
+      </if>
+      <if test="system_operate_operateTableId != null" >
+        #{system_operate_operateTableId,jdbcType=VARCHAR},
+      </if>
+      <if test="system_operate_date != null" >
+        #{system_operate_date,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybSystemOperate" >
+    update oa_rlzyb_system_operate
+    <set >
+      <if test="system_operate_operator != null" >
+        system_operate_operator = #{system_operate_operator,jdbcType=VARCHAR},
+      </if>
+      <if test="system_operate_type != null" >
+        system_operate_type = #{system_operate_type,jdbcType=VARCHAR},
+      </if>
+      <if test="system_operate_operateTable != null" >
+        system_operate_operateTable = #{system_operate_operateTable,jdbcType=VARCHAR},
+      </if>
+      <if test="system_operate_operateTableId != null" >
+        system_operate_operateTableId = #{system_operate_operateTableId,jdbcType=VARCHAR},
+      </if>
+      <if test="system_operate_date != null" >
+        system_operate_date = #{system_operate_date,jdbcType=DATE},
+      </if>
+    </set>
+    where system_operate_id = #{system_operate_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybSystemOperate" >
+    update oa_rlzyb_system_operate
+    set system_operate_operator = #{system_operate_operator,jdbcType=VARCHAR},
+      system_operate_type = #{system_operate_type,jdbcType=VARCHAR},
+      system_operate_operateTable = #{system_operate_operateTable,jdbcType=VARCHAR},
+      system_operate_operateTableId = #{system_operate_operateTableId,jdbcType=VARCHAR},
+      system_operate_date = #{system_operate_date,jdbcType=DATE}
+    where system_operate_id = #{system_operate_id,jdbcType=INTEGER}
+  </update>
+</mapper>

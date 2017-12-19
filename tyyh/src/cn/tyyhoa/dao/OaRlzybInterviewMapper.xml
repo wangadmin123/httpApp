@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybInterviewMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybInterview" >
+    <id column="interview_id" property="interview_id" jdbcType="INTEGER" />
+    <result column="interview_person" property="interview_person" jdbcType="VARCHAR" />
+    <result column="emp_id" property="emp_id" jdbcType="INTEGER" />
+    <result column="interview_date" property="interview_date" jdbcType="DATE" />
+    <result column="interview_reason" property="interview_reason" jdbcType="VARCHAR" />
+    <result column="interview_content" property="interview_content" jdbcType="VARCHAR" />
+    <result column="interview_recorder" property="interview_recorder" jdbcType="VARCHAR" />
+    <result column="interview_delectStatus" property="interview_delectStatus" jdbcType="INTEGER" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    interview_id, interview_person, emp_id, interview_date, interview_reason, interview_content, 
+    interview_recorder, interview_delectStatus, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_interview
+    where interview_id = #{interview_id,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  
+  
+  <!-- zl -->
+  <!-- 根据访谈人查询信息 -->
+  <select id="selectAllPerson" resultMap="BaseResultMap" >
+   SELECT 
+	interview_id,
+	interview_person,
+	emp_name,
+	depart_name,
+	position_name,
+	interview_date,
+	interview_reason,
+	interview_content,
+	interview_recorder,
+	interview_delectStatus,
+	oa_rlzyb_interview.create_time
+	 FROM oa_rlzyb_interview
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_interview.interview_person = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+    where oa_rlzyb_interview.interview_delectStatus = 1
+    <if test="interview_person != null and interview_person != ''">
+    	and emp_name like CONCAT("%",#{interview_person},"%") 
+    </if>
+    <if test="interview_date != null and interview_date != ''">
+    	and interview_date = #{interview_date }
+    </if>
+   	ORDER BY interview_id DESC
+    limit #{startPos},#{PageSize}
+  </select>
+  
+  
+  <!-- 根据被访谈人查询信息 -->
+  <select id="selectAllEmpName" resultMap="BaseResultMap" >
+    SELECT 
+	interview_id,
+	oa_rlzyb_interview.emp_id as emp_id,
+	emp_name,
+	depart_name,
+	position_name,
+	interview_date,
+	interview_reason,
+	interview_content,
+	interview_recorder,
+	interview_delectStatus,
+	oa_rlzyb_interview.create_time
+	 FROM oa_rlzyb_interview
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_interview.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+    WHERE oa_rlzyb_interview.interview_delectStatus = 1
+    <if test="emp_name != null and emp_name != ''">
+    	and emp_name like CONCAT("%",#{emp_name},"%")
+    </if>
+    <if test="interview_date != null and interview_date != ''">
+    	and interview_date = #{interview_date }
+    </if>
+   	ORDER BY interview_id DESC
+    limit #{startPos},#{PageSize}
+  </select>
+  
+  
+  
+  
+  
+  <select id="selectPerson" resultMap="BaseResultMap" >
+   SELECT 
+	interview_id,
+	interview_person,
+	emp_name,
+	depart_name,
+	position_name,
+	interview_date,
+	interview_reason,
+	interview_content,
+	interview_recorder,
+	interview_delectStatus,
+	oa_rlzyb_interview.create_time
+	 FROM oa_rlzyb_interview
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_interview.interview_person = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+    where oa_rlzyb_interview.interview_delectStatus = 1
+    <if test="interview_person != null and interview_person != ''">
+    	and emp_name like CONCAT("%",#{interview_person},"%") 
+    </if>
+    <if test="interview_date != null and interview_date != ''">
+    	and interview_date = #{interview_date }
+    </if>
+  </select>
+  
+  
+  <select id="selectEmpName" resultMap="BaseResultMap" >
+    SELECT 
+	interview_id,
+	oa_rlzyb_interview.emp_id as emp_id,
+	emp_name,
+	depart_name,
+	position_name,
+	interview_date,
+	interview_reason,
+	interview_content,
+	interview_recorder,
+	interview_delectStatus,
+	oa_rlzyb_interview.create_time
+	 FROM oa_rlzyb_interview
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_interview.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+    WHERE oa_rlzyb_interview.interview_delectStatus = 1
+    <if test="emp_name != null and emp_name != ''">
+    	and emp_name like CONCAT("%",#{emp_name},"%")
+    </if>
+    <if test="interview_date != null and interview_date != ''">
+    	and interview_date = #{interview_date }
+    </if>
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <select id="selectCount" resultType="java.lang.Integer">
+   SELECT 
+	COUNT(interview_id)
+ 	FROM oa_rlzyb_interview
+ 	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_interview.interview_person = oa_rlzyb_employee.emp_id
+ 	INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+ 	INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+    where oa_rlzyb_interview.interview_delectStatus = 1
+    <if test="interview_person != null and interview_person != ''">
+    	and interview_person like CONCAT("%",#{interview_person},"%") 
+    </if>
+    <if test="emp_name != null and emp_name != ''">
+    	and emp_name like CONCAT("%",#{emp_name},"%") 
+    </if>
+    <if test="interview_date != null and interview_date != ''">
+    	and interview_date = #{interview_date }
+    </if>
+  </select>
+  <select id="selectPersonByName" resultMap="BaseResultMap">
+   SELECT oa_rlzyb_interview.interview_person,emp_name,emp_department,depart_name,emp_position,position_name FROM oa_rlzyb_interview
+	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_interview.interview_person = oa_rlzyb_employee.emp_id
+	INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	WHERE oa_rlzyb_interview.interview_delectStatus = 1
+	<if test="emp_name != null and emp_name != ''">
+		and emp_name like CONCAT("%",#{emp_name},"%")
+	</if>
+  </select>
+  <select id="selectIdByName" resultMap="BaseResultMap">
+   SELECT oa_rlzyb_interview.emp_id,emp_name,emp_department,depart_name,emp_position,position_name FROM oa_rlzyb_interview
+	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_interview.emp_id = oa_rlzyb_employee.emp_id
+	INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	WHERE oa_rlzyb_interview.interview_delectStatus = 1
+	<if test="emp_name != null and emp_name != ''">
+		and emp_name like CONCAT("%",#{emp_name},"%")
+	</if>
+  </select>
+  
+  
+  
+  
+  <select id="selectShowPerson" resultMap="BaseResultMap" >
+    SELECT 
+	interview_id,
+	interview_person,
+	emp_name,
+	depart_name,
+	position_name,
+	interview_date,
+	interview_reason,
+	interview_content,
+	interview_recorder,
+	interview_delectStatus,
+	oa_rlzyb_interview.create_time
+	 FROM oa_rlzyb_interview
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_interview.interview_person = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+    where oa_rlzyb_interview.interview_delectStatus = 1 and interview_id = #{interview_id}
+  </select>
+  <select id="selectShowEmpName" resultMap="BaseResultMap" >
+    SELECT 
+	interview_id,
+	oa_rlzyb_interview.emp_id as emp_id,
+	emp_name,
+	depart_name,
+	position_name,
+	interview_date,
+	interview_reason,
+	interview_content,
+	interview_recorder,
+	interview_delectStatus,
+	oa_rlzyb_interview.create_time
+	 FROM oa_rlzyb_interview
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_interview.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+    WHERE oa_rlzyb_interview.interview_delectStatus = 1 and interview_id = #{interview_id}
+  </select>
+  <update id="updateDelete" parameterType="java.lang.Integer" >
+    update oa_rlzyb_interview
+    set interview_delectStatus = 2
+    where interview_id = #{interview_id,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  <!-- zl -->
+  
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_interview
+    where interview_id = #{interview_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybInterview" >
+    insert into oa_rlzyb_interview (interview_id, interview_person, emp_id, 
+      interview_date, interview_reason, interview_content, 
+      interview_recorder, interview_delectStatus
+      )
+    values (#{interview_id,jdbcType=INTEGER}, #{interview_person,jdbcType=VARCHAR}, #{emp_id,jdbcType=INTEGER}, 
+      #{interview_date,jdbcType=DATE}, #{interview_reason,jdbcType=VARCHAR}, #{interview_content,jdbcType=VARCHAR}, 
+      #{interview_recorder,jdbcType=VARCHAR}, #{interview_delectStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybInterview" >
+    insert into oa_rlzyb_interview
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="interview_id != null" >
+        interview_id,
+      </if>
+      <if test="interview_person != null" >
+        interview_person,
+      </if>
+      <if test="emp_id != null" >
+        emp_id,
+      </if>
+      <if test="interview_date != null" >
+        interview_date,
+      </if>
+      <if test="interview_reason != null" >
+        interview_reason,
+      </if>
+      <if test="interview_content != null" >
+        interview_content,
+      </if>
+      <if test="interview_recorder != null" >
+        interview_recorder,
+      </if>
+      <if test="interview_delectStatus != null" >
+        interview_delectStatus,
+      </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
+	
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="interview_id != null" >
+        #{interview_id,jdbcType=INTEGER},
+      </if>
+      <if test="interview_person != null" >
+        #{interview_person,jdbcType=VARCHAR},
+      </if>
+      <if test="emp_id != null" >
+        #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="interview_date != null" >
+        #{interview_date,jdbcType=DATE},
+      </if>
+      <if test="interview_reason != null" >
+        #{interview_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_content != null" >
+        #{interview_content,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_recorder != null" >
+        #{interview_recorder,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_delectStatus != null" >
+        #{interview_delectStatus,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null" >
+        #{create_time},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybInterview" >
+    update oa_rlzyb_interview
+    <set >
+      <if test="interview_person != null" >
+        interview_person = #{interview_person,jdbcType=VARCHAR},
+      </if>
+      <if test="emp_id != null" >
+        emp_id = #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="interview_date != null" >
+        interview_date = #{interview_date,jdbcType=DATE},
+      </if>
+      <if test="interview_reason != null" >
+        interview_reason = #{interview_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_content != null" >
+        interview_content = #{interview_content,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_recorder != null" >
+        interview_recorder = #{interview_recorder,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_delectStatus != null" >
+        interview_delectStatus = #{interview_delectStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where interview_id = #{interview_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybInterview" >
+    update oa_rlzyb_interview
+    set interview_person = #{interview_person,jdbcType=VARCHAR},
+      emp_id = #{emp_id,jdbcType=INTEGER},
+      interview_date = #{interview_date,jdbcType=DATE},
+      interview_reason = #{interview_reason,jdbcType=VARCHAR},
+      interview_content = #{interview_content,jdbcType=VARCHAR},
+      interview_recorder = #{interview_recorder,jdbcType=VARCHAR},
+      interview_delectStatus = #{interview_delectStatus,jdbcType=INTEGER}
+    where interview_id = #{interview_id,jdbcType=INTEGER}
+  </update>
+</mapper>

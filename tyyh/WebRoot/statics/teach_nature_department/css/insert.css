@@ -1,0 +1,139 @@
+@charset "utf-8";
+/* CSS Document */
+
+.rightContent{
+  padding:15px 0px 0px 15px;
+  
+
+}
+.tabs{
+	width:100%;
+	border-bottom:1px solid #E5E5E5;
+	height:33px;
+}
+.tabs span{
+    border-top:1px solid #E5E5E5;
+	border-left:1px solid #E5E5E5;
+	padding:0px 18px;
+	height:32px;
+	line-height:32px;
+	display:block;
+	float:left;
+	font-size:12px;
+	color:#333333;
+	text-align:center;
+	cursor:pointer;
+
+}
+.spanOut{
+	border-bottom:1px solid #E5E5E5;
+	background-color:#F8F8F8;
+}
+
+.spanHover{
+	background-color:#FFFFFF;
+	border-bottom:1px solid #FFFFFF;
+}
+#spanLast{
+	border-right:1px solid #E5E5E5;
+}
+/********************************************/
+.tabTitle{
+	font-size:14px;
+	color:#333333; 
+	text-indent:2pt;
+	height:40px;
+	line-height:40px;
+	border-bottom:1px solid #E5E5E5;
+}
+
+  
+.insertTable{
+  text-align:left;
+	width:600px;
+	font-size:12px;
+	color:#333333;
+   
+}
+.insertTable tr{
+   min-height:50px;
+   line-height:50px;
+  
+  }
+   .insertTable tr th{
+ 
+   min-height:30px;
+   line-height:30px;
+ 
+  } 
+  .insertTable tr td{
+ 
+   min-height:50px;
+   line-height:50px;
+  
+  }
+
+
+
+.tabTitle2{
+	height:30px;
+	border-bottom:1px solid #E5E5E5;
+}
+.btposition1{
+  margin-left:173px;
+  margin-top:20px;
+}
+.btposition2{
+  margin-left:10px;
+  margin-top:10px;
+}
+
+
+.selectTable{
+    text-align:center;
+	width:100%;
+	font-size:12px;
+	color:#333333;
+}
+.selectTable tr{
+   min-height:35px;
+   line-height:35px;
+   border-bottom:1px solid #E5E5E5;
+  }
+.selectTable tr th{
+ 
+   min-height:30px;
+   line-height:30px;
+   border-bottom:1px solid #E5E5E5;
+    background-color: #f9f9f9;
+  } 
+  .selectTable tr td{
+   padding:2px 5px;
+   min-height:35px;
+   line-height:35px;
+   border-bottom:1px solid #E5E5E5;
+  }
+  .manager{ text-align: left; text-indent: 30px;}
+  /***************************/
+
+
+.std{
+    background-color:#2B963A; color:#FFFFFF;
+}
+
+.edit{background-image:url(../images/edit.png); background-repeat:no-repeat; width:40px; height:25px;  display:block;background-position:center left; float:left; line-height:25px; text-decoration:none; padding-left:5px;}
+.delete{background-image:url(../images/delete.png);
+    background-repeat:no-repeat;width:40px; height:25px;
+    display:block; background-position:center left; float:left; line-height:25px; text-decoration:none; padding-left:5px;}
+.link{background-image:url(../images/link.png);
+    background-repeat:no-repeat;width:40px; height:25px;
+    display:block; background-position:center left; float:left; line-height:25px; text-decoration:none; padding-left:5px;}
+.data{background-image:url(../images/data.png);
+    background-repeat:no-repeat;width:40px; height:25px;
+    display:block; background-position:center left; float:left; line-height:25px; text-decoration:none; padding-left:5px;}
+.paifa{background-image:url(../images/paifa.png);
+    background-repeat:no-repeat;width:40px; height:25px;
+    display:block; background-position:center left; float:left; line-height:25px; text-decoration:none; padding-left:5px;}
+.doMore{ width:100px;}
+.chaozuo{float:left; margin-left: -300px;}
+

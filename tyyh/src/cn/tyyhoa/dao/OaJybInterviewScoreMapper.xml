@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybInterviewScoreMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybInterviewScore" >
+    <id column="interview_score_id" property="interview_score_id" jdbcType="INTEGER" />
+    <result column="interview_score_studentId" property="interview_score_studentId" jdbcType="INTEGER" />
+    <result column="interview_score_basic_etiquette" property="interview_score_basic_etiquette" jdbcType="INTEGER" />
+    <result column="interview_score_clothing" property="interview_score_clothing" jdbcType="INTEGER" />
+    <result column="interview_score_appearance" property="interview_score_appearance" jdbcType="INTEGER" />
+    <result column="interview_score_expression" property="interview_score_expression" jdbcType="INTEGER" />
+    <result column="interview_score_skill" property="interview_score_skill" jdbcType="INTEGER" />
+    <result column="interview_score_self_introduction" property="interview_score_self_introduction" jdbcType="INTEGER" />
+    <result column="interview_score_skill_main" property="interview_score_skill_main" jdbcType="INTEGER" />
+    <result column="interview_score_synthesize" property="interview_score_synthesize" jdbcType="INTEGER" />
+    <result column="interview_score_surface" property="interview_score_surface" jdbcType="INTEGER" />
+    <result column="interview_score_content" property="interview_score_content" jdbcType="INTEGER" />
+    <result column="interview_score_totalscore" property="interview_score_totalscore" jdbcType="INTEGER" />
+    <result column="interview_score_merit" property="interview_score_merit" jdbcType="VARCHAR" />
+    <result column="interview_score_defect" property="interview_score_defect" jdbcType="VARCHAR" />
+    <result column="interview_score_interviewid" property="interview_score_interviewid" jdbcType="INTEGER" />
+     <result column="studentname" property="studentname" jdbcType="VARCHAR" />
+      <result column="gradename" property="gradename" jdbcType="VARCHAR" />
+      <result column="gradeid" property="gradeid" jdbcType="INTEGER" />
+      <result column="mianshiyuan" property="mianshiyuan" jdbcType="VARCHAR" />
+       <result column="mianshishijian" property="mianshishijian"  />
+       <result column="stu_id" property="stuid" />
+        <!-- <association property="oaJybInterview" javaType="cn.tyyhoa.pojo.OaJybInterview">
+      <id property="interview_id" column="interview_id"/>
+     <result property="interview_centrality" column="interview_centrality"/>
+     <result property="interview_activity_theme" column="interview_activity_theme"/>
+     <result property="interview_constitutor" column="interview_constitutor"/>
+     <result property="interview_class" column="interview_class"/>
+     <result property="interview_time" column="interview_time"/>
+     <result property="interview_staff" column="interview_staff"/>
+     <result property="mianshibiao_id" column="mianshibiao_id"/>
+  
+     </association> -->
+      
+      
+      
+      
+  </resultMap>
+  <sql id="Base_Column_List" >
+    interview_score_id, interview_score_studentId, interview_score_basic_etiquette, interview_score_clothing, 
+    interview_score_appearance, interview_score_expression, interview_score_skill, interview_score_self_introduction, 
+    interview_score_skill_main, interview_score_synthesize, interview_score_surface, 
+    interview_score_content, interview_score_totalscore, interview_score_merit, interview_score_defect, 
+    interview_score_interviewid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_interview_score
+    where interview_score_id = #{interview_score_id,jdbcType=INTEGER}
+  </select>
+  
+  
+   <select id="GetAllIntervie" resultType="cn.tyyhoa.pojo.OaJybInterviewScore" >
+    SELECT oa_jwb_grade.NAME AS gradename,stu.stu_name AS studentname,oa_jwb_grade.id AS gradeid,
+    interview_staff AS mianshiyuan,interview_time AS mianshishijian,
+    stu.stu_Id AS interview_score_studentId,interview_score_basic_etiquette,interview_score_clothing,
+interview_score_appearance,interview_score_expression,interview_score_skill,interview_score_self_introduction,
+interview_score_skill_main,interview_score_synthesize,interview_score_surface,interview_score_content,
+interview_score_totalscore,interview_score_merit,interview_score_defect,
+interview_score_interviewid FROM oa_jzb_student AS stu
+LEFT JOIN `oa_jyb_interview_score` ON oa_jyb_interview_score.interview_score_studentId=stu.stu_Id
+LEFT JOIN oa_jyb_interview ON oa_jyb_interview.mianshibiao_id=oa_jyb_interview_score.interview_score_studentId
+INNER JOIN oa_jwb_grade ON stu.grade_id=oa_jwb_grade.id
+INNER JOIN oa_jwb_struts ON oa_jwb_struts.strutsid=oa_jwb_grade.struts
+INNER JOIN oa_rlzyb_user ON  oa_jwb_grade.obtainID=oa_rlzyb_user.emp_id
+      <where>
+			<if test="studentname != null and studentname != ''">
+				and stu_name like concat('%',#{studentname},'%') 
+			</if>
+			<if test="gradename != null and gradename != ''">
+				and name =#{gradename}
+			</if>
+			and oa_jwb_grade.struts>2 <if test="position_id != 25 ">
+			and	emp_id=#{emp_id}
+			</if>
+			</where>  
+			group by gradename,stu_name
+			limit #{index},#{pageSize}
+  </select>
+  
+   <select id="GetXinIntervie" resultMap="BaseResultMap" >
+      SELECT NAME AS gradename,stu_name AS studentname,oa_jwb_grade.id AS gradeid,
+    
+    interview_score_studentId,interview_score_basic_etiquette,interview_score_clothing,
+interview_score_appearance,interview_score_expression,interview_score_skill,interview_score_self_introduction,
+interview_score_skill_main,interview_score_synthesize,interview_score_surface,interview_score_content,
+interview_score_totalscore,interview_score_merit,interview_score_defect,
+interview_score_interviewid FROM oa_jyb_interview_score 
+INNER JOIN oa_jzb_student ON oa_jyb_interview_score.interview_score_studentId=oa_jzb_student.stu_Id
+INNER JOIN oa_jwb_grade ON oa_jzb_student.grade_id=oa_jwb_grade.id
+inner join oa_jwb_struts on oa_jwb_struts.strutsid=oa_jwb_grade.struts
+       <where>
+			<if test="studentname != null and studentname != ''">
+				and stu_name like concat('%',#{studentname},'%') 
+			</if>
+			<if test="gradename != null and gradename != ''">
+				and name =#{gradename}
+			</if>
+			and oa_jwb_grade.struts>2
+			</where> 
+			limit #{index},#{pageSize}
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <select id="GetAllCounts" resultType="int" >
+    SELECT COUNT(1) FROM oa_jzb_student 
+INNER JOIN oa_jwb_grade ON oa_jzb_student.grade_id=oa_jwb_grade.id
+INNER JOIN oa_jwb_struts ON oa_jwb_struts.strutsid=oa_jwb_grade.struts
+     INNER JOIN oa_rlzyb_user ON  oa_jwb_grade.obtainID=oa_rlzyb_user.emp_id
+     <where>
+			<if test="studentname != null and studentname != ''">
+				and stu_name like concat('%',#{studentname},'%') 
+			</if>
+			<if test="gradename != null and gradename != ''">
+				and name =#{gradename}
+			</if>
+			and oa_jwb_grade.struts>2<if test="position_id != 25 ">
+			and	emp_id=#{emp_id}
+			</if>
+			</where> 
+			
+  </select>
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <select id="GetStudentInterview" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+   SELECT * FROM oa_jyb_interview,oa_jyb_interview_score WHERE interview_score_studentid=#{stuid}
+   AND oa_jyb_interview.mianshibiao_id=#{stuid}
+    
+
+  </select>
+  
+  
+  
+    <select id="GetBanjiInterview" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  
+  SELECT NAME AS gradename,stu_name AS studentname,
+interview_staff AS mianshiyuan,interview_time AS mianshishijian,
+oa_jwb_grade.id AS gradeid,interview_score_studentId,interview_score_basic_etiquette,interview_score_clothing,
+interview_score_appearance,interview_score_expression,interview_score_skill,interview_score_self_introduction,
+interview_score_skill_main,interview_score_synthesize,interview_score_surface,interview_score_content,
+interview_score_totalscore,interview_score_merit,interview_score_defect,
+interview_score_interviewid FROM oa_jyb_interview_score 
+INNER JOIN oa_jzb_student ON oa_jyb_interview_score.interview_score_studentId=oa_jzb_student.stu_Id
+INNER JOIN oa_jwb_grade ON oa_jzb_student.grade_id=oa_jwb_grade.id
+INNER JOIN oa_jyb_interview ON oa_jyb_interview.mianshibiao_id=oa_jyb_interview_score.interview_score_studentId
+inner join oa_jwb_struts on oa_jwb_struts.strutsid=oa_jwb_grade.struts
+WHERE oa_jwb_grade.id=#{gradeid} and oa_jwb_grade.struts>2
+   GROUP BY grade_id,stu_name
+
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_interview_score
+    where interview_score_id = #{interview_score_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybInterviewScore" >
+    insert into oa_jyb_interview_score (interview_score_id, interview_score_studentId, 
+      interview_score_basic_etiquette, interview_score_clothing, 
+      interview_score_appearance, interview_score_expression, 
+      interview_score_skill, interview_score_self_introduction, 
+      interview_score_skill_main, interview_score_synthesize, 
+      interview_score_surface, interview_score_content, 
+      interview_score_totalscore, interview_score_merit, 
+      interview_score_defect, interview_score_interviewid
+      )
+    values (#{interview_score_id,jdbcType=INTEGER}, #{interview_score_studentId,jdbcType=INTEGER}, 
+      #{interview_score_basic_etiquette,jdbcType=INTEGER}, #{interview_score_clothing,jdbcType=INTEGER}, 
+      #{interview_score_appearance,jdbcType=INTEGER}, #{interview_score_expression,jdbcType=INTEGER}, 
+      #{interview_score_skill,jdbcType=INTEGER}, #{interview_score_self_introduction,jdbcType=INTEGER}, 
+      #{interview_score_skill_main,jdbcType=INTEGER}, #{interview_score_synthesize,jdbcType=INTEGER}, 
+      #{interview_score_surface,jdbcType=INTEGER}, #{interview_score_content,jdbcType=INTEGER}, 
+      #{interview_score_totalscore,jdbcType=INTEGER}, #{interview_score_merit,jdbcType=VARCHAR}, 
+      #{interview_score_defect,jdbcType=VARCHAR}, #{interview_score_interviewid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybInterviewScore" >
+    insert into oa_jyb_interview_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="interview_score_id != null" >
+        interview_score_id,
+      </if>
+      <if test="interview_score_studentId != null" >
+        interview_score_studentId,
+      </if>
+      <if test="interview_score_basic_etiquette != null" >
+        interview_score_basic_etiquette,
+      </if>
+      <if test="interview_score_clothing != null" >
+        interview_score_clothing,
+      </if>
+      <if test="interview_score_appearance != null" >
+        interview_score_appearance,
+      </if>
+      <if test="interview_score_expression != null" >
+        interview_score_expression,
+      </if>
+      <if test="interview_score_skill != null" >
+        interview_score_skill,
+      </if>
+      <if test="interview_score_self_introduction != null" >
+        interview_score_self_introduction,
+      </if>
+      <if test="interview_score_skill_main != null" >
+        interview_score_skill_main,
+      </if>
+      <if test="interview_score_synthesize != null" >
+        interview_score_synthesize,
+      </if>
+      <if test="interview_score_surface != null" >
+        interview_score_surface,
+      </if>
+      <if test="interview_score_content != null" >
+        interview_score_content,
+      </if>
+      <if test="interview_score_totalscore != null" >
+        interview_score_totalscore,
+      </if>
+      <if test="interview_score_merit != null" >
+        interview_score_merit,
+      </if>
+      <if test="interview_score_defect != null" >
+        interview_score_defect,
+      </if>
+      <if test="interview_score_interviewid != null" >
+        interview_score_interviewid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="interview_score_id != null" >
+        #{interview_score_id,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_studentId != null" >
+        #{interview_score_studentId,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_basic_etiquette != null" >
+        #{interview_score_basic_etiquette,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_clothing != null" >
+        #{interview_score_clothing,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_appearance != null" >
+        #{interview_score_appearance,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_expression != null" >
+        #{interview_score_expression,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_skill != null" >
+        #{interview_score_skill,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_self_introduction != null" >
+        #{interview_score_self_introduction,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_skill_main != null" >
+        #{interview_score_skill_main,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_synthesize != null" >
+        #{interview_score_synthesize,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_surface != null" >
+        #{interview_score_surface,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_content != null" >
+        #{interview_score_content,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_totalscore != null" >
+        #{interview_score_totalscore,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_merit != null" >
+        #{interview_score_merit,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_score_defect != null" >
+        #{interview_score_defect,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_score_interviewid != null" >
+        #{interview_score_interviewid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybInterviewScore" >
+    update oa_jyb_interview_score
+    <set >
+      <if test="interview_score_studentId != null" >
+        interview_score_studentId = #{interview_score_studentId,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_basic_etiquette != null" >
+        interview_score_basic_etiquette = #{interview_score_basic_etiquette,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_clothing != null" >
+        interview_score_clothing = #{interview_score_clothing,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_appearance != null" >
+        interview_score_appearance = #{interview_score_appearance,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_expression != null" >
+        interview_score_expression = #{interview_score_expression,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_skill != null" >
+        interview_score_skill = #{interview_score_skill,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_self_introduction != null" >
+        interview_score_self_introduction = #{interview_score_self_introduction,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_skill_main != null" >
+        interview_score_skill_main = #{interview_score_skill_main,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_synthesize != null" >
+        interview_score_synthesize = #{interview_score_synthesize,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_surface != null" >
+        interview_score_surface = #{interview_score_surface,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_content != null" >
+        interview_score_content = #{interview_score_content,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_totalscore != null" >
+        interview_score_totalscore = #{interview_score_totalscore,jdbcType=INTEGER},
+      </if>
+      <if test="interview_score_merit != null" >
+        interview_score_merit = #{interview_score_merit,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_score_defect != null" >
+        interview_score_defect = #{interview_score_defect,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_score_interviewid != null" >
+        interview_score_interviewid = #{interview_score_interviewid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where interview_score_studentId = #{interview_score_studentId,jdbcType=INTEGER}
+  </update>
+  <insert id="insertByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybInterviewScore" >
+INSERT oa_jyb_interview_score VALUES 
+(DEFAULT,#{interview_score_studentId,jdbcType=INTEGER},
+        #{interview_score_basic_etiquette,jdbcType=INTEGER},
+        #{interview_score_clothing,jdbcType=INTEGER},
+#{interview_score_appearance,jdbcType=INTEGER},
+#{interview_score_expression,jdbcType=INTEGER},
+#{interview_score_skill,jdbcType=INTEGER},
+#{interview_score_self_introduction,jdbcType=INTEGER},
+#{interview_score_skill_main,jdbcType=INTEGER},
+#{interview_score_synthesize,jdbcType=INTEGER},
+#{interview_score_surface,jdbcType=INTEGER},
+#{interview_score_content,jdbcType=INTEGER},
+#{interview_score_totalscore,jdbcType=INTEGER},
+#{interview_score_merit,jdbcType=VARCHAR},
+#{interview_score_defect,jdbcType=VARCHAR},
+#{interview_score_interviewid,jdbcType=INTEGER}
+)
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybInterviewScore" >
+    update oa_jyb_interview_score
+    set interview_score_studentId = #{interview_score_studentId,jdbcType=INTEGER},
+      interview_score_basic_etiquette = #{interview_score_basic_etiquette,jdbcType=INTEGER},
+      interview_score_clothing = #{interview_score_clothing,jdbcType=INTEGER},
+      interview_score_appearance = #{interview_score_appearance,jdbcType=INTEGER},
+      interview_score_expression = #{interview_score_expression,jdbcType=INTEGER},
+      interview_score_skill = #{interview_score_skill,jdbcType=INTEGER},
+      interview_score_self_introduction = #{interview_score_self_introduction,jdbcType=INTEGER},
+      interview_score_skill_main = #{interview_score_skill_main,jdbcType=INTEGER},
+      interview_score_synthesize = #{interview_score_synthesize,jdbcType=INTEGER},
+      interview_score_surface = #{interview_score_surface,jdbcType=INTEGER},
+      interview_score_content = #{interview_score_content,jdbcType=INTEGER},
+      interview_score_totalscore = #{interview_score_totalscore,jdbcType=INTEGER},
+      interview_score_merit = #{interview_score_merit,jdbcType=VARCHAR},
+      interview_score_defect = #{interview_score_defect,jdbcType=VARCHAR},
+      interview_score_interviewid = #{interview_score_interviewid,jdbcType=INTEGER}
+    where interview_score_id = #{interview_score_id,jdbcType=INTEGER}
+  </update>
+  
+   <insert id="insertId" parameterType="int">
+   insert into oa_jyb_interview_score (interview_score_studentId) values (#{interview_score_studentId})
+   </insert>
+   
+   <select id="getstudentid" resultMap="BaseResultMap">
+   SELECT stu_id FROM oa_jzb_student
+  	INNER JOIN oa_jwb_grade ON oa_jzb_student.grade_id=oa_jwb_grade.id WHERE struts>2 and oa_jwb_grade.id=#{id}
+   </select>
+  
+</mapper>

@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tyyhoa.dao.OaScbConsultAssistantSheetMapper">
+
+<!-- 日报表——查询电话咨询量 -->
+<select id="phoneControllers" resultType="int" >
+
+SELECT count(1) FROM oa_scb_consulter WHERE  consultWay=1 AND  firstConsultTime =#{day}
+<if test="consultTeacher!=0 and consultTeacher!=null">
+	and consultTeacher=#{consultTeacher}
+</if>
+</select>
+
+<!-- 日报表——电话上门量 -->
+<select id="phoneControllersCome" resultType="int" >
+SELECT COUNT(1) FROM oa_scb_consulter WHERE  consultWay=1 AND come=1 AND firstConsultTime=#{day}
+<if test="consultTeacher!=0 and consultTeacher!=null">
+	and consultTeacher=#{consultTeacher}
+</if>
+</select>
+
+<!-- 日报——直接上门量 -->
+<select id="ControllersDirectCome" resultType="int" >
+SELECT COUNT(1) FROM oa_scb_consulter WHERE  consultWay=2 AND firstConsultTime =#{day}
+<if test="consultTeacher!=0 and consultTeacher!=null">
+	and consultTeacher=#{consultTeacher}
+</if>
+</select>
+
+<!-- 日报——总报名量 -->
+<select id="Allenrolls" resultType="int" >
+SELECT COUNT(1) FROM oa_scb_consulter WHERE  enrollStatus=1 AND firstConsultTime =#{day}
+<if test="consultTeacher!=0 and consultTeacher!=null">
+	and consultTeacher=#{consultTeacher}
+</if>
+</select>
+
+<!-- 日报——总咨询量 -->
+<select id="AllControllers" resultType="int" >
+SELECT COUNT(1) FROM oa_scb_consulter WHERE infoStatus=2 AND firstConsultTime=#{day}
+<if test="consultTeacher!=0 and consultTeacher!=null">
+	and consultTeacher=#{consultTeacher}
+</if>
+</select>
+
+<!-- 日报——总上门量 -->
+<select id="AllComes" resultType="int" >
+SELECT COUNT(1) FROM oa_scb_consulter WHERE come=1 AND firstConsultTime=#{day}
+<if test="consultTeacher!=0 and consultTeacher!=null">
+	and consultTeacher=#{consultTeacher}
+</if>
+</select>
+
+<!-- 日报——总定金量 -->
+<select id="AllpayStatus" resultType="int" >
+SELECT COUNT(1) FROM oa_scb_consulter WHERE payStatus=2 AND firstConsultTime=#{day}
+<if test="consultTeacher!=0 and consultTeacher!=null">
+	and consultTeacher=#{consultTeacher}
+</if>
+</select>
+
+
+
+
+<!-- 周报——电话咨询量 -->
+<select id="WeekPhoneControllers" resultType="int" >
+<![CDATA[
+select count(1) from oa_scb_consulter where  consultWay=1 AND firstConsultTime !='0000-00-00'
+ ]]>
+<if test="Nowday!=null">
+<![CDATA[
+AND  week(firstConsultTime) = week(#{Nowday})
+ ]]>
+</if>
+<if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+
+<if test="Maxday!=null and Nowday==null">
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') <= DATE_FORMAT(#{Maxday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') <= DATE_FORMAT(#{Maxday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') <= DATE_FORMAT(#{Maxday},'%d')
+ ]]>
+</if>
+<if test="Minday!=null and Nowday==null " >
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') >= DATE_FORMAT(#{Minday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') >= DATE_FORMAT(#{Minday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') >= DATE_FORMAT(#{Minday},'%d')
+ ]]>
+</if>
+</select>
+
+
+
+
+
+<!-- 周报——电话上门量 -->
+<select id="WeekPhoneControllersCome" resultType="int" >
+<![CDATA[
+select count(1) from oa_scb_consulter where  consultWay=1 AND come=1 AND firstConsultTime !='0000-00-00'
+ ]]>
+<if test="Nowday!=null">
+<![CDATA[
+AND  week(firstConsultTime) = week(#{Nowday})
+ ]]>
+</if>
+<if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+
+<if test="Maxday!=null and Nowday==null">
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') <= DATE_FORMAT(#{Maxday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') <= DATE_FORMAT(#{Maxday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') <= DATE_FORMAT(#{Maxday},'%d')
+ ]]>
+</if>
+<if test="Minday!=null and Nowday==null " >
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') >= DATE_FORMAT(#{Minday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') >= DATE_FORMAT(#{Minday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') >= DATE_FORMAT(#{Minday},'%d')
+ ]]>
+</if>
+</select>
+
+
+
+<!-- 周报——直接上门量 -->
+<select id="WeekControllersDirectCome" resultType="int" >
+<![CDATA[
+select count(1) from oa_scb_consulter where   consultWay=2 AND firstConsultTime !='0000-00-00'
+ ]]>
+<if test="Nowday!=null">
+<![CDATA[
+AND  week(firstConsultTime) = week(#{Nowday})
+ ]]>
+</if>
+<if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+
+<if test="Maxday!=null and Nowday==null">
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') <= DATE_FORMAT(#{Maxday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') <= DATE_FORMAT(#{Maxday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') <= DATE_FORMAT(#{Maxday},'%d')
+ ]]>
+</if>
+<if test="Minday!=null and Nowday==null " >
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') >= DATE_FORMAT(#{Minday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') >= DATE_FORMAT(#{Minday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') >= DATE_FORMAT(#{Minday},'%d')
+ ]]>
+</if>
+</select>
+
+
+
+<!-- 周报——总报名量 -->
+<select id="WeekAllenrolls" resultType="int" >
+<![CDATA[
+select count(1) from oa_scb_consulter where  enrollStatus=1  AND firstConsultTime !='0000-00-00'
+ ]]>
+<if test="Nowday!=null">
+<![CDATA[
+AND  week(firstConsultTime) = week(#{Nowday})
+ ]]>
+</if>
+<if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+
+<if test="Maxday!=null and Nowday==null">
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') <= DATE_FORMAT(#{Maxday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') <= DATE_FORMAT(#{Maxday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') <= DATE_FORMAT(#{Maxday},'%d')
+ ]]>
+</if>
+<if test="Minday!=null and Nowday==null " >
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') >= DATE_FORMAT(#{Minday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') >= DATE_FORMAT(#{Minday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') >= DATE_FORMAT(#{Minday},'%d')
+ ]]>
+</if>
+</select>
+
+
+
+<!-- 周报——总咨询量 -->
+<select id="WeekAllControllers" resultType="int" >
+<![CDATA[
+select count(1) from oa_scb_consulter where  infoStatus=2 AND firstConsultTime !='0000-00-00'
+ ]]>
+<if test="Nowday!=null">
+<![CDATA[
+AND  week(firstConsultTime) = week(#{Nowday})
+ ]]>
+</if>
+<if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+
+<if test="Maxday!=null and Nowday==null">
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') <= DATE_FORMAT(#{Maxday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') <= DATE_FORMAT(#{Maxday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') <= DATE_FORMAT(#{Maxday},'%d')
+ ]]>
+</if>
+<if test="Minday!=null and Nowday==null " >
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') >= DATE_FORMAT(#{Minday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') >= DATE_FORMAT(#{Minday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') >= DATE_FORMAT(#{Minday},'%d')
+ ]]>
+</if>
+</select>
+
+
+
+<!-- 周报——总上门量 -->
+<select id="WeekAllComes" resultType="int" >
+<![CDATA[
+select count(1) from oa_scb_consulter where  come=1 AND firstConsultTime !='0000-00-00'
+ ]]>
+<if test="Nowday!=null">
+<![CDATA[
+AND  week(firstConsultTime) = week(#{Nowday})
+ ]]>
+</if>
+<if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+
+<if test="Maxday!=null and Nowday==null">
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') <= DATE_FORMAT(#{Maxday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') <= DATE_FORMAT(#{Maxday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') <= DATE_FORMAT(#{Maxday},'%d')
+ ]]>
+</if>
+<if test="Minday!=null and Nowday==null " >
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') >= DATE_FORMAT(#{Minday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') >= DATE_FORMAT(#{Minday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') >= DATE_FORMAT(#{Minday},'%d')
+ ]]>
+</if>
+</select>
+
+
+
+<!-- 周报——总定金量 -->
+<select id="WeekAllpayStatus" resultType="int" >
+<![CDATA[
+select count(1) from oa_scb_consulter where  payStatus=2 AND firstConsultTime !='0000-00-00'
+ ]]>
+<if test="Nowday!=null">
+<![CDATA[
+AND  week(firstConsultTime) = week(#{Nowday})
+ ]]>
+</if>
+<if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+
+<if test="Maxday!=null and Nowday==null">
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') <= DATE_FORMAT(#{Maxday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') <= DATE_FORMAT(#{Maxday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') <= DATE_FORMAT(#{Maxday},'%d')
+ ]]>
+</if>
+<if test="Minday!=null and Nowday==null " >
+<![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') >= DATE_FORMAT(#{Minday},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') >= DATE_FORMAT(#{Minday},'%m') AND 
+DATE_FORMAT(firstConsultTime,'%d') >= DATE_FORMAT(#{Minday},'%d')
+ ]]>
+</if>
+</select>
+
+
+
+<!-- 月报——电话咨询量 -->
+<select id="MonthPhoneControllers" resultType="int" >
+<![CDATA[
+SELECT COUNT(1)  FROM oa_scb_consulter 
+WHERE consultWay=1 
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') = DATE_FORMAT(#{day},'%m')
+ ]]>
+ <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+ 
+</select>
+
+<!-- 月报——电话上门量 -->
+<select id="MonthPhoneControllersCome" resultType="int" >
+<![CDATA[
+SELECT COUNT(1)  FROM oa_scb_consulter 
+WHERE consultWay=1 AND come=1 
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') = DATE_FORMAT(#{day},'%m')
+ ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+<!-- 月报——直接上门量 -->
+<select id="MonthControllersDirectCome" resultType="int" >
+<![CDATA[
+SELECT COUNT(1)  FROM oa_scb_consulter 
+WHERE consultWay=2 
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') = DATE_FORMAT(#{day},'%m')
+ ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+
+<!-- 月报——总报名量 -->
+<select id="MonthAllenrolls" resultType="int" >
+<![CDATA[
+SELECT COUNT(1)  FROM oa_scb_consulter 
+WHERE enrollStatus=1 
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') = DATE_FORMAT(#{day},'%m')
+ ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+
+</select>
+
+<!-- 月报——总咨询量 -->
+<select id="MonthAllControllers" resultType="int" >
+<![CDATA[
+SELECT COUNT(1)  FROM oa_scb_consulter 
+WHERE infoStatus=2  
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') = DATE_FORMAT(#{day},'%m')
+ ]]>
+ <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+<!-- 月报——总上门量 -->
+<select id="MonthAllComes" resultType="int" >
+<![CDATA[
+SELECT COUNT(1)  FROM oa_scb_consulter 
+WHERE come=1  
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') = DATE_FORMAT(#{day},'%m')
+ ]]>
+ <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+
+<!-- 周报——总定金量 -->
+<select id="MonthAllpayStatus" resultType="int" >
+<![CDATA[
+SELECT COUNT(1)  FROM oa_scb_consulter 
+WHERE payStatus=2  
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ AND   DATE_FORMAT(firstConsultTime,'%m') = DATE_FORMAT(#{day},'%m')
+ ]]>
+ <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+<!-- 年报——电话咨询量 -->
+<select id="YearPhoneControllers" resultType="int" >
+SELECT COUNT(1)  FROM oa_scb_consulter 
+ WHERE consultWay=1
+ <![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ 	 ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+
+<!-- 年报——电话上门量 -->
+<select id="YearPhoneControllersCome" resultType="int" >
+SELECT COUNT(1)  FROM oa_scb_consulter 
+ WHERE consultWay=1 AND come=1 
+ <![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ 	 ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+<!-- 年报——直接上门量 -->
+<select id="YearControllersDirectCome" resultType="int" >
+SELECT COUNT(1)  FROM oa_scb_consulter 
+ WHERE consultWay=2 
+ <![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ 	 ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+<!-- 年报——总报名量 -->
+<select id="YearAllenrolls" resultType="int" >
+SELECT COUNT(1)  FROM oa_scb_consulter 
+ WHERE enrollStatus=1 
+ <![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ 	 ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+<!-- 年报——总咨询量 -->
+<select id="YearAllControllers" resultType="int" >
+SELECT COUNT(1)  FROM oa_scb_consulter 
+ WHERE infoStatus=2 
+ <![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ 	 ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+<!-- 年报——总上门量 -->
+<select id="YearAllComes" resultType="int" >
+SELECT COUNT(1)  FROM oa_scb_consulter 
+ WHERE come=1
+ <![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ 	 ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+
+<!-- 年报——总定金量 -->
+<select id="YearAllpayStatus" resultType="int" >
+SELECT COUNT(1)  FROM oa_scb_consulter 
+ WHERE payStatus=2 
+ <![CDATA[
+ AND DATE_FORMAT(firstConsultTime,'%y') = DATE_FORMAT(#{day},'%y')
+ 	 ]]>
+  <if test="consultTeacher!=0 and consultTeacher!=null">
+<![CDATA[
+	and consultTeacher=#{consultTeacher}
+	 ]]>
+</if>
+</select>
+	
+	
+
+
+</mapper>

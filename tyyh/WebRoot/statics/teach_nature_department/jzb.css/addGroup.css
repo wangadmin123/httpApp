@@ -1,0 +1,11 @@
+.addGroup{
+	background-color:#EFEFEF;
+	width: 60px;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+}
+.addGroup:active{
+	background-color:#3498DB;
+	color: #fff;
+}

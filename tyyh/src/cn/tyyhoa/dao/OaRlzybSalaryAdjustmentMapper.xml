@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybSalaryAdjustmentMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybSalaryAdjustment" >
+    <id column="salary_adjustment_id" property="salary_adjustment_id" jdbcType="INTEGER" />
+    <result column="emp_id" property="emp_id" jdbcType="INTEGER" />
+    <result column="salary_adjustment_beforeMoney" property="salary_adjustment_beforeMoney" jdbcType="VARCHAR" />
+    <result column="salary_adjustment_afterMoney" property="salary_adjustment_afterMoney" jdbcType="VARCHAR" />
+    <result column="salary_adjustment_reason" property="salary_adjustment_reason" jdbcType="VARCHAR" />
+    <result column="salary_adjustment_explain" property="salary_adjustment_explain" jdbcType="VARCHAR" />
+    <result column="salary_adjustment_delectStatus" property="salary_adjustment_delectStatus" jdbcType="INTEGER" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    salary_adjustment_id, emp_id, salary_adjustment_beforeMoney, salary_adjustment_afterMoney, 
+    salary_adjustment_reason, salary_adjustment_explain, salary_adjustment_delectStatus, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_salary_adjustment
+    where salary_adjustment_id = #{salary_adjustment_id,jdbcType=INTEGER}
+  </select>
+
+
+
+
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+   SELECT 
+	salary_adjustment_id,
+	oa_rlzyb_salary_adjustment.emp_id,
+	emp_name,
+	emp_department,
+	depart_name,
+	emp_position,
+	position_name,
+	salary_adjustment_beforeMoney,
+	salary_adjustment_afterMoney,
+	salary_adjustment_reason,
+	salary_adjustment_explain,
+	salary_adjustment_delectStatus,
+	oa_rlzyb_salary_adjustment.create_time
+	 FROM oa_rlzyb_salary_adjustment
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_salary_adjustment.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	 where salary_adjustment_delectStatus = 1
+	 <if test="emp_position != null and emp_position != 0">
+	 	and emp_position = #{emp_position }
+	 </if>
+	 <if test="emp_name != null and emp_name != ''">
+	 	and emp_name like CONCAT("%",#{emp_name},"%")
+	 </if>
+	 <if test="emp_department != null and emp_department != 0">
+	 	and emp_department = #{emp_department }
+	 </if>
+	 ORDER BY salary_adjustment_id DESC
+	 limit #{startPos},#{PageSize} 
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+   SELECT count(salary_adjustment_id)
+	 FROM oa_rlzyb_salary_adjustment
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_salary_adjustment.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	 where salary_adjustment_delectStatus = 1
+	 <if test="emp_position != null and emp_position != 0">
+	 	and emp_position = #{emp_position }
+	 </if>
+	 <if test="emp_name != null and emp_name != ''">
+	 	and emp_name like CONCAT("%",#{emp_name},"%")
+	 </if>
+	 <if test="emp_department != null and emp_department != 0">
+	 	and emp_department = #{emp_department }
+	 </if>
+  </select>
+	<select id="selectShowById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	   SELECT 
+		salary_adjustment_id,
+		oa_rlzyb_salary_adjustment.emp_id,
+		emp_name,
+		emp_department,
+		depart_name,
+		emp_position,
+		position_name,
+		salary_adjustment_beforeMoney,
+		salary_adjustment_afterMoney,
+		salary_adjustment_reason,
+		salary_adjustment_explain,
+		salary_adjustment_delectStatus,
+	oa_rlzyb_salary_adjustment.create_time
+		 FROM oa_rlzyb_salary_adjustment
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_salary_adjustment.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	where salary_adjustment_id = #{salary_adjustment_id}
+	
+  </select>
+<update id="updateDelete" parameterType="cn.tyyhoa.pojo.OaRlzybSalaryAdjustment" >
+    update oa_rlzyb_salary_adjustment
+    set 
+      salary_adjustment_delectStatus = 2
+    where salary_adjustment_id = #{salary_adjustment_id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+
+
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_salary_adjustment
+    where salary_adjustment_id = #{salary_adjustment_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybSalaryAdjustment" >
+    insert into oa_rlzyb_salary_adjustment (salary_adjustment_id, emp_id, salary_adjustment_beforeMoney, 
+      salary_adjustment_afterMoney, salary_adjustment_reason, 
+      salary_adjustment_explain, salary_adjustment_delectStatus
+      )
+    values (#{salary_adjustment_id,jdbcType=INTEGER}, #{emp_id,jdbcType=INTEGER}, #{salary_adjustment_beforeMoney,jdbcType=VARCHAR}, 
+      #{salary_adjustment_afterMoney,jdbcType=VARCHAR}, #{salary_adjustment_reason,jdbcType=VARCHAR}, 
+      #{salary_adjustment_explain,jdbcType=VARCHAR}, #{salary_adjustment_delectStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybSalaryAdjustment" >
+    insert into oa_rlzyb_salary_adjustment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="salary_adjustment_id != null" >
+        salary_adjustment_id,
+      </if>
+      <if test="emp_id != null" >
+        emp_id,
+      </if>
+      <if test="salary_adjustment_beforeMoney != null" >
+        salary_adjustment_beforeMoney,
+      </if>
+      <if test="salary_adjustment_afterMoney != null" >
+        salary_adjustment_afterMoney,
+      </if>
+      <if test="salary_adjustment_reason != null" >
+        salary_adjustment_reason,
+      </if>
+      <if test="salary_adjustment_explain != null" >
+        salary_adjustment_explain,
+      </if>
+      <if test="salary_adjustment_delectStatus != null" >
+        salary_adjustment_delectStatus,
+      </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="salary_adjustment_id != null" >
+        #{salary_adjustment_id,jdbcType=INTEGER},
+      </if>
+      <if test="emp_id != null" >
+        #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="salary_adjustment_beforeMoney != null" >
+        #{salary_adjustment_beforeMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="salary_adjustment_afterMoney != null" >
+        #{salary_adjustment_afterMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="salary_adjustment_reason != null" >
+        #{salary_adjustment_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="salary_adjustment_explain != null" >
+        #{salary_adjustment_explain,jdbcType=VARCHAR},
+      </if>
+      <if test="salary_adjustment_delectStatus != null" >
+        #{salary_adjustment_delectStatus,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null" >
+        #{create_time},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybSalaryAdjustment" >
+    update oa_rlzyb_salary_adjustment
+    <set >
+      <if test="emp_id != null" >
+        emp_id = #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="salary_adjustment_beforeMoney != null" >
+        salary_adjustment_beforeMoney = #{salary_adjustment_beforeMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="salary_adjustment_afterMoney != null" >
+        salary_adjustment_afterMoney = #{salary_adjustment_afterMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="salary_adjustment_reason != null" >
+        salary_adjustment_reason = #{salary_adjustment_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="salary_adjustment_explain != null" >
+        salary_adjustment_explain = #{salary_adjustment_explain,jdbcType=VARCHAR},
+      </if>
+      <if test="salary_adjustment_delectStatus != null" >
+        salary_adjustment_delectStatus = #{salary_adjustment_delectStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where salary_adjustment_id = #{salary_adjustment_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybSalaryAdjustment" >
+    update oa_rlzyb_salary_adjustment
+    set emp_id = #{emp_id,jdbcType=INTEGER},
+      salary_adjustment_beforeMoney = #{salary_adjustment_beforeMoney,jdbcType=VARCHAR},
+      salary_adjustment_afterMoney = #{salary_adjustment_afterMoney,jdbcType=VARCHAR},
+      salary_adjustment_reason = #{salary_adjustment_reason,jdbcType=VARCHAR},
+      salary_adjustment_explain = #{salary_adjustment_explain,jdbcType=VARCHAR},
+      salary_adjustment_delectStatus = #{salary_adjustment_delectStatus,jdbcType=INTEGER}
+    where salary_adjustment_id = #{salary_adjustment_id,jdbcType=INTEGER}
+  </update>
+</mapper>

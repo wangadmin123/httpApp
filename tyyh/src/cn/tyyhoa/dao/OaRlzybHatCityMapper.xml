@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybHatCityMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybHatCity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cityID" property="cityID" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="father" property="father" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cityID, city, father
+  </sql>
+  <select id="selectSomeOaRlzybHatCityByfather" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_hat_city
+  where father = ${ProvinceId};
+  </select>
+  
+  
+<select id="selectByCityPojoKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_hat_city
+    where city = #{city,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_hat_city
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_hat_city
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybHatCity" >
+    insert into oa_rlzyb_hat_city (id, cityID, city, 
+      father)
+    values (#{id,jdbcType=INTEGER}, #{cityID,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{father,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybHatCity" >
+    insert into oa_rlzyb_hat_city
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cityID != null" >
+        cityID,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="father != null" >
+        father,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cityID != null" >
+        #{cityID,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="father != null" >
+        #{father,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybHatCity" >
+    update oa_rlzyb_hat_city
+    <set >
+      <if test="cityID != null" >
+        cityID = #{cityID,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="father != null" >
+        father = #{father,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybHatCity" >
+    update oa_rlzyb_hat_city
+    set cityID = #{cityID,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      father = #{father,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

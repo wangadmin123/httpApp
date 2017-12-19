@@ -1,0 +1,6 @@
+=\=\=\=\=\=\=
+<<<<<<<=.mine
+>>>>>>>=.r142
+eclipse.preferences.version=1
+validator.Checked=src/springmvc-servlet.xml,WebRoot,resources,src/applicationContext-mybatis.xml,conf
+validator.Unchecked=

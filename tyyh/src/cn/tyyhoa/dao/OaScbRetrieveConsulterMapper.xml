@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tyyhoa.dao.OaScbRetrieveConsulterMapper">
+
+		<!-- 回收咨询量 -->
+	<update id="RetrieveConsulter">
+ 		UPDATE oa_scb_consulter SET allotstatus =2,consultTeacher=null
+ 		 WHERE id = #{id}
+ 	</update>
+ 	
+ 	<!-- 报名审核 -->
+ 	<update id="PraiseCheckAuditing">
+ 	UPDATE oa_scb_consulter SET declareStatus =3,enrollStatus=1  
+ 	
+ 	WHERE id =#{id}
+ 	</update>
+ 	
+ 	<!-- 报名暂缓 -->
+ 	<update id="PraiseCheckAuditingNopass">
+ 	UPDATE oa_scb_consulter SET declareStatus =2
+ 	WHERE id =#{id}
+ 	</update>
+ 	
+ 	
+ 	<!-- 分发功能-分发 -->
+ 	<update id="Todistribute">
+ 	update oa_scb_consulter set consultTeacher=#{consultTeacherid},allotstatus=3,allotTime=#{allotTime}
+ 	where id=#{id}
+ 	</update>
+ 	
+ 	<!-- 查询是口碑的咨询量 -->
+ 	<select id="FindconsultWayName" resultType="String">
+ 		SELECT consultway.consultWay as consultwayName
+ 		FROM oa_scb_consulter AS consulter 		
+ 		LEFT JOIN oa_scb_consultway AS consultway ON consultway.id=consulter.consultWay
+ 		where consulter.id=#{id}
+ 	</select>
+ 	
+ 	<!-- 分发——口碑插入 -->
+ 	<update id="UpdatePraiseInto">
+ 	UPDATE tyyhoa.oa_jzb_praise 
+	SET
+	Teacher_id = #{consultTeacherid}
+	WHERE
+	consulter_id = #{id}
+ 	</update>
+ 	
+</mapper>

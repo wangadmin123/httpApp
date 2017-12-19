@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybInterviewMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJybInterview" >
+    <id column="interview_id" property="interview_id" jdbcType="INTEGER" />
+    <result column="interview_centrality" property="interview_centrality" jdbcType="VARCHAR" />
+    <result column="interview_activity_theme" property="interview_activity_theme" jdbcType="VARCHAR" />
+    <result column="interview_constitutor" property="interview_constitutor" jdbcType="VARCHAR" />
+    <result column="interview_class" property="interview_class" jdbcType="VARCHAR" />
+    <result column="interview_time" property="interview_time" />
+    <result column="interview_staff" property="interview_staff" jdbcType="VARCHAR" />
+    <result column="mianshibiao_id" property="mianshibiao_id" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    interview_id, interview_centrality, interview_activity_theme, interview_constitutor, 
+    interview_class, interview_time, interview_staff,mianshibiao_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jyb_interview
+    where interview_id = #{interview_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jyb_interview
+    where interview_id = #{interview_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJybInterview" >
+    insert into oa_jyb_interview (interview_id, interview_centrality, 
+      interview_activity_theme, interview_constitutor, 
+      interview_class, interview_time, interview_staff,mianshibiao_id
+      )
+    values (#{interview_id,jdbcType=INTEGER}, #{interview_centrality,jdbcType=VARCHAR}, 
+      #{interview_activity_theme,jdbcType=VARCHAR}, #{interview_constitutor,jdbcType=VARCHAR}, 
+      #{interview_class,jdbcType=VARCHAR}, #{interview_time}, #{interview_staff,jdbcType=VARCHAR},
+      #{mianshibiao_id,jdbcType=INTEGER}
+      )
+  </insert>
+  
+   <insert id="insertId" parameterType="int" >
+    insert into oa_jyb_interview (mianshibiao_id
+      )
+    values (
+      #{mianshibiao_id}
+      )
+  </insert>
+  
+  
+  
+  
+  
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybInterview" >
+    insert into oa_jyb_interview
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="interview_id != null" >
+        interview_id,
+      </if>
+      <if test="interview_centrality != null" >
+        interview_centrality,
+      </if>
+      <if test="interview_activity_theme != null" >
+        interview_activity_theme,
+      </if>
+      <if test="interview_constitutor != null" >
+        interview_constitutor,
+      </if>
+      <if test="interview_class != null" >
+        interview_class,
+      </if>
+      <if test="interview_time != null" >
+        interview_time,
+      </if>
+      <if test="interview_staff != null" >
+        interview_staff,
+      </if>
+       <if test="mianshibiao_id != null" >
+        mianshibiao_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="interview_id != null" >
+        #{interview_id,jdbcType=INTEGER},
+      </if>
+      <if test="interview_centrality != null" >
+        #{interview_centrality,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_activity_theme != null" >
+        #{interview_activity_theme,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_constitutor != null" >
+        #{interview_constitutor,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_class != null" >
+        #{interview_class,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_time != null" >
+        #{interview_time},
+      </if>
+      <if test="interview_staff != null" >
+        #{interview_staff,jdbcType=VARCHAR},
+      </if>
+      <if test="mianshibiao_id != null" >
+        #{mianshibiao_id,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybInterview" >
+    update oa_jyb_interview
+    <set >
+      <if test="interview_centrality != null" >
+        interview_centrality = #{interview_centrality,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_activity_theme != null" >
+        interview_activity_theme = #{interview_activity_theme,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_constitutor != null" >
+        interview_constitutor = #{interview_constitutor,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_class != null" >
+        interview_class = #{interview_class,jdbcType=VARCHAR},
+      </if>
+      <if test="interview_time != null" >
+        interview_time = #{interview_time},
+      </if>
+      <if test="interview_staff != null" >
+        interview_staff = #{interview_staff,jdbcType=VARCHAR},
+      </if>
+       <if test="mianshibiao_id != null" >
+        mianshibiao_id = #{mianshibiao_id,jdbcType=INTEGER},
+      </if>
+    </set>
+    where mianshibiao_id = #{mianshibiao_id,jdbcType=INTEGER}
+  </update>
+   <insert id="insertByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJybInterview" >
+    INSERT oa_jyb_interview VALUES(DEFAULT,
+#{interview_centrality,jdbcType=VARCHAR},
+#{interview_activity_theme,jdbcType=VARCHAR},
+#{interview_constitutor,jdbcType=VARCHAR},
+#{interview_class,jdbcType=VARCHAR},
+#{interview_time},
+#{interview_staff,jdbcType=VARCHAR},
+#{mianshibiao_id,jdbcType=INTEGER}
+)
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJybInterview" >
+    update oa_jyb_interview
+    set interview_centrality = #{interview_centrality,jdbcType=VARCHAR},
+      interview_activity_theme = #{interview_activity_theme,jdbcType=VARCHAR},
+      interview_constitutor = #{interview_constitutor,jdbcType=VARCHAR},
+      interview_class = #{interview_class,jdbcType=VARCHAR},
+      interview_time = #{interview_time},
+      interview_staff = #{interview_staff,jdbcType=VARCHAR},
+      mianshibiao_id=#{mianshibiao_id,jdbcType=INTEGER}
+    where interview_id = #{interview_id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,19 @@
+﻿.stutalk{
+width:100px;
+font-size: 14px;
+height: 40px;
+margin-right:40px;
+line-height: 35px;
+}
+input{text-align: center;height:30px;}
+input,textarea{
+width:200px;
+border: none;
+border-bottom: 1px solid black;
+}
+.textStyle{margin: auto;}
+.saveBotton{margin-right:50px;border-style: groove;border-radius:8px;width:60px;height:25px;float: right;}
+.w{margin: auto; width:900px; padding :20px;}
+.addstu{font-family:'楷体';width:200px;margin-bottom:5px;margin-left:10px;color: blue;font-size:25px; font-weight: bold;margin-top:15px;}
+form{padding:20px;margin-left: 60px;}
+.qu{height: 352px;text-align:center;margin: auto;width: 70%;}

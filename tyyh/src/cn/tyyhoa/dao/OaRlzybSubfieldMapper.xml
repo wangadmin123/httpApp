@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybSubfieldMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybSubfield" >
+    <id column="subfield_id" property="subfield_id" jdbcType="INTEGER" />
+    <result column="subfield_name" property="subfield_name" jdbcType="VARCHAR" />
+    <result column="show_name" property="show_name" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    subfield_id, subfield_name, show_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_subfield
+    where subfield_id = #{subfield_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_subfield
+    where subfield_id = #{subfield_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybSubfield" >
+    insert into oa_rlzyb_subfield (subfield_name, show_name
+      )
+    values (#{subfield_name,jdbcType=VARCHAR}, #{show_name,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybSubfield" >
+    insert into oa_rlzyb_subfield
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="subfield_id != null" >
+        subfield_id,
+      </if>
+      <if test="subfield_name != null" >
+        subfield_name,
+      </if>
+      <if test="show_name != null" >
+        show_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="subfield_id != null" >
+        #{subfield_id,jdbcType=INTEGER},
+      </if>
+      <if test="subfield_name != null" >
+        #{subfield_name,jdbcType=VARCHAR},
+      </if>
+      <if test="show_name != null" >
+        #{show_name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybSubfield" >
+    update oa_rlzyb_subfield
+    <set >
+      <if test="subfield_name != null" >
+        subfield_name = #{subfield_name,jdbcType=VARCHAR},
+      </if>
+      <if test="show_name != null" >
+        show_name = #{show_name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where subfield_id = #{subfield_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybSubfield" >
+    update oa_rlzyb_subfield
+    set subfield_name = #{subfield_name,jdbcType=VARCHAR},
+      show_name = #{show_name,jdbcType=VARCHAR}
+    where subfield_id = #{subfield_id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPositionId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    oa_rlzyb_subfield.subfield_id as subfield_id,
+	oa_rlzyb_subfield.subfield_name as subfield_name,
+	oa_rlzyb_subfield.show_name AS show_name
+    FROM 
+	tyyhoa.oa_rlzyb_possub 
+	INNER JOIN oa_rlzyb_subfield ON oa_rlzyb_subfield.subfield_id = oa_rlzyb_possub.subfield_id
+    where position_id = #{position_id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByNotPositionId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    oa_rlzyb_subfield.subfield_id AS subfield_id,
+	oa_rlzyb_subfield.subfield_name AS subfield_name,
+	oa_rlzyb_subfield.show_name AS show_name
+    FROM 
+	tyyhoa.oa_rlzyb_subfield
+	LEFT JOIN oa_rlzyb_possub ON oa_rlzyb_subfield.subfield_id = oa_rlzyb_possub.subfield_id
+    WHERE position_id != #{position_id,jdbcType=INTEGER} OR position_id IS NULL
+  </select>
+  
+  <select id="selectAllSubfield" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    oa_rlzyb_subfield.subfield_id as subfield_id,
+	oa_rlzyb_subfield.subfield_name as subfield_name,
+	oa_rlzyb_subfield.show_name AS show_name
+    FROM 
+	tyyhoa.oa_rlzyb_subfield 
+  </select>
+  <insert id="subfield_to_position" parameterType="cn.tyyhoa.pojo.OaRlzybSubfield" >
+   INSERT INTO tyyhoa.oa_rlzyb_possub 
+	(position_id, 
+	subfield_id
+	)
+	VALUES
+	(	#{position_id,jdbcType=INTEGER}, 
+		#{subfield_id,jdbcType=INTEGER}
+	)
+  </insert>
+  <delete id="subfield_out_position" parameterType="cn.tyyhoa.pojo.OaRlzybSubfield" >
+    DELETE FROM tyyhoa.oa_rlzyb_possub 
+	WHERE
+	position_id = #{position_id,jdbcType=INTEGER} AND subfield_id = #{subfield_id,jdbcType=INTEGER};
+  </delete>
+  
+  <select id="selectCanDelSubfield" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    oa_rlzyb_subfield.subfield_id as subfield_id,
+	oa_rlzyb_subfield.subfield_name as subfield_name,
+	oa_rlzyb_subfield.show_name AS show_name
+    FROM 
+	tyyhoa.oa_rlzyb_subfield 
+	WHERE subfield_id NOT IN(
+	SELECT 	subfield_id
+	FROM 
+	tyyhoa.oa_rlzyb_possub
+	) AND subfield_id NOT IN(
+	SELECT 	subfield_id
+	FROM 
+	tyyhoa.oa_rlzyb_subfun 
+	)
+  </select>
+  
+  
+</mapper>

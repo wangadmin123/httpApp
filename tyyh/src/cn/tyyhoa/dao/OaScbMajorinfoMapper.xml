@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbMajorinfoMapper" >
+  
+<select id="selectMajorinfoList"  resultType="OaScbMajorinfo" parameterType="int">
+	SELECT id,specialtyName FROM oa_scb_majorinfo where schoolId=#{schoolId}
+</select>
+
+<select id="findSchoolid"  resultType="int">
+  	SELECT schoolId FROM oa_scb_majorinfo WHERE id = #{id}
+  
+</select>
+
+
+
+</mapper>

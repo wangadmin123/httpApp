@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbHebanMapper">
+	<!-- 查询所有教员 -->
+	<select id="selectJY" resultType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		SELECT * FROM `oa_rlzyb_employee` WHERE emp_position in (20,21)
+	</select>
+
+	<!-- 查询所有班主任 -->
+	<select id="selectBZR" resultType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		SELECT * FROM `oa_rlzyb_employee` WHERE emp_position in (22,23)
+	</select>
+
+	<!-- 查询所有就业老师 -->
+	<select id="selectJYLS" resultType="cn.tyyhoa.pojo.OaRlzybEmployee">
+		SELECT * FROM `oa_rlzyb_employee` WHERE emp_position in (25,26)
+	</select>
+
+	<!-- 查询所有可用机房 -->
+	<select id="selectJF" resultType="cn.tyyhoa.pojo.OaJwbMotor">
+		SELECT * FROM `oa_jwb_motor`
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectGradeId" resultType="OaJwbGrade">
+		SELECT * FROM `oa_jwb_grade` WHERE id = #{id}
+	</select>
+
+	<!-- 查询指定班级编号 -->
+	<select id="selectZDGrade" resultType="int">
+		SELECT * FROM oa_jwb_grade WHERE NAME = #{name}
+	</select>
+	
+	<!-- 查询所有班级 -->
+	<select id="selectGrade" resultType="cn.tyyhoa.pojo.OaJwbGrade">
+		SELECT * FROM oa_jwb_grade
+	</select>
+
+	<!-- 查询班级类型 -->
+	<select id="selectGradeType" resultType="cn.tyyhoa.pojo.OaJzbSpecialty">
+		SELECT * FROM `oa_jzb_specialty`
+	</select>
+	
+	<select id="selectsemester" resultType="cn.tyyhoa.pojo.OaJwbSemester">
+		SELECT * FROM `oa_jwb_semester`
+	</select>
+
+	<!-- 删除指定班级 -->
+	<delete id="deleteZDGrade">
+		DELETE FROM oa_jwb_grade WHERE id IN (#{id},#{id2})
+	</delete>
+
+	<!-- 修改机房为已被占用 -->
+	<update id="updateMotor">
+		UPDATE oa_jwb_motor SET `status` = 1 WHERE id = #{id}
+	</update>
+	
+	<update id="updateMotorKY">
+		UPDATE oa_jwb_motor SET `status` = 0 WHERE id in (#{id},#{id2})
+	</update>
+
+	<!-- 修改学生原班级编号为现班级 -->
+	<update id="updateStuGrade">
+		UPDATE `oa_jzb_student` SET `grade_id` = #{newId} WHERE `grade_id` IN (#{yuanId},#{yuanId2})
+	</update>
+	
+	<!-- 新增班级 -->
+	<insert id="insertGrade">
+		INSERT oa_jwb_grade VALUES(DEFAULT,#{name},#{teacherID},#{classTeacherID},#{obtainID},#{motorid},#{specialtyID},#{stage},#{stage},#{createTime},NULL,NULL,NULL,NULL);
+	</insert>
+</mapper>

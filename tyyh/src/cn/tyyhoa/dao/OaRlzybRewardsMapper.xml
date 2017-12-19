@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybRewardsMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybRewards" >
+    <id column="rewards_id" property="rewards_id" jdbcType="INTEGER" />
+    <result column="emp_id" property="emp_id" jdbcType="INTEGER" />
+    <result column="rewards_date" property="rewards_date" jdbcType="DATE" />
+    <result column="rewards_type" property="rewards_type" jdbcType="VARCHAR" />
+    <result column="rewards_reason" property="rewards_reason" jdbcType="VARCHAR" />
+    <result column="rewards_content" property="rewards_content" jdbcType="VARCHAR" />
+    <result column="rewards_delectStatus" property="rewards_delectStatus" jdbcType="INTEGER" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    rewards_id, emp_id, rewards_date, rewards_type, rewards_reason, rewards_content, 
+    rewards_delectStatus, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_rewards
+    where rewards_id = #{rewards_id,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+	rewards_id,
+	oa_rlzyb_rewards.emp_id,
+	emp_name,
+	emp_position,
+	position_name,
+	emp_department,
+	depart_name,
+	rewards_date,
+	rewards_type,
+	rewards_reason,
+	rewards_content,
+	rewards_delectStatus,
+	oa_rlzyb_rewards.create_time
+	 FROM oa_rlzyb_rewards
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_rewards.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	 where oa_rlzyb_rewards.rewards_delectStatus = 1 
+	 <if test="emp_name != null and emp_name != ''">
+	 	and emp_name like CONCAT("%",#{emp_name},"%")
+	 </if>
+	 <if test="rewards_type != null and rewards_type != '' ">
+	 	and rewards_type = #{rewards_type}
+	 </if>
+	 order by rewards_id DESC
+	 limit #{startPos},#{PageSize} 
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    SELECT COUNT(rewards_id)
+	 FROM oa_rlzyb_rewards
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_rewards.emp_id = oa_rlzyb_employee.emp_id
+	 where oa_rlzyb_rewards.rewards_delectStatus = 1 
+	 <if test="emp_name != null and emp_name != ''">
+	 	and emp_name like CONCAT("%",#{emp_name},"%")
+	 </if>
+	 <if test="rewards_type != null and rewards_type != '' ">
+	 	and rewards_type = #{rewards_type}
+	 </if>
+  </select>
+  <select id="selectShowInfo" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+     SELECT 
+	rewards_id,
+	oa_rlzyb_rewards.emp_id,
+	emp_name,
+	emp_position,
+	position_name,
+	emp_department,
+	depart_name,
+	rewards_date,
+	rewards_type,
+	rewards_reason,
+	rewards_content,
+	rewards_delectStatus,
+	oa_rlzyb_rewards.create_time
+	 FROM oa_rlzyb_rewards
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_rewards.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	 <if test="rewards_id != null and rewards_id != ''">
+	 	where rewards_id = #{rewards_id}
+	 </if>
+  </select>
+  <update id="updateByRewardsId" parameterType="cn.tyyhoa.pojo.OaRlzybRewards" >
+    update oa_rlzyb_rewards
+    set rewards_delectStatus = 2
+    where rewards_id = #{rewards_id,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_rewards
+    where rewards_id = #{rewards_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybRewards" >
+    insert into oa_rlzyb_rewards (rewards_id, emp_id, rewards_date, 
+      rewards_type, rewards_reason, rewards_content, 
+      rewards_delectStatus)
+    values (#{rewards_id,jdbcType=INTEGER}, #{emp_id,jdbcType=INTEGER}, #{rewards_date,jdbcType=DATE}, 
+      #{rewards_type,jdbcType=VARCHAR}, #{rewards_reason,jdbcType=VARCHAR}, #{rewards_content,jdbcType=VARCHAR}, 
+      #{rewards_delectStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybRewards" >
+    insert into oa_rlzyb_rewards
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rewards_id != null" >
+        rewards_id,
+      </if>
+      <if test="emp_id != null" >
+        emp_id,
+      </if>
+      <if test="rewards_date != null" >
+        rewards_date,
+      </if>
+      <if test="rewards_type != null" >
+        rewards_type,
+      </if>
+      <if test="rewards_reason != null" >
+        rewards_reason,
+      </if>
+      <if test="rewards_content != null" >
+        rewards_content,
+      </if>
+      <if test="rewards_delectStatus != null" >
+        rewards_delectStatus,
+      </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rewards_id != null" >
+        #{rewards_id,jdbcType=INTEGER},
+      </if>
+      <if test="emp_id != null" >
+        #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="rewards_date != null" >
+        #{rewards_date,jdbcType=DATE},
+      </if>
+      <if test="rewards_type != null" >
+        #{rewards_type,jdbcType=VARCHAR},
+      </if>
+      <if test="rewards_reason != null" >
+        #{rewards_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="rewards_content != null" >
+        #{rewards_content,jdbcType=VARCHAR},
+      </if>
+      <if test="rewards_delectStatus != null" >
+        #{rewards_delectStatus,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null" >
+        #{create_time},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybRewards" >
+    update oa_rlzyb_rewards
+    <set >
+      <if test="emp_id != null" >
+        emp_id = #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="rewards_date != null" >
+        rewards_date = #{rewards_date,jdbcType=DATE},
+      </if>
+      <if test="rewards_type != null" >
+        rewards_type = #{rewards_type,jdbcType=VARCHAR},
+      </if>
+      <if test="rewards_reason != null" >
+        rewards_reason = #{rewards_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="rewards_content != null" >
+        rewards_content = #{rewards_content,jdbcType=VARCHAR},
+      </if>
+      <if test="rewards_delectStatus != null" >
+        rewards_delectStatus = #{rewards_delectStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where rewards_id = #{rewards_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybRewards" >
+    update oa_rlzyb_rewards
+    set emp_id = #{emp_id,jdbcType=INTEGER},
+      rewards_date = #{rewards_date,jdbcType=DATE},
+      rewards_type = #{rewards_type,jdbcType=VARCHAR},
+      rewards_reason = #{rewards_reason,jdbcType=VARCHAR},
+      rewards_content = #{rewards_content,jdbcType=VARCHAR},
+      rewards_delectStatus = #{rewards_delectStatus,jdbcType=INTEGER}
+    where rewards_id = #{rewards_id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybDimissionMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybDimission" >
+    <id column="dimission_id" property="dimission_id" jdbcType="INTEGER" />
+    <result column="emp_id" property="emp_id" jdbcType="INTEGER" />
+    <result column="dimission_reason" property="dimission_reason" jdbcType="VARCHAR" />
+    <result column="dimission_date" property="dimission_date" jdbcType="DATE" />
+    <result column="dimission_approver" property="dimission_approver" jdbcType="VARCHAR" />
+    <result column="dimission_delectStatus" property="dimission_delectStatus" jdbcType="INTEGER" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    dimission_id, emp_id, dimission_reason, dimission_date, dimission_approver, dimission_delectStatus, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_dimission
+    where dimission_id = #{dimission_id,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT 
+	dimission_id,
+	oa_rlzyb_dimission.emp_id,
+	emp_name,
+	emp_department,
+	depart_name,
+	emp_position,
+	position_name,
+	dimission_reason,
+	dimission_date,
+	dimission_approver,
+	dimission_delectStatus,
+	oa_rlzyb_dimission.create_time
+	 FROM oa_rlzyb_dimission
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_dimission.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	 where dimission_delectStatus = 1
+	 <if test="emp_name != null and emp_name != ''">
+	 	and emp_name like CONCAT("%",#{emp_name},"%") 
+	 </if>
+	 <if test="dimission_date1 != null and dimission_date1 != ''">
+	 	and   dimission_date > #{dimission_date1}
+	 </if>
+	 <if test="dimission_date2 != null and dimission_date2 != ''">
+	 	and  #{dimission_date2} >  dimission_date
+	 </if>
+	 ORDER BY dimission_id DESC
+	 limit #{startPos},#{PageSize} 
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    SELECT count(dimission_id)
+	 FROM oa_rlzyb_dimission
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_dimission.emp_id = oa_rlzyb_employee.emp_id
+	 where dimission_delectStatus = 1
+	 <if test="emp_name != null and emp_name != ''">
+	 	and emp_name like CONCAT("%",#{emp_name},"%") 
+	 </if>
+	  <if test="dimission_date1 != null and dimission_date1 != ''">
+	 	and   dimission_date > #{dimission_date1}
+	 </if>
+	 <if test="dimission_date2 != null and dimission_date2 != ''">
+	 	and  #{dimission_date2} >  dimission_date
+	 </if>
+  </select>
+  <select id="selectShow" resultMap="BaseResultMap">
+    SELECT 
+	dimission_id,
+	oa_rlzyb_dimission.emp_id,
+	emp_name,
+	emp_department,
+	depart_name,
+	emp_position,
+	position_name,
+	dimission_reason,
+	dimission_date,
+	dimission_approver,
+	dimission_delectStatus,
+	oa_rlzyb_dimission.create_time
+	 FROM oa_rlzyb_dimission
+	 INNER JOIN oa_rlzyb_employee ON oa_rlzyb_dimission.emp_id = oa_rlzyb_employee.emp_id
+	 INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	 INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	 where dimission_delectStatus = 1
+	 and dimission_id = #{dimission_id}
+  </select>
+  <update id="updateDelete" parameterType="java.lang.Integer" >
+    update oa_rlzyb_dimission
+    set 
+      dimission_delectStatus = 2
+    where dimission_id = #{dimission_id,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_dimission
+    where dimission_id = #{dimission_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybDimission" >
+    insert into oa_rlzyb_dimission (dimission_id, emp_id, dimission_reason, 
+      dimission_date, dimission_approver, dimission_delectStatus
+      )
+    values (#{dimission_id,jdbcType=INTEGER}, #{emp_id,jdbcType=INTEGER}, #{dimission_reason,jdbcType=VARCHAR}, 
+      #{dimission_date,jdbcType=DATE}, #{dimission_approver,jdbcType=VARCHAR}, #{dimission_delectStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybDimission" >
+    insert into oa_rlzyb_dimission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dimission_id != null" >
+        dimission_id,
+      </if>
+      <if test="emp_id != null" >
+        emp_id,
+      </if>
+      <if test="dimission_reason != null" >
+        dimission_reason,
+      </if>
+      <if test="dimission_date != null" >
+        dimission_date,
+      </if>
+      <if test="dimission_approver != null" >
+        dimission_approver,
+      </if>
+      <if test="dimission_delectStatus != null" >
+        dimission_delectStatus,
+      </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dimission_id != null" >
+        #{dimission_id,jdbcType=INTEGER},
+      </if>
+      <if test="emp_id != null" >
+        #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="dimission_reason != null" >
+        #{dimission_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="dimission_date != null" >
+        #{dimission_date,jdbcType=DATE},
+      </if>
+      <if test="dimission_approver != null" >
+        #{dimission_approver,jdbcType=VARCHAR},
+      </if>
+      <if test="dimission_delectStatus != null" >
+        #{dimission_delectStatus,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null" >
+        #{create_time},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybDimission" >
+    update oa_rlzyb_dimission
+    <set >
+      <if test="emp_id != null" >
+        emp_id = #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="dimission_reason != null" >
+        dimission_reason = #{dimission_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="dimission_date != null" >
+        dimission_date = #{dimission_date,jdbcType=DATE},
+      </if>
+      <if test="dimission_approver != null" >
+        dimission_approver = #{dimission_approver,jdbcType=VARCHAR},
+      </if>
+      <if test="dimission_delectStatus != null" >
+        dimission_delectStatus = #{dimission_delectStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where dimission_id = #{dimission_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybDimission" >
+    update oa_rlzyb_dimission
+    set emp_id = #{emp_id,jdbcType=INTEGER},
+      dimission_reason = #{dimission_reason,jdbcType=VARCHAR},
+      dimission_date = #{dimission_date,jdbcType=DATE},
+      dimission_approver = #{dimission_approver,jdbcType=VARCHAR},
+      dimission_delectStatus = #{dimission_delectStatus,jdbcType=INTEGER}
+    where dimission_id = #{dimission_id,jdbcType=INTEGER}
+  </update>
+</mapper>

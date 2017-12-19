@@ -1,0 +1,12 @@
+﻿.saveBotton{margin-right: 30px;border-style: groove;border-radius:8px;width:60px;float: right;height:25px;}
+.div{margin: auto; width:1000px; padding :20px;}
+.popupStyle{width:900px; height: 480px;background-color:white;border:1px solid menu;}
+.addstu{font-family:'楷体';width:200px;margin-bottom:5px;margin-left:10px;color: blue;font-size:25px; font-weight: bold;margin-top:15px;}
+.ai{float: left; height: 352px;width:400px;}
+from{padding:20px;}
+.addTable{height:362px;margin-left:60px;}
+input{border: none;border-bottom: 1px solid black;}
+.stutalk{font-size: 14px;}
+.floats{float: right;width:500px;}
+.btposition1{float: right;margin: auto; width: 865px;padding-top: 20px;}
+.talk_p_checked span{font-size: 15px;}

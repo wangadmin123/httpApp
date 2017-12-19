@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJybChronicleMapper" >
+  
+   
+  <delete id="delectSelective">
+  	delete from `oa_jyb_chronicle` 
+  	where student_id=#{id} and event_time like concat('%',#{time},'%') and event_name like concat('%',#{zt},'%')
+  </delete>
+  
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJybChronicle" >
+    insert into oa_jyb_chronicle
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="student_id != null" >
+       student_id,
+      </if>
+      <if test="event_time != null" >
+        event_time,
+      </if>
+      <if test="event_name != null" >
+        event_name,
+      </if>
+      <if test="inputUser != null" >
+        inputUser,
+      </if>
+      <if test="input_time != null" >
+        input_time,
+      </if>
+      <if test="describe != null" >
+        describe,
+      </if>
+      <if test="isNormal != null" >
+        isNormal,
+      </if>
+     
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="student_id != null" >
+        #{student_id},
+      </if>
+      <if test="event_time != null" >
+        #{event_time},
+      </if>
+      <if test="event_name != null" >
+        #{event_name},
+      </if>
+      <if test="inputUser != null" >
+        #{inputUser},
+      </if>
+      <if test="input_time != null" >
+        #{input_time},
+      </if>
+      <if test="describe != null" >
+        #{describe},
+      </if>
+      <if test="isNormal != null" >
+        #{isNormal},
+      </if>
+     
+    </trim>
+  </insert>
+  
+  <select id="GetChrobicleById" resultType="cn.tyyhoa.pojo.OaJybChronicle">
+  select * from oa_jyb_chronicle 
+  where student_id=#{student_id}
+  GROUP BY  DATE_FORMAT(event_time,'%Y-%m-%d')
+  order by event_time desc
+  </select>
+  
+ 
+  
+    <select id="GetChronicleByTime" resultType="cn.tyyhoa.pojo.OaJybChronicle">
+  SELECT * FROM oa_jyb_chronicle WHERE 
+  DATE_FORMAT(event_time,'%Y-%m-%d')=DATE_FORMAT(#{event_time},'%Y-%m-%d')
+  and student_id=#{student_id}
+  order by event_time
+  </select>
+  
+   <select id="GetgradeStudent" resultType="cn.tyyhoa.pojo.OaJybChronicle">
+   SELECT stu_name AS stuname,NAME AS gradename 
+FROM oa_jyb_chronicle INNER JOIN oa_jzb_student ON oa_jyb_chronicle.student_id=oa_jzb_student.stu_Id
+INNER JOIN oa_jwb_grade ON  oa_jwb_grade.id=oa_jzb_student.grade_id 
+WHERE oa_jyb_chronicle.student_id=#{student_id}
+GROUP BY stuname
+   
+   </select>
+ 
+</mapper>

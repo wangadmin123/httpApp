@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbPatriarchInterviewMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJzbPatriarchInterview" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Interview_stuid" property="interview_stuid" jdbcType="INTEGER" />
+    <result column="Interview_id" property="interview_id" jdbcType="INTEGER" />
+    <result column="term" property="term" jdbcType="INTEGER" />
+    <result column="Interview_time" property="interview_time" jdbcType="DATE" />
+    <result column="Entering_time" property="entering_time" jdbcType="DATE" />
+    <result column="Interview_way" property="interview_way" jdbcType="INTEGER" />
+    <result column="Interview_content" property="interview_content" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, Interview_stuid, Interview_id, term, Interview_time, Entering_time, Interview_way, 
+    Interview_content, remarks
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jzb_patriarch_interview
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jzb_patriarch_interview
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJzbPatriarchInterview" >
+    insert into oa_jzb_patriarch_interview (Id, Interview_stuid, Interview_id, 
+      term, Interview_time, Entering_time, 
+      Interview_way, Interview_content, remarks
+      )
+    values (#{id,jdbcType=INTEGER}, #{interview_stuid,jdbcType=INTEGER}, #{interview_id,jdbcType=INTEGER}, 
+      #{term,jdbcType=INTEGER}, #{interview_time,jdbcType=DATE}, #{entering_time,jdbcType=DATE}, 
+      #{interview_way,jdbcType=INTEGER}, #{interview_content,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJzbPatriarchInterview" >
+    insert into oa_jzb_patriarch_interview
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="interview_stuid != null" >
+        Interview_stuid,
+      </if>
+      <if test="interview_id != null" >
+        Interview_id,
+      </if>
+      <if test="term != null" >
+        term,
+      </if>
+      <if test="interview_time != null" >
+        Interview_time,
+      </if>
+      <if test="entering_time != null" >
+        Entering_time,
+      </if>
+      <if test="interview_way != null" >
+        Interview_way,
+      </if>
+      <if test="interview_content != null" >
+        Interview_content,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="interview_stuid != null" >
+        #{interview_stuid,jdbcType=INTEGER},
+      </if>
+      <if test="interview_id != null" >
+        #{interview_id,jdbcType=INTEGER},
+      </if>
+      <if test="term != null" >
+        #{term,jdbcType=INTEGER},
+      </if>
+      <if test="interview_time != null" >
+        #{interview_time,jdbcType=DATE},
+      </if>
+      <if test="entering_time != null" >
+        #{entering_time,jdbcType=DATE},
+      </if>
+      <if test="interview_way != null" >
+        #{interview_way,jdbcType=INTEGER},
+      </if>
+      <if test="interview_content != null" >
+        #{interview_content,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJzbPatriarchInterview" >
+    update oa_jzb_patriarch_interview
+    <set >
+      <if test="interview_stuid != null" >
+        Interview_stuid = #{interview_stuid,jdbcType=INTEGER},
+      </if>
+      <if test="interview_id != null" >
+        Interview_id = #{interview_id,jdbcType=INTEGER},
+      </if>
+      <if test="term != null" >
+        term = #{term,jdbcType=INTEGER},
+      </if>
+      <if test="interview_time != null" >
+        Interview_time = #{interview_time,jdbcType=DATE},
+      </if>
+      <if test="entering_time != null" >
+        Entering_time = #{entering_time,jdbcType=DATE},
+      </if>
+      <if test="interview_way != null" >
+        Interview_way = #{interview_way,jdbcType=INTEGER},
+      </if>
+      <if test="interview_content != null" >
+        Interview_content = #{interview_content,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJzbPatriarchInterview" >
+    update oa_jzb_patriarch_interview
+    set Interview_stuid = #{interview_stuid,jdbcType=INTEGER},
+      Interview_id = #{interview_id,jdbcType=INTEGER},
+      term = #{term,jdbcType=INTEGER},
+      Interview_time = #{interview_time,jdbcType=DATE},
+      Entering_time = #{entering_time,jdbcType=DATE},
+      Interview_way = #{interview_way,jdbcType=INTEGER},
+      Interview_content = #{interview_content,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+   <!-- 根据学生ID查询家长访谈 -->
+   <select id="getJZFTSById" resultType="OaJzbPatriarchInterview">
+    SELECT oa_jzb_patriarch_interview.Id,Interview_name,emp_name,stage,Interview_time,Entering_time,Interview,Interview_content,stu_name
+	FROM oa_jzb_patriarch_interview
+	LEFT JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_patriarch_interview.Interview_id
+	LEFT JOIN oa_jwb_semester ON oa_jwb_semester.id=oa_jzb_patriarch_interview.term
+	LEFT JOIN oa_jzb_interview ON oa_jzb_interview.Interview_id=oa_jzb_patriarch_interview.Interview_way
+	LEFT JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jzb_patriarch_interview.stu_id
+	WHERE oa_jzb_patriarch_interview.deleteStatus=0 AND oa_jzb_patriarch_interview.stu_id=#{stu_id}
+	ORDER BY Interview_time DESC 
+   </select>
+  <!--  查询访谈方式 -->
+  <select id="getInterview" resultType="OaJzbInterview">
+  SELECT Interview_id,Interview FROM oa_jzb_interview
+  </select>
+  <!-- add 家长访谈 -->
+  <insert id="addJZFT" > 
+	INSERT INTO tyyhoa.oa_jzb_patriarch_interview 
+	(Interview_name,Interview_id,term, Interview_time,Entering_time,Interview_way, 
+	Interview_content,remarks,deleteStatus,stu_id)
+	VALUES
+	(#{Interview_name},#{Interview_id},#{term}, #{Interview_time},#{Entering_time}, 
+	#{Interview_way},#{Interview_content},#{remarks},#{deleteStatus},#{stu_id});
+  </insert>
+ <!--  根据ID查询一条访谈记录 -->
+	 <select id="getJZFTByID" resultType="OaJzbPatriarchInterview">
+	  SELECT oa_jzb_patriarch_interview.Id,Interview_name,emp_name,stage,Interview_time,Entering_time,Interview,Interview_content,stu_name  
+ FROM oa_jzb_patriarch_interview  INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id=oa_jzb_patriarch_interview.Interview_id  
+ LEFT JOIN oa_jwb_semester ON oa_jwb_semester.id=oa_jzb_patriarch_interview.term  
+ LEFT JOIN oa_jzb_interview ON oa_jzb_interview.Interview_id=oa_jzb_patriarch_interview.Interview_way  
+ LEFT JOIN oa_jzb_student ON oa_jzb_student.stu_Id=oa_jzb_patriarch_interview.stu_id  
+ WHERE oa_jzb_patriarch_interview.deleteStatus=0 AND oa_jzb_patriarch_interview.Id=#{id}  ORDER BY Interview_time DESC
+	 </select>
+	<!-- 根据ID修改 -->
+	<update id="UpdateJZFT">
+	UPDATE tyyhoa.oa_jzb_patriarch_interview 
+	<trim prefix="set" suffixOverrides=",">
+	<if test="Interview_name!=null and Interview_name!=''">Interview_name = #{Interview_name} , </if>
+	<if test="Interview_way!=0">Interview_way = #{Interview_way} , </if>
+	<if test="Interview_content!=null and Interview_content!=''">Interview_content = #{Interview_content} , </if> 
+	</trim>
+	WHERE
+	Id = #{id} ;
+	</update>
+	<!-- 删除家长访谈 -->
+	<update id="deleteJZFT">
+	UPDATE tyyhoa.oa_jzb_patriarch_interview 
+	SET
+	deleteStatus = 1
+	WHERE
+	Id = #{id};
+	</update>
+	<!-- 根据学生ID查询该学生的班级学期 -->
+	<select id="getsemesterById" resultType="OaJwbSemester">
+	SELECT oa_jwb_grade.id,oa_jwb_semester.stage FROM oa_jwb_semester  
+INNER JOIN oa_jwb_grade ON oa_jwb_grade.stage=oa_jwb_semester.id  
+INNER JOIN oa_jzb_student ON oa_jzb_student.grade_id=oa_jwb_grade.id 
+	WHERE oa_jzb_student.stu_Id=#{stu_Id}
+	</select>
+</mapper>

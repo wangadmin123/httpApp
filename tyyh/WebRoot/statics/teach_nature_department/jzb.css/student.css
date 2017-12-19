@@ -1,0 +1,29 @@
+.stu{
+    height: 500px;
+    text-align: center;
+    margin: 0 auto;
+    width: 400px;
+
+}
+.stu h1{ font-size: 16px;  color: #5C5C5C; height: 100px; line-height: 100px;}
+.stu_line{
+
+    text-align: center;
+    margin: 0 auto;
+
+}
+#dianCount{line-height:40px;text-align:left;margin-bottom:10px;}
+#dianCount label{float:left;line-height:16px;height: 10px;}
+#dianCount .hong{width: 10px; border-radius: 10px; background: #ff0000; border: 3px solid #ff7a7a;}
+#dianCount .lv{width: 10px; border-radius: 10px; background:#00910a; border: 3px solid #50b857;}
+
+.stu_left{clear:both;display: block; text-align: left; border-right:1px solid #e9e9e9;width: 200px; float: left; height: 80px;}
+.stu_left label{width: 10px; height: 10px; border-radius: 10px; background: #ff0000; display: block; border: 3px solid #ff7a7a; position: relative; }
+.left_line{ border-top:1px solid #e9e9e9; width:182px; position: relative; left: 18px; bottom: 8px;}
+.stu_left span{clear:both;display: block; line-height: 22px; font-size: 14px; }
+
+
+.stu_right{clear:both;display: block; text-align: right;border-left:1px solid #e9e9e9; width: 199px; float: right; height: 80px;}
+.stu_right label{width: 10px; height: 10px; border-radius: 10px; background:#00910a; display: block; border: 3px solid #50b857; position: relative;  left:184px; bottom: 0px;}
+.right_line{ border-top:1px solid #e9e9e9;width: 182px; position: relative; bottom: 8px;}
+.stu_right span{clear:both;display: block; line-height: 22px; font-size: 14px;}

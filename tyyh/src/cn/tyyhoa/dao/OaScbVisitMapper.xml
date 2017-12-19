@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaScbVisitMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaScbVisit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="consultId" property="consultId" jdbcType="INTEGER" />
+    <result column="returnvisitTime" property="returnvisitTime" jdbcType="TIMESTAMP" />
+    <result column="returnvisitRecord" property="returnvisitRecord" jdbcType="VARCHAR" />
+    <result column="returnvisitPeople" property="returnvisitPeople" jdbcType="INTEGER" />
+    <result column="nextvisitTime" property="nextvisitTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, consultId, returnvisitTime, returnvisitRecord, returnvisitPeople, nextvisitTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_scb_visit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_scb_visit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaScbVisit" >
+    insert into oa_scb_visit (id, consultId, returnvisitTime, 
+      returnvisitRecord, returnvisitPeople, nextvisitTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{consultId,jdbcType=INTEGER}, #{returnvisitTime,jdbcType=TIMESTAMP}, 
+      #{returnvisitRecord,jdbcType=VARCHAR}, #{returnvisitPeople,jdbcType=INTEGER}, #{nextvisitTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaScbVisit" >
+    insert into oa_scb_visit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="consultId != null" >
+        consultId,
+      </if>
+      <if test="returnvisitTime != null" >
+        returnvisitTime,
+      </if>
+      <if test="returnvisitRecord != null" >
+        returnvisitRecord,
+      </if>
+      <if test="returnvisitPeople != null" >
+        returnvisitPeople,
+      </if>
+      <if test="nextvisitTime != null" >
+        nextvisitTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="consultId != null" >
+        #{consultId,jdbcType=INTEGER},
+      </if>
+      <if test="returnvisitTime != null" >
+        #{returnvisitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnvisitRecord != null" >
+        #{returnvisitRecord,jdbcType=VARCHAR},
+      </if>
+      <if test="returnvisitPeople != null" >
+        #{returnvisitPeople,jdbcType=INTEGER},
+      </if>
+      <if test="nextvisitTime != null" >
+        #{nextvisitTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaScbVisit" >
+    update oa_scb_visit
+    <set >
+      <if test="consultId != null" >
+        consultId = #{consultId,jdbcType=INTEGER},
+      </if>
+      <if test="returnvisitTime != null" >
+        returnvisitTime = #{returnvisitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnvisitRecord != null" >
+        returnvisitRecord = #{returnvisitRecord,jdbcType=VARCHAR},
+      </if>
+      <if test="returnvisitPeople != null" >
+        returnvisitPeople = #{returnvisitPeople,jdbcType=INTEGER},
+      </if>
+      <if test="nextvisitTime != null" >
+        nextvisitTime = #{nextvisitTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaScbVisit" >
+    update oa_scb_visit
+    set consultId = #{consultId,jdbcType=INTEGER},
+      returnvisitTime = #{returnvisitTime,jdbcType=TIMESTAMP},
+      returnvisitRecord = #{returnvisitRecord,jdbcType=VARCHAR},
+      returnvisitPeople = #{returnvisitPeople,jdbcType=INTEGER},
+      nextvisitTime = #{nextvisitTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

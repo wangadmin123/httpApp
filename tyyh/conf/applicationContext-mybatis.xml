@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/util
+ http://www.springframework.org/schema/util/spring-util.xsd
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/tx
+ http://www.springframework.org/schema/tx/spring-tx.xsd
+ http://www.springframework.org/schema/aop
+ http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!--读取配置文件 -->
+	<bean id="loadProperties"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:database.properties</value>
+		</property>
+	</bean>
+	<!--根据配置文件创建数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="DriverClassName" value="${driver}"></property>
+		<property name="Url">
+			<value>${url}</value>
+		</property>
+		<property name="Username" value="${username}"></property>
+		<property name="Password" value="${password}"></property>
+	</bean>
+	<!-- 根据MyBatis的配置文件及映射文件和数据源创建SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="ConfigLocation">
+			<value>classpath:mybatis-config.xml</value>
+		</property>
+		<property name="DataSource" ref="dataSource"></property>
+	</bean>
+	<!-- 扫描创建XxxMapper接口的实现类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.tyyhoa.dao"></property>
+	</bean>
+	<!-- 扫描注解创建XxxServiceImpl的实现类 -->
+	<context:component-scan base-package="cn.tyyhoa.service"></context:component-scan>
+	<!-- 创建事务bean -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="DataSource" ref="dataSource">
+		</property>
+	</bean>
+	<!-- 配置事务属性 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="update*" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- 将事务属性织入方法中 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* cn.tyyhoa.dao..*.update*(..))"
+			id="updateMethod" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="updateMethod" />
+	</aop:config>
+</beans>
+
+	

@@ -1,0 +1,50 @@
+*{
+	margin:0px;
+	_margin:0px;
+	padding:0px;
+	_padding:0px;
+}
+.showPatrolDiv{
+	width:900px;
+	margin: auto;
+	margin-top: 10px;
+	border-top: 2px solid #C9C4C4;
+	border-bottom:2px dashed #C9C4C4;
+	padding-bottom: 20px;
+}
+.showPatrolDiv ul li{
+	list-style:none;
+	float: left;
+	margin-right:20px;
+	margin-top: 20px;
+}
+.showPatrolDiv2{
+	margin-top: 70px;
+	margin-left: 35px;
+}
+.showPatrolDiv3{
+	margin-top: 25px;
+}
+.showPatrolDiv3 a{
+	text-decoration: none;
+}
+ .deletePatrol{  cursor:pointer;background-color:#2A00E1;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+padding:7px 12px;margin-left:650px;
+}
+.saveBotton1{cursor:pointer;background-color:#44bb00;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+float: right;padding-top: 20px;
+}
+ .updatePatrol{  cursor:pointer;background-color:#2A00E1;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+padding:7px 12px;
+}
+.addPatrol{  cursor:pointer;background-color:#2A00E1;width:65px;height:30px;line-height:30px;
+text-align:center; color:#fff;font-size:12px;font-weight:bold; border:0px; border-radius: 3px; margin-right:20px;
+padding:7px 12px;
+}
+span{
+	color: red;
+	font-weight: 700;
+}

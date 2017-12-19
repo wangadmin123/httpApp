@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybContractMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybContract" >
+    <id column="contract_num" property="contract_num" jdbcType="INTEGER" />
+    <result column="contract_id" property="contract_id" jdbcType="INTEGER" />
+    <result column="emp_id" property="emp_id" jdbcType="INTEGER" />
+    <result column="contract_startDate" property="contract_startDate" jdbcType="DATE" />
+    <result column="contract_endDate" property="contract_endDate" jdbcType="DATE" />
+    <result column="contract_status" property="contract_status" jdbcType="VARCHAR" />
+    <result column="contract_belong_company" property="contract_belong_company" jdbcType="VARCHAR" />
+    <result column="contract_delectStatus" property="contract_delectStatus" jdbcType="INTEGER" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    contract_num, contract_id, emp_id, contract_startDate, contract_endDate, contract_status, 
+    contract_belong_company, contract_delectStatus, oa_rlzyb_contract.create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_contract
+    where contract_num = #{contract_num,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  <select id="selectAllContract" resultMap="BaseResultMap" >
+    SELECT contract_num,
+	oa_rlzyb_contract.emp_id AS emp_id,emp_name,
+	emp_department,depart_name,
+	emp_position AS position_id,position_name,
+	contract_id,contract_status,contract_belong_company,contract_startDate,contract_endDate,contract_delectStatus,oa_rlzyb_contract.create_time
+	FROM oa_rlzyb_contract
+	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id = oa_rlzyb_contract.emp_id
+	INNER JOIN oa_rlzyb_department ON oa_rlzyb_employee.emp_department = oa_rlzyb_department.depart_id
+	INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+  </select>
+  
+  
+  
+  <select id="selectContractId" resultMap="BaseResultMap" >
+    SELECT contract_id FROM oa_rlzyb_contract
+  </select>
+  
+  
+  <select id="showInfo" resultMap="BaseResultMap" >
+    SELECT 
+	oa_rlzyb_employee.emp_id AS emp_id,
+	emp_name,
+	emp_position,
+	position_name,
+	emp_department,
+	depart_name,
+	contract_startDate,
+	contract_endDate,
+	oa_rlzyb_contract.create_time
+	FROM oa_rlzyb_contract
+	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_contract.emp_id = oa_rlzyb_employee.emp_id
+	INNER JOIN oa_rlzyb_position ON oa_rlzyb_employee.emp_position = oa_rlzyb_position.position_id
+	INNER JOIN oa_rlzyb_department ON oa_rlzyb_department.emp_department = oa_rlzyb_employee.depart_id
+	<where>
+		<if test="emp_id != null and emp_id != ''">
+			oa_rlzyb_contract.emp_id = #{emp_id}
+		</if>
+	</where>
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_contract
+    where contract_num = #{contract_num,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybContract" >
+    insert into oa_rlzyb_contract (contract_num, contract_id, emp_id, 
+      contract_startDate, contract_endDate, contract_status, 
+      contract_belong_company, contract_delectStatus
+      )
+    values (#{contract_num,jdbcType=INTEGER}, #{contract_id,jdbcType=INTEGER}, #{emp_id,jdbcType=INTEGER}, 
+      #{contract_startDate,jdbcType=DATE}, #{contract_endDate,jdbcType=DATE}, #{contract_status,jdbcType=VARCHAR}, 
+      #{contract_belong_company,jdbcType=VARCHAR}, #{contract_delectStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybContract" >
+    insert into oa_rlzyb_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contract_num != null" >
+        contract_num,
+      </if>
+      <if test="contract_id != null" >
+        contract_id,
+      </if>
+      <if test="emp_id != null" >
+        emp_id,
+      </if>
+      <if test="contract_startDate != null" >
+        contract_startDate,
+      </if>
+      <if test="contract_endDate != null" >
+        contract_endDate,
+      </if>
+      <if test="contract_status != null" >
+        contract_status,
+      </if>
+      <if test="contract_belong_company != null" >
+        contract_belong_company,
+      </if>
+      <if test="contract_delectStatus != null" >
+        contract_delectStatus,
+      </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contract_num != null" >
+        #{contract_num,jdbcType=INTEGER},
+      </if>
+      <if test="contract_id != null" >
+        #{contract_id,jdbcType=INTEGER},
+      </if>
+      <if test="emp_id != null" >
+        #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="contract_startDate != null" >
+        #{contract_startDate,jdbcType=DATE},
+      </if>
+      <if test="contract_endDate != null" >
+        #{contract_endDate,jdbcType=DATE},
+      </if>
+      <if test="contract_status != null" >
+        #{contract_status,jdbcType=VARCHAR},
+      </if>
+      <if test="contract_belong_company != null" >
+        #{contract_belong_company,jdbcType=VARCHAR},
+      </if>
+      <if test="contract_delectStatus != null" >
+        #{contract_delectStatus,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null" >
+        #{create_time},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByContractEndDate" parameterType="cn.tyyhoa.pojo.OaRlzybContract" >
+    update oa_rlzyb_contract
+    <set >
+      <if test="contract_status != null" >
+        contract_status = #{contract_status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where contract_endDate = #{contract_endDate}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybContract" >
+    update oa_rlzyb_contract
+    set contract_id = #{contract_id,jdbcType=INTEGER},
+      emp_id = #{emp_id,jdbcType=INTEGER},
+      contract_startDate = #{contract_startDate,jdbcType=DATE},
+      contract_endDate = #{contract_endDate,jdbcType=DATE},
+      contract_status = #{contract_status,jdbcType=VARCHAR},
+      contract_belong_company = #{contract_belong_company,jdbcType=VARCHAR},
+      contract_delectStatus = #{contract_delectStatus,jdbcType=INTEGER}
+    where contract_num = #{contract_num,jdbcType=INTEGER}
+  </update>
+</mapper>

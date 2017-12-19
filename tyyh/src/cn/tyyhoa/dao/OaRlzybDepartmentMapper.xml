@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybDepartmentMapper">
+	<resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybDepartment">
+		<id column="depart_id" property="depart_id" jdbcType="INTEGER" />
+		<result column="depart_name" property="depart_name" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		depart_id, depart_name
+	</sql>
+	<!-- 人力资源部 -->
+	<!-- zl -->
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from oa_rlzyb_department
+	</select>
+	<!-- zl -->
+	<select id="selectAllOaRlzybDepartment" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from oa_rlzyb_department
+	</select>
+	<!-- 人力资源部 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from oa_rlzyb_department
+		where depart_id = #{depart_id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from oa_rlzyb_department
+		where depart_id = #{depart_id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybDepartment">
+		insert into oa_rlzyb_department (depart_id, depart_name)
+		values (#{depart_id,jdbcType=INTEGER}, #{depart_name,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybDepartment">
+		insert into oa_rlzyb_department
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="depart_id != null">
+				depart_id,
+			</if>
+			<if test="depart_name != null">
+				depart_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="depart_id != null">
+				#{depart_id,jdbcType=INTEGER},
+			</if>
+			<if test="depart_name != null">
+				#{depart_name,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybDepartment">
+		update oa_rlzyb_department
+		<set>
+			<if test="depart_name != null">
+				depart_name = #{depart_name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where depart_id = #{depart_id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybDepartment">
+		update oa_rlzyb_department
+		set depart_name = #{depart_name,jdbcType=VARCHAR}
+		where depart_id = #{depart_id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectByPositionId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from oa_rlzyb_department
+		where depart_id = #{depart_id,jdbcType=INTEGER}
+	</select>
+	<select id="selectAllDepartment" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from oa_rlzyb_department
+	</select>
+
+
+	<resultMap type="cn.tyyhoa.pojo.OaRlzybDepartment" id="rm">
+		<result column="depart_id" property="depart_id" />
+		<result column="depart_name" property="depart_name" />
+		<collection property="li" ofType="cn.tyyhoa.pojo.OaRlzybUser">
+			<result column="user_id" property="user_id" />
+			<result column="user_name" property="user_name" />
+			<result column="user_pwd" property="user_pwd" />
+			<association property="emp" javaType="cn.tyyhoa.pojo.OaRlzybEmployee">
+				<result column="emp_id" property="emp_id" />
+				<result column="emp_name" property="emp_name" />
+				<result column="emp_now_status" property="emp_now_status" />
+			</association>
+			<association property="position" javaType="cn.tyyhoa.pojo.OaRlzybPosition">
+				<result column="position_id" property="position_id" />
+				<result column="position_name" property="position_name" />
+			</association>
+		</collection>
+	</resultMap>
+
+	<select id="chooseposition" resultMap="rm">
+		SELECT
+		oa_rlzyb_user.`user_name`,oa_rlzyb_user.`user_pwd`,oa_rlzyb_department.depart_id,oa_rlzyb_position.position_id,oa_rlzyb_position.`position_name`,oa_rlzyb_employee.`emp_name`,oa_rlzyb_department.`depart_name`,oa_rlzyb_employee.`emp_now_status`
+		FROM
+		oa_rlzyb_user,oa_rlzyb_position,oa_rlzyb_department,oa_rlzyb_employee
+		WHERE oa_rlzyb_user.`position_id`=oa_rlzyb_position.`position_id`
+		AND oa_rlzyb_department.`depart_id` = oa_rlzyb_position.`department_id`
+		AND oa_rlzyb_employee.`emp_id`= oa_rlzyb_user.`emp_id`
+	</select>
+
+</mapper>

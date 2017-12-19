@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaRlzybUserMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaRlzybUser" >
+    <id column="user_id" property="user_id" jdbcType="INTEGER" />
+    <result column="user_name" property="user_name" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="user_pwd" jdbcType="VARCHAR" />
+    <result column="emp_id" property="emp_id" jdbcType="INTEGER" />
+    <result column="login_type" property="login_type" jdbcType="INTEGER"/>
+    <result column="stu_id" property="stu_id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="logincont" property="logincont" jdbcType="INTEGER"/>
+    <result column="emp_name" property="emp_name" jdbcType="VARCHAR"/>
+    <result column="position_name" property="position_name" jdbcType="VARCHAR"/>
+    <association property="position"  javaType="OaRlzybPosition" >
+    <result column="position_id" property="position_id" />
+    <result column="position_name" property="position_name" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_name, user_pwd, emp_id
+  </sql>
+<!--   人力资源部 -->
+<delete id="delStudentDuoyu">
+	DELETE FROM `oa_jzb_student` 
+WHERE stu_Id NOT IN (SELECT a.stu_Id FROM (SELECT MAX(stu_Id)  AS stu_Id,stu_number,
+            stu_name,COUNT(stu_name) FROM oa_jzb_student
+GROUP BY stu_number,
+            stu_name) a)
+</delete>
+
+<!-- 查询除自己外其他用户名 -->
+	<select id="selectUserByUid" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT user_id,user_name,e.emp_name AS NAME,p.position_name as position_name
+		FROM oa_rlzyb_user u LEFT JOIN oa_rlzyb_employee e ON u.emp_id = e.emp_id 
+		LEFT JOIN  oa_rlzyb_position p ON p.position_id = e.emp_position
+		<where>
+			<if test="user_id!=0">
+				and user_id!=#{user_id}
+			</if>
+		</where>
+
+	</select>
+
+<!-- 查询除自己用户名 -->
+	<select id="selectUserNameByUid" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+				SELECT user_id,user_name,e.emp_name AS NAME,p.position_name as position_name
+		FROM oa_rlzyb_user u LEFT JOIN oa_rlzyb_employee e ON u.emp_id = e.emp_id 
+		LEFT JOIN  oa_rlzyb_position p ON p.position_id = e.emp_position
+		<where>
+			<if test="user_id!=0">
+				and user_id=#{user_id}
+			</if>
+		</where>
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+<!--  zl -->
+   <update id="updatePositionByEmpId" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+    update oa_rlzyb_user
+    set position_id = #{position_id,jdbcType=VARCHAR}
+    where emp_id = #{emp_id,jdbcType=INTEGER}
+  </update>
+  <!--  zl -->
+  <!-- db -->
+  <update id="updateUserPositionIdByUserName" parameterType="cn.tyyhoa.pojo.OaRlzybUser">
+    update oa_rlzyb_user
+    set position_id = #{position_id,jdbcType=VARCHAR}
+    where user_name = #{user_name,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectOaRlzybUserCountByOaRlzybUser" parameterType="cn.tyyhoa.pojo.OaRlzybUser" resultType="java.lang.Integer">
+  select count(user_name)
+   from oa_rlzyb_user
+   where emp_id = #{emp_id} 
+  </select>
+    <!-- db -->
+<!--   人力资源部 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_rlzyb_user
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_rlzyb_user
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+    insert into oa_rlzyb_user (user_id, user_name, user_pwd, 
+      emp_id)
+    values (#{user_id,jdbcType=INTEGER}, #{user_name,jdbcType=VARCHAR}, #{user_pwd,jdbcType=VARCHAR}, 
+      #{emp_id,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+    insert into oa_rlzyb_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="user_id != null" >
+        user_id,
+      </if>
+      <if test="user_name != null" >
+        user_name,
+      </if>
+      <if test="user_pwd != null" >
+        user_pwd,
+      </if>
+      <if test="emp_id != null" >
+        emp_id,
+      </if>
+      <if test="position_id != null" >
+        position_id,
+      </if>
+      <if test="stu_id != null" >
+        stu_id,
+      </if>
+      <if test="login_type != null" >
+        login_type,
+      </if>
+      <if test="logincont != null" >
+        logincont,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="user_id != null" >
+        #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="user_name != null" >
+        #{user_name,jdbcType=VARCHAR},
+      </if>
+      <if test="user_pwd != null" >
+        md5(#{user_pwd,jdbcType=VARCHAR}),
+      </if>
+      <if test="emp_id != null" >
+        #{emp_id,jdbcType=INTEGER},
+      </if>
+      <if test="position_id != null" >
+        #{position_id,jdbcType=INTEGER},
+      </if>
+      <if test="stu_id != null" >
+        #{stu_id,jdbcType=VARCHAR},
+      </if>
+      <if test="login_type != null" >
+        #{login_type,jdbcType=INTEGER},
+      </if>
+      <if test="logincont != null" >
+        #{logincont,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+    update oa_rlzyb_user
+    <set >
+      <if test="user_name != null" >
+        user_name = #{user_name,jdbcType=VARCHAR},
+      </if>
+      <if test="user_pwd != null" >
+        user_pwd = #{user_pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="emp_id != null" >
+        emp_id = #{emp_id,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+    update oa_rlzyb_user
+    set user_name = #{user_name,jdbcType=VARCHAR},
+      user_pwd = #{user_pwd,jdbcType=VARCHAR},
+      emp_id = #{emp_id,jdbcType=INTEGER}
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="login" resultMap="BaseResultMap" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+     SELECT 
+    user_id, user_name, user_pwd, 
+      oa_rlzyb_user.emp_id,oa_rlzyb_user.position_id, 
+	stu_id,
+	login_type,
+	logincont,
+	employee.emp_name as emp_name,
+	POSITION.position_name
+	
+    FROM
+    oa_rlzyb_user
+    INNER JOIN oa_rlzyb_employee AS employee ON employee.emp_id=oa_rlzyb_user.emp_id
+    inner join oa_rlzyb_position AS position ON position.position_id=oa_rlzyb_user.position_id
+    where user_name = #{user_name,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getEmpName" resultMap="BaseResultMap" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+    SELECT 	oa_rlzyb_employee.emp_name AS NAME
+	FROM 
+	tyyhoa.oa_rlzyb_user 
+	INNER JOIN oa_rlzyb_employee ON oa_rlzyb_employee.emp_id = oa_rlzyb_user.emp_id
+	WHERE user_id = #{user_id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getStuName" resultMap="BaseResultMap" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+    SELECT oa_jzb_student.stu_name AS NAME
+	FROM 
+	tyyhoa.oa_rlzyb_user 
+	INNER JOIN oa_jzb_student ON oa_jzb_student.stu_number = oa_rlzyb_user.stu_id
+	WHERE user_id = #{user_id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPositionid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    user_id, user_name, user_pwd, 
+    emp_id
+    from 
+    oa_rlzyb_user
+    where position_id = #{position_id,jdbcType=VARCHAR}
+  </select>
+  <update id="updataPwdByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+    update oa_rlzyb_user
+    <set >
+        user_pwd = md5(#{new_pwd,jdbcType=VARCHAR})
+    </set>
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </update>
+  <insert id="InsertUserFromStu" >
+  	INSERT INTO oa_rlzyb_user(user_name,user_pwd,position_id,stu_id,login_type)
+		SELECT stu_number AS user_name,
+		MD5(888888) AS user_pwd,
+		33 AS position_id,
+		 stu_number,
+		2 AS login_type FROM
+		oa_jzb_student AS s
+		INNER JOIN oa_jwb_grade AS g ON s.grade_id=g.id
+WHERE stu_number NOT IN(SELECT stu_id FROM oa_rlzyb_user WHERE  stu_id IS NOT NULL)	 AND g.struts=2	
+  </insert>
+  
+  <delete id="deleteUserNotKfbStu">
+  	DELETE FROM tyyhoa.oa_rlzyb_user 
+	WHERE
+	oa_rlzyb_user.stu_id NOT IN (SELECT oa_jzb_student.stu_number
+	FROM 
+	tyyhoa.oa_jzb_student 
+	INNER JOIN oa_jwb_grade ON oa_jwb_grade.id = oa_jzb_student.grade_id
+	WHERE oa_jwb_grade.ClassStatus = 2) AND oa_rlzyb_user.login_type = 2;
+  </delete>
+  
+  <update id="updateStuUserzz" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+    update oa_rlzyb_user
+    <set >
+      <if test="user_name != null" >
+        user_name = #{user_name,jdbcType=VARCHAR},
+      </if>
+      <if test="user_pwd != null" >
+        user_pwd = #{user_pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="emp_id != null" >
+        emp_id = #{emp_id,jdbcType=INTEGER},
+      </if>
+    </set>
+    where stu_id = #{stu_id,jdbcType=VARCHAR}
+  </update>
+  <update id="recordlogincont" parameterType="cn.tyyhoa.pojo.OaRlzybUser" >
+  	UPDATE tyyhoa.oa_rlzyb_user 
+	SET
+	logincont = #{logincont}
+	WHERE
+	oa_rlzyb_user.user_name = #{user_name}
+  </update>
+  <update id="updateUserJob32">
+	UPDATE tyyhoa.oa_rlzyb_user 
+	SET
+	position_id = 32
+	WHERE
+	stu_id = #{stuid,jdbcType=VARCHAR} ;
+  </update>
+    <update id="updateUserJob33">
+	UPDATE tyyhoa.oa_rlzyb_user 
+	SET
+	position_id = 33
+	WHERE
+	stu_id = #{stuid,jdbcType=VARCHAR} ;
+  </update>
+      <update id="updateUserJobnull">
+	UPDATE tyyhoa.oa_rlzyb_user 
+	SET
+	position_id = null 
+	WHERE
+	stu_id = #{stuid,jdbcType=VARCHAR} ;
+  </update>
+</mapper>

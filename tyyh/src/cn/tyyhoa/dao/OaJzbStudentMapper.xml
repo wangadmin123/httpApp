@@ -1,0 +1,1000 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbStudentMapper" >
+  <resultMap id="BaseResultMap" type="cn.tyyhoa.pojo.OaJzbStudent" >
+    <id column="stu_Id" property="stu_Id" jdbcType="INTEGER" />
+    <result column="stu_number" property="stu_number" jdbcType="VARCHAR" />
+    <result column="stu_name" property="stu_name" jdbcType="VARCHAR" />
+    <result column="spellName" property="spellName" jdbcType="VARCHAR" />
+    <result column="stu_sex" property="stu_sex" jdbcType="INTEGER" />
+    <result column="ID_number" property="ID_number" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="E_mail" property="e_mail" jdbcType="VARCHAR" />
+    <result column="photograph" property="photograph" jdbcType="VARCHAR" />
+    <result column="hobbys" property="hobbys" jdbcType="VARCHAR" />
+    <result column="postalcode" property="postalcode" jdbcType="VARCHAR" />
+    <result column="present_address" property="present_address" jdbcType="VARCHAR" />
+    <result column="specialty" property="specialty" jdbcType="VARCHAR" />
+    <result column="contact_way" property="contact_way" jdbcType="VARCHAR" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="wducation_id" property="wducation_id" jdbcType="INTEGER" />
+    <result column="high_school" property="high_school" jdbcType="VARCHAR" />
+    <result column="undergraduate_school" property="undergraduate_school" jdbcType="VARCHAR" />
+    <result column="graduate_school" property="graduate_school" jdbcType="VARCHAR" />
+    <result column="doctor_school" property="doctor_school" jdbcType="VARCHAR" />
+    <result column="other_schools" property="other_schools" jdbcType="VARCHAR" />
+    <result column="first_job" property="first_job" jdbcType="VARCHAR" />
+    <result column="current_job" property="current_job" jdbcType="VARCHAR" />
+    <result column="courses_study" property="courses_study" jdbcType="VARCHAR" />
+    <result column="intentional_City" property="intentional_City" jdbcType="VARCHAR" />
+    <result column="cost_sources" property="cost_sources" jdbcType="VARCHAR" />
+    <result column="home_Phone" property="home_Phone" jdbcType="VARCHAR" />
+    <result column="family_call1" property="family_call1" jdbcType="VARCHAR" />
+    <result column="family_call2" property="family_call2" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="dormitory_number" property="dormitory_number" jdbcType="INTEGER" />
+    <result column="infoSource_id" property="infoSource_id" jdbcType="INTEGER" />
+    <result column="paymentmethod_id" property="paymentmethod_id" jdbcType="INTEGER" />
+    <result column="other_help" property="other_help" jdbcType="VARCHAR" />
+    <result column="membership_id" property="membership_id" jdbcType="INTEGER" />
+    <result column="memberName" property="memberName" jdbcType="VARCHAR" />
+    <result column="memberBirthday" property="memberBirthday" jdbcType="DATE" />
+    <result column="Workcondition_id" property="workcondition_id" jdbcType="INTEGER" />
+    <result column="work_unit" property="work_unit" jdbcType="VARCHAR" />
+    <result column="memberContact_way" property="memberContact_way" jdbcType="VARCHAR" />
+    <result column="deleteStatus" property="deleteStatus" jdbcType="INTEGER" />
+  
+  <result column="uid" jdbcType="VARCHAR" property="uid" /> 
+  <result column="jobname" jdbcType="VARCHAR" property="jobname" /> 
+  
+  
+  
+  </resultMap>
+  <sql id="Base_Column_List" >
+    stu_Id, stu_number, stu_name, spellName, stu_sex, ID_number, birthday, E_mail, photograph, 
+    hobbys, postalcode, present_address, specialty, contact_way, wechat, wducation_id, 
+    high_school, undergraduate_school, graduate_school, doctor_school, other_schools, 
+    first_job, current_job, courses_study, intentional_City, cost_sources, home_Phone, 
+    family_call1, family_call2, address, dormitory_number, infoSource_id, paymentmethod_id, 
+    other_help, membership_id, memberName, memberBirthday, Workcondition_id, work_unit, 
+    memberContact_way, deleteStatus
+  </sql>
+  
+   
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from oa_jzb_student
+    where stu_Id = #{stu_Id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_jzb_student
+    where stu_Id = #{stu_Id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.tyyhoa.pojo.OaJzbStudent" >
+    insert into oa_jzb_student (stu_Id, stu_number, stu_name, 
+      spellName, stu_sex, ID_number, 
+      birthday, E_mail, photograph, 
+      hobbys, postalcode, present_address, 
+      specialty, contact_way, wechat, 
+      wducation_id, high_school, undergraduate_school, 
+      graduate_school, doctor_school, other_schools, 
+      first_job, current_job, courses_study, 
+      intentional_City, cost_sources, home_Phone, 
+      family_call1, family_call2, address, 
+      dormitory_number, infoSource_id, paymentmethod_id, 
+      other_help, membership_id, memberName, 
+      memberBirthday, Workcondition_id, work_unit, 
+      memberContact_way, deleteStatus)
+    values (#{stu_Id,jdbcType=INTEGER}, #{stu_number,jdbcType=VARCHAR}, #{stu_name,jdbcType=VARCHAR}, 
+      #{spellName,jdbcType=VARCHAR}, #{stu_sex,jdbcType=INTEGER}, #{ID_number,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=DATE}, #{e_mail,jdbcType=VARCHAR}, #{photograph,jdbcType=VARCHAR}, 
+      #{hobbys,jdbcType=VARCHAR}, #{postalcode,jdbcType=VARCHAR}, #{present_address,jdbcType=VARCHAR}, 
+      #{specialty,jdbcType=VARCHAR}, #{contact_way,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, 
+      #{wducation_id,jdbcType=INTEGER}, #{high_school,jdbcType=VARCHAR}, #{undergraduate_school,jdbcType=VARCHAR}, 
+      #{graduate_school,jdbcType=VARCHAR}, #{doctor_school,jdbcType=VARCHAR}, #{other_schools,jdbcType=VARCHAR}, 
+      #{first_job,jdbcType=VARCHAR}, #{current_job,jdbcType=VARCHAR}, #{courses_study,jdbcType=VARCHAR}, 
+      #{intentional_City,jdbcType=VARCHAR}, #{cost_sources,jdbcType=VARCHAR}, #{home_Phone,jdbcType=VARCHAR}, 
+      #{family_call1,jdbcType=VARCHAR}, #{family_call2,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{dormitory_number,jdbcType=INTEGER}, #{infoSource_id,jdbcType=INTEGER}, #{paymentmethod_id,jdbcType=INTEGER}, 
+      #{other_help,jdbcType=VARCHAR}, #{membership_id,jdbcType=INTEGER}, #{memberName,jdbcType=VARCHAR}, 
+      #{memberBirthday,jdbcType=DATE}, #{workcondition_id,jdbcType=INTEGER}, #{work_unit,jdbcType=VARCHAR}, 
+      #{memberContact_way,jdbcType=VARCHAR}, #{deleteStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.tyyhoa.pojo.OaJzbStudent" >
+    insert into oa_jzb_student
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stu_Id != null" >
+        stu_Id,
+      </if>
+      <if test="stu_number != null" >
+        stu_number,
+      </if>
+      <if test="stu_name != null" >
+        stu_name,
+      </if>
+      <if test="spellName != null" >
+        spellName,
+      </if>
+      <if test="stu_sex != null" >
+        stu_sex,
+      </if>
+      <if test="ID_number != null" >
+        ID_number,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="e_mail != null" >
+        E_mail,
+      </if>
+      <if test="photograph != null" >
+        photograph,
+      </if>
+      <if test="hobbys != null" >
+        hobbys,
+      </if>
+      <if test="postalcode != null" >
+        postalcode,
+      </if>
+      <if test="present_address != null" >
+        present_address,
+      </if>
+      <if test="specialty != null" >
+        specialty,
+      </if>
+      <if test="contact_way != null" >
+        contact_way,
+      </if>
+      <if test="wechat != null" >
+        wechat,
+      </if>
+      <if test="wducation_id != null" >
+        wducation_id,
+      </if>
+      <if test="high_school != null" >
+        high_school,
+      </if>
+      <if test="undergraduate_school != null" >
+        undergraduate_school,
+      </if>
+      <if test="graduate_school != null" >
+        graduate_school,
+      </if>
+      <if test="doctor_school != null" >
+        doctor_school,
+      </if>
+      <if test="other_schools != null" >
+        other_schools,
+      </if>
+      <if test="first_job != null" >
+        first_job,
+      </if>
+      <if test="current_job != null" >
+        current_job,
+      </if>
+      <if test="courses_study != null" >
+        courses_study,
+      </if>
+      <if test="intentional_City != null" >
+        intentional_City,
+      </if>
+      <if test="cost_sources != null" >
+        cost_sources,
+      </if>
+      <if test="home_Phone != null" >
+        home_Phone,
+      </if>
+      <if test="family_call1 != null" >
+        family_call1,
+      </if>
+      <if test="family_call2 != null" >
+        family_call2,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="dormitory_number != null" >
+        dormitory_number,
+      </if>
+      <if test="infoSource_id != null" >
+        infoSource_id,
+      </if>
+      <if test="paymentmethod_id != null" >
+        paymentmethod_id,
+      </if>
+      <if test="other_help != null" >
+        other_help,
+      </if>
+      <if test="membership_id != null" >
+        membership_id,
+      </if>
+      <if test="memberName != null" >
+        memberName,
+      </if>
+      <if test="memberBirthday != null" >
+        memberBirthday,
+      </if>
+      <if test="workcondition_id != null" >
+        Workcondition_id,
+      </if>
+      <if test="work_unit != null" >
+        work_unit,
+      </if>
+      <if test="memberContact_way != null" >
+        memberContact_way,
+      </if>
+      <if test="deleteStatus != null" >
+        deleteStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stu_Id != null" >
+        #{stu_Id,jdbcType=INTEGER},
+      </if>
+      <if test="stu_number != null" >
+        #{stu_number,jdbcType=VARCHAR},
+      </if>
+      <if test="stu_name != null" >
+        #{stu_name,jdbcType=VARCHAR},
+      </if>
+      <if test="spellName != null" >
+        #{spellName,jdbcType=VARCHAR},
+      </if>
+      <if test="stu_sex != null" >
+        #{stu_sex,jdbcType=INTEGER},
+      </if>
+      <if test="ID_number != null" >
+        #{ID_number,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="e_mail != null" >
+        #{e_mail,jdbcType=VARCHAR},
+      </if>
+      <if test="photograph != null" >
+        #{photograph,jdbcType=VARCHAR},
+      </if>
+      <if test="hobbys != null" >
+        #{hobbys,jdbcType=VARCHAR},
+      </if>
+      <if test="postalcode != null" >
+        #{postalcode,jdbcType=VARCHAR},
+      </if>
+      <if test="present_address != null" >
+        #{present_address,jdbcType=VARCHAR},
+      </if>
+      <if test="specialty != null" >
+        #{specialty,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_way != null" >
+        #{contact_way,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="wducation_id != null" >
+        #{wducation_id,jdbcType=INTEGER},
+      </if>
+      <if test="high_school != null" >
+        #{high_school,jdbcType=VARCHAR},
+      </if>
+      <if test="undergraduate_school != null" >
+        #{undergraduate_school,jdbcType=VARCHAR},
+      </if>
+      <if test="graduate_school != null" >
+        #{graduate_school,jdbcType=VARCHAR},
+      </if>
+      <if test="doctor_school != null" >
+        #{doctor_school,jdbcType=VARCHAR},
+      </if>
+      <if test="other_schools != null" >
+        #{other_schools,jdbcType=VARCHAR},
+      </if>
+      <if test="first_job != null" >
+        #{first_job,jdbcType=VARCHAR},
+      </if>
+      <if test="current_job != null" >
+        #{current_job,jdbcType=VARCHAR},
+      </if>
+      <if test="courses_study != null" >
+        #{courses_study,jdbcType=VARCHAR},
+      </if>
+      <if test="intentional_City != null" >
+        #{intentional_City,jdbcType=VARCHAR},
+      </if>
+      <if test="cost_sources != null" >
+        #{cost_sources,jdbcType=VARCHAR},
+      </if>
+      <if test="home_Phone != null" >
+        #{home_Phone,jdbcType=VARCHAR},
+      </if>
+      <if test="family_call1 != null" >
+        #{family_call1,jdbcType=VARCHAR},
+      </if>
+      <if test="family_call2 != null" >
+        #{family_call2,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="dormitory_number != null" >
+        #{dormitory_number,jdbcType=INTEGER},
+      </if>
+      <if test="infoSource_id != null" >
+        #{infoSource_id,jdbcType=INTEGER},
+      </if>
+      <if test="paymentmethod_id != null" >
+        #{paymentmethod_id,jdbcType=INTEGER},
+      </if>
+      <if test="other_help != null" >
+        #{other_help,jdbcType=VARCHAR},
+      </if>
+      <if test="membership_id != null" >
+        #{membership_id,jdbcType=INTEGER},
+      </if>
+      <if test="memberName != null" >
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberBirthday != null" >
+        #{memberBirthday,jdbcType=DATE},
+      </if>
+      <if test="workcondition_id != null" >
+        #{workcondition_id,jdbcType=INTEGER},
+      </if>
+      <if test="work_unit != null" >
+        #{work_unit,jdbcType=VARCHAR},
+      </if>
+      <if test="memberContact_way != null" >
+        #{memberContact_way,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteStatus != null" >
+        #{deleteStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.tyyhoa.pojo.OaJzbStudent" >
+    update oa_jzb_student
+    <set >
+      <if test="stu_number != null" >
+        stu_number = #{stu_number,jdbcType=VARCHAR},
+      </if>
+      <if test="stu_name != null" >
+        stu_name = #{stu_name,jdbcType=VARCHAR},
+      </if>
+      <if test="spellName != null" >
+        spellName = #{spellName,jdbcType=VARCHAR},
+      </if>
+      <if test="stu_sex != null" >
+        stu_sex = #{stu_sex,jdbcType=INTEGER},
+      </if>
+      <if test="ID_number != null" >
+        ID_number = #{ID_number,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="e_mail != null" >
+        E_mail = #{e_mail,jdbcType=VARCHAR},
+      </if>
+      <if test="photograph != null" >
+        photograph = #{photograph,jdbcType=VARCHAR},
+      </if>
+      <if test="hobbys != null" >
+        hobbys = #{hobbys,jdbcType=VARCHAR},
+      </if>
+      <if test="postalcode != null" >
+        postalcode = #{postalcode,jdbcType=VARCHAR},
+      </if>
+      <if test="present_address != null" >
+        present_address = #{present_address,jdbcType=VARCHAR},
+      </if>
+      <if test="specialty != null" >
+        specialty = #{specialty,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_way != null" >
+        contact_way = #{contact_way,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="wducation_id != null" >
+        wducation_id = #{wducation_id,jdbcType=INTEGER},
+      </if>
+      <if test="high_school != null" >
+        high_school = #{high_school,jdbcType=VARCHAR},
+      </if>
+      <if test="undergraduate_school != null" >
+        undergraduate_school = #{undergraduate_school,jdbcType=VARCHAR},
+      </if>
+      <if test="graduate_school != null" >
+        graduate_school = #{graduate_school,jdbcType=VARCHAR},
+      </if>
+      <if test="doctor_school != null" >
+        doctor_school = #{doctor_school,jdbcType=VARCHAR},
+      </if>
+      <if test="other_schools != null" >
+        other_schools = #{other_schools,jdbcType=VARCHAR},
+      </if>
+      <if test="first_job != null" >
+        first_job = #{first_job,jdbcType=VARCHAR},
+      </if>
+      <if test="current_job != null" >
+        current_job = #{current_job,jdbcType=VARCHAR},
+      </if>
+      <if test="courses_study != null" >
+        courses_study = #{courses_study,jdbcType=VARCHAR},
+      </if>
+      <if test="intentional_City != null" >
+        intentional_City = #{intentional_City,jdbcType=VARCHAR},
+      </if>
+      <if test="cost_sources != null" >
+        cost_sources = #{cost_sources,jdbcType=VARCHAR},
+      </if>
+      <if test="home_Phone != null" >
+        home_Phone = #{home_Phone,jdbcType=VARCHAR},
+      </if>
+      <if test="family_call1 != null" >
+        family_call1 = #{family_call1,jdbcType=VARCHAR},
+      </if>
+      <if test="family_call2 != null" >
+        family_call2 = #{family_call2,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="dormitory_number != null" >
+        dormitory_number = #{dormitory_number,jdbcType=INTEGER},
+      </if>
+      <if test="infoSource_id != null" >
+        infoSource_id = #{infoSource_id,jdbcType=INTEGER},
+      </if>
+      <if test="paymentmethod_id != null" >
+        paymentmethod_id = #{paymentmethod_id,jdbcType=INTEGER},
+      </if>
+      <if test="other_help != null" >
+        other_help = #{other_help,jdbcType=VARCHAR},
+      </if>
+      <if test="membership_id != null" >
+        membership_id = #{membership_id,jdbcType=INTEGER},
+      </if>
+      <if test="memberName != null" >
+        memberName = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberBirthday != null" >
+        memberBirthday = #{memberBirthday,jdbcType=DATE},
+      </if>
+      <if test="workcondition_id != null" >
+        Workcondition_id = #{workcondition_id,jdbcType=INTEGER},
+      </if>
+      <if test="work_unit != null" >
+        work_unit = #{work_unit,jdbcType=VARCHAR},
+      </if>
+      <if test="memberContact_way != null" >
+        memberContact_way = #{memberContact_way,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteStatus != null" >
+        deleteStatus = #{deleteStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where stu_Id = #{stu_Id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.tyyhoa.pojo.OaJzbStudent" >
+    update oa_jzb_student
+    set stu_number = #{stu_number,jdbcType=VARCHAR},
+      stu_name = #{stu_name,jdbcType=VARCHAR},
+      spellName = #{spellName,jdbcType=VARCHAR},
+      stu_sex = #{stu_sex,jdbcType=INTEGER},
+      ID_number = #{ID_number,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      E_mail = #{e_mail,jdbcType=VARCHAR},
+      photograph = #{photograph,jdbcType=VARCHAR},
+      hobbys = #{hobbys,jdbcType=VARCHAR},
+      postalcode = #{postalcode,jdbcType=VARCHAR},
+      present_address = #{present_address,jdbcType=VARCHAR},
+      specialty = #{specialty,jdbcType=VARCHAR},
+      contact_way = #{contact_way,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      wducation_id = #{wducation_id,jdbcType=INTEGER},
+      high_school = #{high_school,jdbcType=VARCHAR},
+      undergraduate_school = #{undergraduate_school,jdbcType=VARCHAR},
+      graduate_school = #{graduate_school,jdbcType=VARCHAR},
+      doctor_school = #{doctor_school,jdbcType=VARCHAR},
+      other_schools = #{other_schools,jdbcType=VARCHAR},
+      first_job = #{first_job,jdbcType=VARCHAR},
+      current_job = #{current_job,jdbcType=VARCHAR},
+      courses_study = #{courses_study,jdbcType=VARCHAR},
+      intentional_City = #{intentional_City,jdbcType=VARCHAR},
+      cost_sources = #{cost_sources,jdbcType=VARCHAR},
+      home_Phone = #{home_Phone,jdbcType=VARCHAR},
+      family_call1 = #{family_call1,jdbcType=VARCHAR},
+      family_call2 = #{family_call2,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      dormitory_number = #{dormitory_number,jdbcType=INTEGER},
+      infoSource_id = #{infoSource_id,jdbcType=INTEGER},
+      paymentmethod_id = #{paymentmethod_id,jdbcType=INTEGER},
+      other_help = #{other_help,jdbcType=VARCHAR},
+      membership_id = #{membership_id,jdbcType=INTEGER},
+      memberName = #{memberName,jdbcType=VARCHAR},
+      memberBirthday = #{memberBirthday,jdbcType=DATE},
+      Workcondition_id = #{workcondition_id,jdbcType=INTEGER},
+      work_unit = #{work_unit,jdbcType=VARCHAR},
+      memberContact_way = #{memberContact_way,jdbcType=VARCHAR},
+      deleteStatus = #{deleteStatus,jdbcType=INTEGER}
+    where stu_Id = #{stu_Id,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  
+  
+  
+  
+  
+  <select id="gradeList" resultType="OaJwbGrade">
+  	SELECT id,NAME FROM oa_jwb_grade
+  	where 1 = 1
+  	<if test="classTeacherID != 0">
+  		and classTeacherID = #{classTeacherID}
+  	</if>
+  </select>
+  <select id="statusList" resultType="OaJzbStudentstatus">
+  	SELECT id,stu_status FROM oa_jzb_studentStatus
+  </select>
+  
+  
+  <select id="stuList" resultType="OaJzbStudent">
+SELECT
+	stu_Id,
+	stu_number,
+	stu_name,
+	spellName,
+	stu_sex,
+	stu_age,
+	ID_number,
+	birthday,
+	E_mail,
+	photograph,
+	spe.specialty_id AS specialty_id,
+	spe.Specialty_name AS specialty,
+	gra.id AS grade_id,
+	gra.name AS grade_name,
+	sta.stu_status AS stu_status,
+	contact_way,
+	education_id,
+	edu.education AS education_name,
+	membership_id,
+	meb.member AS member_ship,
+	present_address,
+	postalcode,
+	address,
+	infoSource_id,
+	paymentmethod_id,
+	ins.infoSource AS infoSource,
+	wechat,
+	hobbys,
+	memberName,
+	work_unit,
+	memberContact_way,
+	high_school,
+	secondary_school,
+	undergraduate_school,
+	work_experience,
+	learning_experience,
+	credentials,
+	training_experience,
+	intentional_City,
+	dormitory_number,
+	other_help,
+	entry_date,
+	member_remarks,
+	stu.workcondition_id,
+	con.workcondition_name
+	FROM oa_jzb_student AS stu
+	LEFT JOIN oa_jzb_specialty AS spe ON stu.specialty_id = spe.specialty_Id
+	LEFT JOIN oa_jwb_grade gra ON stu.grade_id = gra.id
+	LEFT JOIN oa_jzb_studentStatus AS sta ON stu.status_id = sta.id
+	LEFT JOIN oa_scb_education AS edu ON edu.id = stu.education_id
+	LEFT JOIN oa_jzb_memberShip meb ON stu.membership_id = meb.member_Id
+	LEFT JOIN oa_scb_infosource ins ON ins.id = stu.infoSource_id
+	LEFT JOIN oa_jzb_workcondition con ON con.workcondition_id = stu.workcondition_id
+	where 1=1 
+	and stu.deleteStatus = 0
+	<if test="queryGrade != 0">
+		and grade_id = #{queryGrade}
+	</if>
+	<if test="searchName!=null and searchName!=''">
+		and stu_name like concat('%',#{searchName},'%')
+	</if>
+	<if test="queryStatus != 0">
+		and status_id = #{queryStatus}
+	</if>
+	<if test="classTeacherID != 0">
+		and stu.grade_id IN (SELECT id FROM oa_jwb_grade WHERE classTeacherID = #{classTeacherID})
+	</if>
+	ORDER  BY entry_date DESC
+	LIMIT #{index},#{pageSize}
+</select>
+
+
+	<select id="getStuCount" resultType="int">
+		SELECT COUNT(1)
+		FROM oa_jzb_student AS stu
+		LEFT JOIN oa_jzb_specialty AS spe ON stu.specialty_id = spe.specialty_Id
+		LEFT JOIN oa_jwb_grade gra ON stu.grade_id = gra.id
+		LEFT JOIN oa_jzb_studentStatus AS sta ON stu.status_id = sta.id
+		LEFT JOIN oa_scb_education AS edu ON edu.id = stu.education_id
+		LEFT JOIN oa_jzb_memberShip meb ON stu.membership_id = meb.member_Id
+		LEFT JOIN oa_scb_infosource ins ON ins.id = stu.infoSource_id
+		LEFT JOIN oa_jzb_workcondition con ON con.workcondition_id = stu.workcondition_id
+	where 1=1 and stu.deleteStatus = 0
+	<if test="queryGrade != 0">
+		and grade_id = #{queryGrade}
+	</if>
+	<if test="searchName!=null and searchName!=''">
+		and stu_name like concat('%',#{searchName},'%')
+	</if>
+	<if test="queryStatus != 0">
+		and status_id = #{queryStatus}
+	</if>
+	<if test="classTeacherID != 0">
+		and stu.grade_id IN (SELECT id FROM oa_jwb_grade WHERE classTeacherID = #{classTeacherID})
+	</if>
+	</select>
+
+
+  <select id="getStuInfo" resultType="OaJzbStudent">
+SELECT
+	stu_Id,
+	stu_number,
+	stu_name,
+	spellName,
+	stu_sex,
+	stu_age,
+	ID_number,
+	birthday,
+	E_mail,
+	photograph,
+	spe.specialty_id AS specialty_id,
+	spe.Specialty_name AS specialty,
+	gra.id AS grade_id,
+	gra.name AS grade_name,
+	stu.`status_id` AS status_id,
+	sta.stu_status AS stu_status,
+	contact_way,
+	education_id,
+	edu.education AS education_name,
+	membership_id,
+	meb.member AS member_ship,
+	present_address,
+	postalcode,
+	address,
+	infoSource_id,
+	paymentmethod_id,
+	ins.infoSource AS infoSource,
+	wechat,
+	hobbys,
+	memberName,
+	work_unit,
+	memberContact_way,
+	high_school,
+	secondary_school,
+	undergraduate_school,
+	work_experience,
+	learning_experience,
+	credentials,
+	training_experience,
+	intentional_City,
+	dormitory_number,
+	other_help,
+	entry_date,
+	member_remarks,
+	stu.workcondition_id,
+	con.workcondition_name
+	FROM oa_jzb_student AS stu
+	LEFT JOIN oa_jzb_specialty AS spe ON stu.specialty_id = spe.specialty_Id
+	LEFT JOIN oa_jwb_grade gra ON stu.grade_id = gra.id
+	LEFT JOIN oa_jzb_studentStatus AS sta ON stu.status_id = sta.id
+	LEFT JOIN oa_scb_education AS edu ON edu.id = stu.education_id
+	LEFT JOIN oa_jzb_memberShip meb ON stu.membership_id = meb.member_Id
+	LEFT JOIN oa_scb_infosource ins ON ins.id = stu.infoSource_id
+	LEFT JOIN oa_jzb_workcondition con ON con.workcondition_id = stu.workcondition_id
+	WHERE 1=1
+	<if test="stu_Id != 0">
+		and stu_Id = #{stu_Id}
+	</if>
+</select>
+
+
+<select id="specialtyList" resultType="OaJzbSpecialty">
+	SELECT
+	specialty_Id,Specialty_name FROM oa_jzb_specialty
+</select>
+	<select id="educations" resultType="OaScbEducation">
+		SELECT id,education FROM oa_scb_education
+	</select>
+	<select id="infoSources" resultType="OaScbInfosource">
+		SELECT id,infoSource FROM oa_scb_infosource
+	</select>
+	<select id="memberships" resultType="OaJzbMembership">
+		SELECT member_Id,member FROM oa_jzb_membership
+	</select>
+	
+	<select id="payfeesways" resultType="OaScbPayfeesway">
+		SELECT payfees_id,payfees_way FROM oa_scb_payfeesway
+	</select>
+	<select id="workconditions" resultType="OaJzbWorkcondition">
+		SELECT workcondition_id,workcondition_name FROM oa_jzb_workcondition
+	</select>
+	
+	<insert id="addStudent" parameterType="OaJzbStudent">
+	INSERT INTO
+	oa_jzb_student(
+	grade_id,
+	stu_number,
+	stu_name,
+	photograph,
+	spellName,
+	stu_sex,
+	ID_number,
+	E_mail,
+	birthday,
+	stu_age,
+	hobbys,
+	postalcode,
+	present_address,
+	specialty_id,
+	contact_way,
+	wechat,
+	entry_date)
+	VALUES(#{grade_id},
+	#{stu_number},
+	#{stu_name},
+	#{photograph},
+	#{spellName},
+	#{stu_sex},
+	#{ID_number},
+	#{e_mail},
+	#{birthday},
+	#{stu_age},
+	#{hobbys},
+	#{postalcode},
+	#{present_address},
+	#{specialty_id},
+	#{contact_way},
+	#{wechat},
+	#{entry_date});
+	</insert>
+	
+	<select id="getLastInsert" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
+	
+	<update id="updateStuInfo" parameterType="OaJzbStudent">
+	UPDATE oa_jzb_student
+	<set>
+		<if test="grade_id != 0">
+		grade_id=#{grade_id},
+	</if>
+	<if test="stu_name != null and stu_name != ''">
+		stu_name=#{stu_name},	
+	</if>
+	<if test="status_id != 0">
+		status_id=#{status_id},	
+	</if>
+	<if test="spellName != null and spellName != ''">
+		spellName=#{spellName},	
+	</if>
+	<if test="stu_sex != null and stu_name != ''">
+		stu_sex=#{stu_sex},	
+	</if>
+	<if test="ID_number != null and ID_number != ''">
+		ID_number=#{ID_number},	
+	</if>
+	<if test="birthday != null and birthday != ''">
+		birthday=#{birthday},	
+	</if>
+	<if test="stu_age != null and stu_age != ''">
+		stu_age=#{stu_age},	
+	</if>
+	<if test="e_mail != null and e_mail != ''">
+		E_mail=#{e_mail},
+	</if>
+	<if test="hobbys != null and hobbys != ''">
+		hobbys=#{hobbys},	
+	</if>
+	<if test="postalcode != null and postalcode != ''">
+		postalcode=#{postalcode},	
+	</if>
+	<if test="present_address != null and present_address != ''">
+		present_address=#{present_address},	
+	</if>
+	<if test="specialty_id != 0">
+		specialty_id=#{specialty_id},	
+	</if>
+	<if test="contact_way != null and contact_way != ''">
+		contact_way=#{contact_way},	
+	</if>
+	<if test="wechat != null and wechat != ''">
+		wechat=#{wechat},	
+	</if>
+	</set>
+	WHERE 1=1 
+	<if test="stu_Id != 0">
+		and stu_Id = #{stu_Id}
+	</if>
+	</update>
+	
+	<update id="modifyAdddetailedStuInfo" parameterType="OaJzbStudent">
+		UPDATE oa_jzb_student
+	<set>
+		<if test="photograph != null and photograph != ''">
+			photograph = #{photograph},
+		</if>
+		<if test="education_id != 0">
+			education_id = #{education_id},
+		</if>
+		<if test="high_school != null and high_school != ''">
+			high_school = #{high_school},
+		</if>
+		<if test="secondary_school != null and high_school != ''">
+			secondary_school = #{secondary_school},
+		</if>
+		<if test="undergraduate_school != null and undergraduate_school != ''">
+			undergraduate_school = #{undergraduate_school},
+		</if>
+		<if test="credentials != null and credentials != ''">
+			credentials = #{credentials},
+		</if>
+		<if test="work_experience != null and work_experience != ''">
+			work_experience = #{work_experience},
+		</if>
+		<if test="learning_experience != null and learning_experience != ''">
+			learning_experience = #{learning_experience},
+		</if>
+		<if test="training_experience != null and training_experience != ''">
+			training_experience = #{training_experience},
+		</if>
+		<if test="intentional_City != null and intentional_City != ''">
+			intentional_City = #{intentional_City},
+		</if>
+		<if test="address != null and address != ''">
+			address = #{address},
+		</if>
+		<if test="dormitory_number != null and dormitory_number != ''">
+			dormitory_number = #{dormitory_number},
+		</if>
+		<if test="infoSource_id != 0">
+			infoSource_id = #{infoSource_id},
+		</if>
+		<if test="paymentmethod_id != 0">
+			paymentmethod_id = #{paymentmethod_id},
+		</if>
+		<if test="other_help != null and other_help != ''">
+			other_help = #{other_help},
+		</if>
+	</set>
+		where stu_Id = #{stu_Id}
+	</update>
+	
+	<update id="modifyAddMemberStuInfo" parameterType="OaJzbStudent">
+		UPDATE oa_jzb_student
+		<set>
+			<if test="membership_id != 0">
+				membership_id = #{membership_id},
+			</if>
+			<if test="memberName != null and memberName != ''">
+			memberName = #{memberName},
+			</if>
+			 <if test="memberBirthday != null and memberBirthday != ''">
+       	 		memberBirthday = #{memberBirthday,jdbcType=DATE},
+      		</if>
+      	    <if test="member_age != null" >
+        		member_age = #{member_age,jdbcType=INTEGER},
+      		</if>
+			<if test="workcondition_id != 0">
+				workcondition_id = #{workcondition_id},
+			</if>
+			<if test="work_unit != null and work_unit != ''">
+			work_unit = #{work_unit},
+			</if>
+			<if test="memberContact_way != null and memberContact_way != ''">
+			memberContact_way = #{memberContact_way},
+			</if>
+			<if test="member_remarks != null and member_remarks != ''">
+			member_remarks = #{member_remarks},
+			</if>
+		</set>
+		where stu_Id = #{stu_Id}
+	</update>
+	
+	<update id="deleteStuInfo">
+		UPDATE oa_jzb_student SET deleteStatus = 1 WHERE stu_Id = #{stu_Id}
+	</update>
+	
+	<update id="updateStuPhoto">
+	UPDATE oa_jzb_student
+	SET
+	photograph=#{photograph}
+	WHERE ID_number = #{ID_number}
+	</update>
+	
+	<select id="getStuPhoto" parameterType="int" resultType="String">
+		SELECT photograph FROM oa_jzb_student WHERE stu_Id = #{stu_Id}
+	</select>
+	
+	<!-- 开发部根据组长id查询小组员工信息 --> 
+<select id="selectYgByUid" resultMap="BaseResultMap" parameterType="Integer">
+  SELECT s.stu_number,u.id as uid,stu_name,stu_sex,stu_age,jobname,contact_way,E_mail 
+  FROM oa_jzb_student AS s 
+  INNER JOIN oa_kfb_user AS u ON u.stu_id=s.stu_number
+  INNER JOIN oa_kfb_job AS j ON u.jobid=j.id 
+  INNER JOIN oa_kfb_group AS g ON g.id=u.groupid 
+ <where>
+  <if test="uid!=null and uid!=''">
+  groupid=( SELECT groupid FROM oa_kfb_user AS u WHERE u.id=#{uid} )
+  </if> 
+  <if test="stu_name!=null and stu_name!=''">
+  AND stu_name LIKE CONCAT('%',#{stu_name},'%')
+  </if> 
+  </where>
+  </select>
+  <!-- 开发部根据组长id查询小组员工信息 --> 
+<select id="selectByUid" resultMap="BaseResultMap" parameterType="Integer">
+  SELECT s.stu_number,u.id as uid,stu_name,stu_sex,stu_age,jobname,contact_way,E_mail 
+  FROM oa_jzb_student AS s 
+  INNER JOIN oa_kfb_user AS u ON u.stu_id=s.stu_number
+  INNER JOIN oa_kfb_job AS j ON u.jobid=j.id 
+  INNER JOIN oa_kfb_group AS g ON g.id=u.groupid 
+ <where>
+  <if test="uid!=null and uid!=''">
+  groupid=( SELECT groupid FROM oa_kfb_user AS u WHERE u.id=#{uid} )
+  </if> 
+  </where>
+  </select>
+<!-- 开发部查询实训人员 --> 
+ <select id="selectAll" parameterType="OaJzbStudent" resultMap="BaseResultMap">
+  SELECT stu_number,stu_name,stu_age,address,E_mail,contact_way,wechat 
+  FROM oa_jwb_grade AS g 
+  INNER JOIN oa_jzb_student AS s ON s.grade_id=g.id 
+ <where>
+  AND g.ClassStatus=2 
+  <if test="stu_number!=null ||stu_number!=''">
+  AND stu_number LIKE CONCAT(#{stu_number},'%')
+  </if> 
+  <if test="stu_name!=null ||stu_name!=''">
+  AND stu_name LIKE CONCAT('%',#{stu_name},'%')
+  </if> 
+  </where>
+  </select>
+ <!-- 开发部查询历史实训人员 --> 
+ <select id="selectHistoryStu" resultMap="BaseResultMap">
+  SELECT s.stu_number, s.stu_name, s.stu_age, s.address, s.E_mail, s.contact_way, s.wechat 
+  FROM oa_jzb_student AS s 
+  INNER JOIN oa_jwb_grade AS g ON s.grade_id=g.id 
+  INNER JOIN oa_kfb_user AS u ON u.stu_id=s.stu_number 
+ <where>
+  AND g.ClassStatus>2 
+  <if test="stu_number!=null">AND s.stu_number LIKE CONCAT(#{stu_number},'%')</if> 
+  <if test="stu_name!=null">AND stu_name LIKE CONCAT('%',#{stu_name},'%')</if> 
+  <if test="gradeid!=null">AND grade_id=#{gradeid}</if> 
+  <if test="groupid!=null">AND u.groupid=#{groupid}</if> 
+  </where>
+  </select>
+  
+ <!--  Mapper XML文件 -->
+	<select id="getStudentByClassId" resultType="OaJzbStudent">
+			SELECT
+			stu_id,stu_number,stu_name,grade_id FROM oa_jzb_student
+			where
+			grade_id=#{grade_id} and status_id=1 ORDER BY stu_number ASC
+	</select>
+	
+	<update id="updateWeiXin">
+		UPDATE `oa_jzb_studkfuzhu` SET stu_wx=#{wx}
+		WHERE stu_wx IN (SELECT wechat FROM `oa_jzb_student` WHERE stu_Id=#{stuid})
+	</update>
+</mapper>

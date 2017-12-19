@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tyyhoa.dao.OaJzbPunishMapper" >
+<!-- 添加奖惩信息 -->
+  <insert id="insertOaJzbPunish" parameterType="OaJzbPunish" >
+   
+INSERT INTO tyyhoa.oa_jzb_punish 
+	(
+	Student_id, 
+	Term_id, 
+	Punish_time, 
+	Punish_cause, 
+	Punish_way, 
+	Implement_id, 
+	Entering_time, 
+	remarks, 
+	deleteStatus
+	)
+	VALUES
+	(
+	#{Student_id}, 
+	#{Term_id}, 
+	#{Punish_time}, 
+	#{Punish_cause}, 
+	#{Punish_way}, 
+	#{Implement_id}, 
+	#{Entering_time}, 
+	#{remarks}, 
+	0
+	);
+  </insert>
+  <!-- 根据班级id查询改班所有学生的所有奖惩信息 -->
+  <select id="selectOaJzbPunishListByGradeId" resultType="OaJzbPunish">
+SELECT jp.id AS id,
+      		 js.stu_name AS stuName,
+       		 student_id,
+      	     term_id,
+             punish_time,
+             punish_cause,
+             punish_way,
+             implement_id,
+             re.emp_name as empName,
+             entering_time,
+             jp.remarks as remarks
+FROM oa_jzb_punish AS  jp 
+INNER JOIN oa_jzb_student AS  js  ON js.stu_Id=jp.Student_id
+INNER JOIN oa_jwb_grade AS g ON g.id=js.grade_id
+INNER JOIN oa_rlzyb_employee AS re ON g.classTeacherId=re.emp_id
+where g.id=#{gradeId}
+ORDER BY jp.Entering_time DESC
+  </select>
+  
+ <!--  根据学生姓名查询该学生的所有奖惩信息 -->
+ <select id="selectOaJzbPunishListByStuName" resultType="OaJzbPunish">
+SELECT jp.id AS id,
+      		 js.stu_name AS stuName,
+       		 student_id,
+      	     term_id,
+             punish_time,
+             punish_cause,
+             punish_way,
+             implement_id,
+             re.emp_name as empName,
+             entering_time,
+             jp.remarks as remarks
+FROM oa_jzb_punish AS  jp 
+INNER JOIN oa_jzb_student AS  js  ON js.stu_Id=jp.Student_id
+INNER JOIN oa_jwb_grade AS g ON g.id=js.grade_id
+INNER JOIN oa_rlzyb_employee AS re ON g.classTeacherId=re.emp_id
+where jp.deleteStatus=0 and js.stu_Id=#{stuId} 
+ORDER BY jp.Entering_time DESC
+ </select>
+<!-- 通过奖惩id获取奖惩信息 -->
+<select id="selectOaJzbPunishById" resultType="OaJzbPunish">
+SELECT jp.id AS id,
+      		 js.stu_name AS stuName,
+       		 student_id,
+      	     term_id,
+             punish_time,
+             punish_cause,
+             punish_way,
+             implement_id,
+             re.emp_name as empName,
+             entering_time,
+             jp.remarks as remarks
+FROM oa_jzb_punish AS  jp 
+INNER JOIN oa_jzb_student AS  js  ON js.stu_Id=jp.Student_id
+INNER JOIN oa_jwb_grade AS g ON g.id=js.grade_id
+INNER JOIN oa_rlzyb_employee AS re ON g.classTeacherId=re.emp_id
+where jp.id=#{punishId}
+</select>
+<!-- 根据奖惩id修改奖惩信息 -->
+<update id="updateOaJzbPunishById" parameterType="OaJzbPunish">
+UPDATE oa_jzb_punish
+<trim prefix="set" suffixOverrides=",">
+		<if test="punish_time!=null">
+				punish_time=#{punish_time},
+		</if>
+		<if test="punish_cause!=null">
+				punish_cause=#{punish_cause},
+		</if>
+		<if test="punish_way!=null">
+				punish_way=#{punish_way},
+		</if>
+		<if test="remarks!=null">
+				remarks=#{remarks},
+		</if>
+</trim>
+where id=#{id}
+</update>
+<!-- 修改删除状态，0为在页面显示，1为不在页面显示 -->
+<update id="updateOaJzbPunishDeleteStatus" parameterType="OaJzbPunish">
+		update oa_jzb_punish set deleteStatus=1
+		where id=#{id}		
+</update>
+</mapper>
